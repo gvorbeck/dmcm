@@ -1,3 +1,10 @@
 node_modules/
 .cache/
 public
+src/content/spells/*
+!src/content/spells/example-spells.mdx
+src/content/monsters/*
+!src/content/monsters/example-monsters.mdx
+src/content/adventures/*
+!src/content/adventures/example/*
+.DS_Store
