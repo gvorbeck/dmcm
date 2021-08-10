@@ -233,7 +233,10 @@ class SearchTextInput extends React.Component {
       <fieldset>
         <label>
           Name: 
-          <input value={text} onChange={this.handleChange} />
+          <input
+            value={text}
+            onChange={this.handleChange}
+          />
         </label>
       </fieldset>
     );
@@ -314,6 +317,6 @@ class BeastPage extends React.Component {
       </Layout>
     );
   }
-}
+};
 
 export default BeastPage;
