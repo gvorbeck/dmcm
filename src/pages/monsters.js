@@ -217,7 +217,7 @@ function resultList(monsters) {
   return monsterList;
 }
 
-class SearchText extends React.Component {
+class SearchTextInput extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -245,6 +245,7 @@ class BeastPage extends React.Component {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getResults = this.getResults.bind(this);
     this.state = {inputText: '', searchResults: []};
   }
 
@@ -256,6 +257,22 @@ class BeastPage extends React.Component {
         this.monsterList.push(monsters[x]);
       }
     }
+    
+    if (this.props.location.search) {
+      const params = new URLSearchParams(this.props.location.search);
+      this.getResults(params.get('m'));
+    }
+  }
+
+  getResults(query) {
+    let results = [];
+    for (let i=0,l=this.monsterList.length;i<l;i++) {
+      if (this.monsterList[i].name.toUpperCase().includes(query.toUpperCase())) {
+        results.push(this.monsterList[i]);
+      }
+    }
+
+    this.setState({searchResults: results});
   }
 
   handleTextChange(text) {
@@ -266,14 +283,7 @@ class BeastPage extends React.Component {
     e.preventDefault();
 
     if (this.state.inputText) {
-      let results = [];
-      for (let i=0,l=this.monsterList.length;i<l;i++) {
-        if (this.monsterList[i].name.toUpperCase().includes(this.state.inputText.toUpperCase())) {
-          results.push(this.monsterList[i]);
-        }
-      }
-  
-      this.setState({searchResults: results});
+      this.getResults(this.state.inputText)
     }
   }
 
@@ -291,7 +301,7 @@ class BeastPage extends React.Component {
         <form
           onSubmit={this.handleSubmit}
         >
-          <SearchText
+          <SearchTextInput
             onTextChange={this.handleTextChange}
             text={text}
           />
