@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import showdown from 'showdown';
 import Layout from '../components/layout/layout';
 
 export const query = graphql`
@@ -20,6 +21,48 @@ export const query = graphql`
                 value
                 notes
               }
+              speed
+              abilities {
+                str
+                dex
+                con
+                int
+                wis
+                cha
+              }
+              saves {
+                name
+                modifier
+              }
+              skills {
+                name
+                modifier
+              }
+              senses
+              languages
+              challenge
+              dmgvulnerabilities
+              dmgresistances
+              dmgimmunities
+              cdnimmunities
+              traits {
+                name
+                content
+              }
+              actions {
+                name
+                content
+              }
+              reactions {
+                name
+                content
+              }
+              lgdyactions {
+                name
+                content
+              }
+              description
+              source
             }
           }
         }
@@ -27,10 +70,54 @@ export const query = graphql`
     }
   }
 `
+const converter = new showdown.Converter();
 
-function resultMarkup(monster) {
+function monsterAdvBlocks(monster, area) {
+  const formattedItems = [];
+  for (let i=0,l=area.length;i<l;i++) {
+    formattedItems.push(
+      <li key={i}>
+        <h4>{area[i].name}</h4>
+        <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(area[i].content)}} />
+      </li>
+    );
+  }
+  return formattedItems;
+}
+
+function monsterSimpleBlocks(monster, area) {
+  const formattedItems = [];
+  for (let i=0,l=area.length;i<l;i++) {
+    formattedItems.push(
+      <li key={i}>{area[i].name}: +{area[i].modifier}</li>
+    );
+  }
+  return formattedItems;
+}
+
+function resultMarkup(monster, index) {
+  let speedList = [],
+      abilityList = [];
+  
+  for (let i=0,l=monster.speed.length;i<l;i++) {
+    speedList.push(
+      <li key={i}>{monster.speed[i]}</li>
+    );
+  }
+
+  for (const [key, value] of Object.entries(monster.abilities)) {
+    abilityList.push(
+      <React.Fragment key={key}>
+        <dt>{key.toUpperCase()}</dt>
+        <dd>
+          <span>{value}</span>
+          <span></span>
+        </dd>
+      </React.Fragment>
+    );
+  }
   return (
-    <article>
+    <article key={index}>
       <h1>{monster.name}</h1>
       <h2>{monster.type}</h2>
       <dl>
@@ -38,7 +125,86 @@ function resultMarkup(monster) {
         <dd>{monster.ac.value}{monster.ac.notes}</dd>
         <dt>Hit Points</dt>
         <dd>{monster.hp.value}{monster.hp.notes}</dd>
+        <dt>Speed</dt>
+        <dd>
+          <ul>{speedList}</ul>
+        </dd>
       </dl>
+      <dl>{abilityList}</dl>
+      <dl>
+        {monster.saves &&
+          <React.Fragment>
+            <dt>Saving Throws</dt>
+            <dd>
+              <ul>{monsterSimpleBlocks(monster, monster.saves)}</ul>
+            </dd>
+          </React.Fragment>
+        }
+        {monster.skills &&
+          <React.Fragment>
+            <dt>Skills</dt>
+            <dd>
+              <ul>{monsterSimpleBlocks(monster, monster.skills)}</ul>
+            </dd>
+          </React.Fragment>
+        }
+        {monster.dmgvulnerabilities &&
+          <React.Fragment>
+            <dt>Damage Vulnerabilities</dt>
+            <dd>{monster.dmgvulnerabilities.join(', ')}</dd>
+          </React.Fragment>
+        }
+        {monster.dmgresistances &&
+          <React.Fragment>
+            <dt>Damage Resistances</dt>
+            <dd>{monster.dmgresistances.join(', ')}</dd>
+          </React.Fragment>
+        }
+        {monster.dmgimmunities &&
+          <React.Fragment>
+            <dt>Damage Immunities</dt>
+            <dd>{monster.dmgimmunities.join(', ')}</dd>
+          </React.Fragment>
+        }
+        {monster.cdnimmunities &&
+          <React.Fragment>
+            <dt>Condition Immunities</dt>
+            <dd>{monster.cdnimmunities.join(', ')}</dd>
+          </React.Fragment>
+        }
+        <dt>Senses</dt>
+        <dd>{monster.senses.join(', ')}</dd>
+        <dt>Languages</dt>
+        <dd>{monster.languages.join(', ')}</dd>
+        <dt>Challenge</dt>
+        <dd>{monster.challenge}</dd>
+      </dl>
+      {monster.traits &&
+        <div>
+          <h3>Traits</h3>
+          <ul>{monsterAdvBlocks(monster, monster.traits)}</ul>
+        </div>
+      }
+      {monster.actions &&
+        <div>
+          <h3>Actions</h3>
+          <ul>{monsterAdvBlocks(monster, monster.actions)}</ul>
+        </div>
+      }
+      {monster.reactions &&
+        <div>
+          <h3>Reactions</h3>
+          <ul>{monsterAdvBlocks(monster, monster.reactions)}</ul>
+        </div>
+      }
+      {monster.lgdyactions &&
+        <div>
+          <h3>Legendary Actions</h3>
+          <ul>{monsterAdvBlocks(monster, monster.lgdyactions)}</ul>
+        </div>
+      }
+      <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(monster.description)}} />
+      <p>{monster.source}</p>
     </article>
   );
 }
@@ -46,7 +212,7 @@ function resultMarkup(monster) {
 function resultList(monsters) {
   let monsterList = [];
   for (let i=0,l=monsters.length;i<l;i++) {
-    monsterList.push(resultMarkup(monsters[i]));
+    monsterList.push(resultMarkup(monsters[i], i));
   }
   return monsterList;
 }
@@ -99,14 +265,16 @@ class BeastPage extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    let results = [];
-    for (let i=0,l=this.monsterList.length;i<l;i++) {
-      if (this.monsterList[i].name.toUpperCase().includes(this.state.inputText.toUpperCase())) {
-        results.push(this.monsterList[i]);
+    if (this.state.inputText) {
+      let results = [];
+      for (let i=0,l=this.monsterList.length;i<l;i++) {
+        if (this.monsterList[i].name.toUpperCase().includes(this.state.inputText.toUpperCase())) {
+          results.push(this.monsterList[i]);
+        }
       }
+  
+      this.setState({searchResults: results});
     }
-
-    this.setState({searchResults: results});
   }
 
   render() {
