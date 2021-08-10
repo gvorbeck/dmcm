@@ -283,7 +283,7 @@ class BeastPage extends React.Component {
     e.preventDefault();
 
     if (this.state.inputText) {
-      this.getResults(this.state.inputText)
+      this.getResults(this.state.inputText);
     }
   }
 
