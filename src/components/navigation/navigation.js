@@ -9,7 +9,7 @@ function NavItem(props) {
   )
 }
 
-function Navigation(props) {
+function Navigation() {
   const nav = [
     {
       title: 'Adventures',
