@@ -1,7 +1,7 @@
-//==============================================================================
+//===================
 // GENERATE MDX SLUGS
 // (Cannot be dynamically generated from /pages so they live in /content)
-//==============================================================================
+//===================
 const { createFilePath } = require("gatsby-source-filesystem");
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
@@ -21,4 +21,41 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       value: `${value}`,
     })
   }
+}
+
+//===============
+// PAGE TEMPLATES
+//===============
+const path = require('path');
+exports.createPages = async ({ graphql, actions, reporter }) => {
+  const { createPage } = actions
+  const result = await graphql(`
+    query {
+      adventures: allMdx(filter: {fields: {slug: {regex: "/adventures\\\\/\\\\w+\\\\/$/i"}}}) {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `);
+  if (result.errors) {
+    reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
+  }
+  const adventures = result.data.adventures.edges;
+  adventures.forEach(({ node }, index) => {
+    createPage({
+      path: node.fields.slug,
+      component: path.resolve(`./src/components/adventure-page-layout/adventure-page-layout.js`),
+      context: {
+        id: node.id,
+        slug: node.fields.slug,
+        regex: "/adventures\\\\/\\\\w+\\\\/$/i",
+      },
+    })
+  })
 }
