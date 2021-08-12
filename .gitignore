@@ -6,5 +6,5 @@ src/content/spells/*
 src/content/monsters/*
 !src/content/monsters/example-monsters.mdx
 src/content/adventures/*
-!src/content/adventures/example/*
+!src/content/adventures/example/
 .DS_Store
