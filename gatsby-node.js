@@ -55,7 +55,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         id: node.id,
         locations: `${node.fields.slug}locations/`,
         notes: `${node.fields.slug}notes/`,
-        npcs: `${node.fields.npcs}npcs/`,
+        npcs: `${node.fields.slug}npcs/`,
       },
     })
   })
