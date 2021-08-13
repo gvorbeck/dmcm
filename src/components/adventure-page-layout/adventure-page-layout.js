@@ -199,9 +199,7 @@ class AdventurePage extends React.Component {
               colSpan='100%'
             >
               <div>
-                <MDXProvider
-                  components={ Link }
-                >
+                <MDXProvider>
                   <MDXRenderer>
                     {this.props.data.npcs.edges[i].node.body}
                   </MDXRenderer>
