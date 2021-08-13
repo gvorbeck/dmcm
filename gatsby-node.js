@@ -41,6 +41,16 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           }
         }
       }
+      locations: allMdx(filter: {fields: {slug: {regex: "/locations/"}}}) {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+          }
+        }
+      }
     }
   `);
   if (result.errors) {
@@ -58,5 +68,16 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         npcs: `${node.fields.slug}npcs/`,
       },
     })
-  })
+  });
+
+  const locations = result.data.locations.edges;
+  locations.forEach(({ node }, index) => {
+    createPage({
+      path: node.fields.slug,
+      component: path.resolve(`./src/components/location-page-layout/location-page-layout.js`),
+      content: {
+        id: node.id,
+      },
+    })
+  });
 }
