@@ -126,6 +126,29 @@ function AdventureSection(props) {
   );
 }
 
+function npcDataRow(npc, column) {
+  if (column ==='stats') {
+    return (
+      <a
+        title='Stat Block'
+        href={npc[column]}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        <span/>
+      </a>
+    );
+  } else if (column === 'detail') {
+    return (
+      <button
+        aria-label='NPC Details'
+      />
+    );
+  } else {
+    return (npc[column]);
+  }
+};
+
 class AdventurePage extends React.Component {
   render() {
     const sectionData = [
@@ -142,15 +165,54 @@ class AdventurePage extends React.Component {
         data: this.props.data.mdx.frontmatter.links,
         external: true,
       }
-    ];
-    const adventureSections = sectionData.map((s, i) => (
+    ],
+    adventureSections = sectionData.map((s, i) => (
       <AdventureSection
         key={i}
         title={s.title}
         data={s.data}
         external={s.external ? true : false}
       />
-    ));
+    )),
+    tableColumnNames = ["name", "race", "location", "occupation", "age", "stats", "emotion", "motive", "voice", "detail"],
+    tableColumns = tableColumnNames.map((c, i) => (
+      <th
+        key={i}
+        aria-label={c}
+        dangerouslySetInnerHTML={{ __html: c }}
+      />
+    )),
+    tableRows = [];
+
+    for (let i=0,l=this.props.data.npcs.edges.length;i<l;i++) {
+      const tableCell = [];
+      for (let x=0,y=tableColumnNames.length;x<y;x++) {
+        tableCell.push(
+          <td key={x}>{npcDataRow(this.props.data.npcs.edges[i].node.frontmatter, tableColumnNames[x])}</td>
+        );
+      }
+      tableRows.push(
+        <React.Fragment key={i}>
+          <tr>{tableCell}</tr>
+          <tr>
+            <td
+              colSpan='100%'
+            >
+              <div>
+                <MDXProvider
+                  components={ Link }
+                >
+                  <MDXRenderer>
+                    {this.props.data.npcs.edges[i].node.body}
+                  </MDXRenderer>
+                </MDXProvider>
+              </div>
+            </td>
+          </tr>
+        </React.Fragment>
+      );
+    };
+
     return (
       <Layout>
         <section>
@@ -190,6 +252,18 @@ class AdventurePage extends React.Component {
           </dl>
         </section>
         <section>{adventureSections}</section>
+        {this.props.data.npcs &&
+          <table>
+            <thead>
+              <tr>
+                {tableColumns}
+              </tr>
+            </thead>
+            <tbody>
+              {tableRows}
+            </tbody>
+          </table>
+        }
       </Layout>
     );
   }
