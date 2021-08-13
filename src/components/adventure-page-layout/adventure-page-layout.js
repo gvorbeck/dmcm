@@ -6,7 +6,7 @@ import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Layout from '../layout/layout';
 
 export const query = graphql`
-  query AdventurePageQuery($id: String) {
+  query AdventurePageQuery($id: String, $locations: String, $notes: String, $npcs: String) {
     mdx(id: {eq: $id}) {
       id
       body
@@ -30,7 +30,7 @@ export const query = graphql`
       }
     }
     notes: allMdx(
-      filter: {fields: {slug: {regex: "/notes/"}}}
+      filter: {fields: {slug: {regex: $notes}}}
       sort: {fields: frontmatter___title}
     ) {
       edges {
@@ -45,7 +45,7 @@ export const query = graphql`
       }
     }
     locations: allMdx(
-      filter: {fields: {slug: {regex: "/locations/"}}}
+      filter: {fields: {slug: {regex: $locations}}}
       sort: {fields: frontmatter___title}
     ) {
       edges {
@@ -60,7 +60,7 @@ export const query = graphql`
       }
     }
     npcs: allMdx(
-      filter: {fields: {slug: {regex: "/npcs/"}}}
+      filter: {fields: {slug: {regex: $npcs}}}
       sort: {fields: frontmatter___name}
     ) {
       edges {
@@ -92,7 +92,7 @@ function SectionLink(props) {
     return (
       <a
         title={props.data.title}
-        target='_blanl'
+        target='_blank'
         rel='noopener noreferrer'
         href={props.data.url}
       >
@@ -101,7 +101,7 @@ function SectionLink(props) {
     );
   } else {
     return (
-      <h1>{props.data.title} foobar</h1>
+      <Link to={props.data.node.fields.slug}>{props.data.node.frontmatter.title}</Link>
     );
   }
 }
@@ -190,7 +190,6 @@ class AdventurePage extends React.Component {
           </dl>
         </section>
         <section>{adventureSections}</section>
-        <h1>hello world.</h1>
       </Layout>
     );
   }

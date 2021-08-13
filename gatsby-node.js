@@ -53,8 +53,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: path.resolve(`./src/components/adventure-page-layout/adventure-page-layout.js`),
       context: {
         id: node.id,
-        slug: node.fields.slug,
-        regex: "/adventures\\\\/\\\\w+\\\\/$/i",
+        locations: `${node.fields.slug}locations/`,
+        notes: `${node.fields.slug}notes/`,
+        npcs: `${node.fields.npcs}npcs/`,
       },
     })
   })
