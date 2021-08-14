@@ -3,11 +3,14 @@ import { graphql, Link } from 'gatsby';
 import { navigate } from '@reach/router';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import Layout from '../layout/layout';
+import { MDXProvider } from '@mdx-js/react';
+import { MDXRenderer } from 'gatsby-plugin-mdx';
 
 export const query = graphql`
 query ($id: String, $pid: String) {
   mdx(id: {eq: $id}) {
     id
+    body
     fields {
       slug
     }
@@ -133,7 +136,7 @@ function Map(props) {
       gridRowStart: area.y,
     }
     area.traps &&
-    area.traps.map((trap, i) => {
+    area.traps.forEach((trap, i) => {
       const style = {
         gridColumnStart: trap.x,
         gridColumnEnd: trap.x + trap.w,
@@ -177,21 +180,42 @@ function Map(props) {
     />
   ));
   return (
-    <section>
+    <React.Fragment>
       <AnchorLink
         id='map'
       />
-      <GatsbyImage
-        image={props.image}
-        loading='eager'
-        alt={'Map of ' + props.title}
-      />
-      <ul>
-        {areasRender}
-        {trapsRender}
-      </ul>
-    </section>
+      <section>
+        <GatsbyImage
+          image={props.image}
+          loading='eager'
+          alt={'Map of ' + props.title}
+        />
+        <ul>
+          {areasRender}
+          {trapsRender}
+        </ul>
+      </section>
+    </React.Fragment>
   )
+}
+
+function GeneralFeatures(props) {
+  return (
+    <React.Fragment>
+      <AnchorLink
+        id='general'
+      />
+      <section>
+        <MDXProvider
+          components={ Link }
+        >
+          <MDXRenderer>
+            {props.body}
+          </MDXRenderer>
+        </MDXProvider>
+      </section>
+    </React.Fragment>
+  );
 }
 
 class LocationPage extends React.Component {
@@ -252,8 +276,12 @@ class LocationPage extends React.Component {
             areas={this.props.data.mdx.frontmatter.areas}
           />
         }
-        {/*<GeneralFeatures></GeneralFeatures>
-        <Areas></Areas>
+        {this.props.data.mdx.body &&
+          <GeneralFeatures
+            body={this.props.data.mdx.body}
+          />
+        }
+        {/*<Areas></Areas>
         <PlayerStats></PlayerStats>*/}
       </Layout>
     );
