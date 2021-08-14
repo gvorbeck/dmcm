@@ -72,11 +72,19 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const locations = result.data.locations.edges;
   locations.forEach(({ node }, index) => {
+    let parent; 
+    for (let i=0,l=adventures.length;i<l;i++) {
+      const slug = node.fields.slug;
+      if (adventures[i].node.fields.slug === slug.split(/locations/)[0]) {
+        parent = adventures[i].node.id
+      }
+    }
     createPage({
       path: node.fields.slug,
       component: path.resolve(`./src/components/location-page-layout/location-page-layout.js`),
-      content: {
+      context: {
         id: node.id,
+        pid: parent,
       },
     })
   });
