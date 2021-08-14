@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { navigate } from '@reach/router';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import Layout from '../layout/layout';
 
 export const query = graphql`
@@ -11,13 +12,29 @@ query ($id: String, $pid: String) {
       slug
     }
     frontmatter {
+      title
       areas {
         name
+        x
+        y
+        flags
+        traps {
+          x
+          y
+          h
+          w
+        }
+      }
+      map {
+        image {
+          childImageSharp {
+            gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
+          }
+        }
       }
     }
   }
   adventure: mdx(id: {eq: $pid}) {
-    id
     slug
   }
 }
@@ -84,12 +101,111 @@ function Navigation(props) {
   );
 }
 
+function DiceTable(props) {
+  const formula = props.amount + 'd' + props.type + '+' + props.modifier;
+  return (
+    <section>
+      <ul>
+        <li>{formula}</li>
+        <li>{props.result}</li>
+      </ul>
+    </section>
+  );
+}
+
+function AnchorLink(props) {
+  return (
+    <a
+      href='!#'
+      id={props.id}
+      dangerouslySetInnerHTML={{ __html: '&nbsp;' }}
+      aria-label='Anchor link'
+    />
+  );
+}
+
+function Map(props) {
+  const areasData = props.areas;
+  const traps = [];
+  const areasRender = areasData.map((area, i) => {
+    const style = {
+      gridColumnStart: area.x,
+      gridRowStart: area.y,
+    }
+    area.traps &&
+    area.traps.map((trap, i) => {
+      const style = {
+        gridColumnStart: trap.x,
+        gridColumnEnd: trap.x + trap.w,
+        gridRowStart: trap.y,
+        gridRowEnd: trap.y + trap.h,
+      }
+      traps.push({
+        style: style,
+      });
+    });
+    console.log(area.traps);
+    return (
+      <li
+        key={i}
+        style={style}
+      >
+        <div>
+          <p>{area.name}</p>
+          {area.flags &&
+            <ul>
+              {area.flags.map((flag, i) => (
+                <li
+                  key={i}
+                />
+              ))}
+            </ul>
+          }
+        </div>
+        <Link
+          to={'./#' + (i+1)}
+        >
+          <span>{i+1}</span>
+        </Link>
+      </li>
+    );
+  });
+  const trapsRender = traps.map((trap, i) => (
+    <li
+      key={i}
+      style={trap.style}
+    />
+  ));
+  return (
+    <section>
+      <AnchorLink
+        id='map'
+      />
+      <GatsbyImage
+        image={props.image}
+        loading='eager'
+        alt={'Map of ' + props.title}
+      />
+      <ul>
+        {areasRender}
+        {trapsRender}
+      </ul>
+    </section>
+  )
+}
+
 class LocationPage extends React.Component {
   constructor(props) {
     super(props);
     this.handleNavClick = this.handleNavClick.bind(this);
     this.state = {
       anchor: this.props.location.hash,
+      dice: {
+        amount: 0,
+        type: 0,
+        modifier: 0,
+        result: 0,
+      }
     };
   }
 
@@ -122,10 +238,21 @@ class LocationPage extends React.Component {
           adventure={`/${this.props.data.adventure.slug}`}
           onclick={this.handleNavClick}
           location={this.state.anchor}
-        ></Navigation>
-        {/*<DiceTable></DiceTable>
-        <Map></Map>
-        <GeneralFeatures></GeneralFeatures>
+        />
+        <DiceTable
+          amount={this.state.dice.amount}
+          type={this.state.dice.type}
+          modifier={this.state.dice.modifier}
+          result={this.state.dice.result}
+        />
+        {this.props.data.mdx.frontmatter.map.image &&
+          <Map
+            image={getImage(this.props.data.mdx.frontmatter.map.image)}
+            title={this.props.data.mdx.frontmatter.title}
+            areas={this.props.data.mdx.frontmatter.areas}
+          />
+        }
+        {/*<GeneralFeatures></GeneralFeatures>
         <Areas></Areas>
         <PlayerStats></PlayerStats>*/}
       </Layout>
