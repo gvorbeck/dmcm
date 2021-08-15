@@ -160,7 +160,6 @@ function Map(props) {
         style: style,
       });
     });
-    console.log(area.traps);
     return (
       <li
         key={i}
@@ -256,7 +255,7 @@ function Areas(props) {
       </React.Fragment>
     );
     return (
-      <li>{areaItem}</li>
+      <li key={i}>{areaItem}</li>
     );
   });
 
@@ -373,3 +372,9 @@ class LocationPage extends React.Component {
 }
 
 export default LocationPage;
+
+    /*
+    TODO: pass a prop to Layout containing a method defined in this class component that changes the states of the dice states defined above.
+
+    In the Layout component write code that looks for button formula text using a hook that fires after the page has loaded (componentDidMount()? maybe another). It will change text to buttons and give those buttons an onClick() method that references handleRoll
+    */
