@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { navigate } from '@reach/router';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import DiceRoller from '../diceRoller/diceRoller';
 import Layout from '../layout/layout';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
@@ -55,6 +56,7 @@ query ($id: String, $pid: String) {
 }
 `
 const converter = new showdown.Converter();
+const shortcodes = { DiceRoller };
 
 function Navigation(props) {
   const navItemsData = [
@@ -218,9 +220,7 @@ function GeneralFeatures(props) {
         id='general'
       />
       <section>
-        <MDXProvider
-          components={ Link }
-        >
+        <MDXProvider components={ shortcodes }>
           <MDXRenderer>
             {props.body}
           </MDXRenderer>
