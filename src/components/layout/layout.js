@@ -18,12 +18,28 @@ class Layout extends React.Component {
   }
 
   handleClick(event) {
-    let foo = this.mainRef.current;
-    console.log(foo);
-    console.log('foo');
+    /*let foo = this.mainRef.current;*/
+    const results = [];
+    let total = 0;
+    const amount = event.target.dataset.amount ? event.target.dataset.amount : 1;
+    const type = event.target.dataset.type;
+    const modifier = event.target.dataset.modifier ? parseInt(event.target.dataset.modifier) : 0;
+    for (let i=0,l=amount;i<l;i++) {
+      const roll = 1 + Math.floor(Math.random()*type);
+      results.push(roll);
+      total = total + roll;
+    }
+    total = total + modifier;
+    results.push(total);
+    console.log(results);
   }
 
   componentDidMount() {
+    const buttons = this.mainRef.current.getElementsByClassName('dmcm--dice-button');
+    for (let i=0,l=buttons.length;i<l;i++) {
+      buttons[i].addEventListener('click', this.handleClick);
+    }
+
     /*const main = this.mainRef.current;
     const reg = new RegExp(/(\d*d\d+)/, 'g');
     const parts = main.innerHTML.split(reg);
@@ -40,6 +56,7 @@ class Layout extends React.Component {
 
   render() {
     const pageWrapperClasses = [styles.pageWrapper, this.props.pageWrapper, 'dmcm--pageWrapper'].join(' ');
+    
     return (
       <div
         className={pageWrapperClasses}
