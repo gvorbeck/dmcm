@@ -213,6 +213,7 @@ class AdventurePage extends React.Component {
 
     return (
       <Layout>
+        <h1>{this.props.data.mdx.frontmatter.title}</h1>
         <section>
           {this.props.data.mdx.frontmatter.image &&
             <GatsbyImage
