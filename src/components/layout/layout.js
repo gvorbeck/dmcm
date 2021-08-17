@@ -1,6 +1,24 @@
 import React from 'react';
 import * as styles from './layout.module.scss';
 
+function DiceTable(props) {
+  const formula = props.amount + 'd' + props.type + '+' + props.modifier;
+  const rolls = props.rolls ? props.rolls.map((roll, i) => (
+    <li key={i}>
+      {roll}
+    </li>
+  )) : '';
+  return (
+    <section>
+      <ul>
+        <li>{formula}</li>
+        {rolls}
+        <li>{props.result}</li>
+      </ul>
+    </section>
+  );
+}
+
 class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -12,26 +30,29 @@ class Layout extends React.Component {
         amount: 0,
         type: 0,
         modifier: 0,
+        rolls: new Array(),
         result: 0,
       }
     }
   }
 
   handleClick(event) {
-    /*let foo = this.mainRef.current;*/
-    const results = [];
     let total = 0;
-    const amount = event.target.dataset.amount ? event.target.dataset.amount : 1;
-    const type = event.target.dataset.type;
-    const modifier = event.target.dataset.modifier ? parseInt(event.target.dataset.modifier) : 0;
-    for (let i=0,l=amount;i<l;i++) {
-      const roll = 1 + Math.floor(Math.random()*type);
-      results.push(roll);
+    let dice = {...this.state.address};
+    dice.amount = event.target.dataset.amount ? parseInt(event.target.dataset.amount) : 1;
+    dice.type = parseInt(event.target.dataset.type);
+    dice.modifier = event.target.dataset.modifier ? parseInt(event.target.dataset.modifier) : 0;
+    dice.rolls = [];
+
+    for (let i=0,l=dice.amount;i<l;i++) {
+      const roll = 1 + Math.floor(Math.random()*dice.type);
+      dice.rolls.push(roll);
       total = total + roll;
     }
-    total = total + modifier;
-    results.push(total);
-    console.log(results);
+
+    dice.result = total + dice.modifier;
+    this.setState( { dice });
+    console.log(this.state.dice);
   }
 
   componentDidMount() {
@@ -39,19 +60,6 @@ class Layout extends React.Component {
     for (let i=0,l=buttons.length;i<l;i++) {
       buttons[i].addEventListener('click', this.handleClick);
     }
-
-    /*const main = this.mainRef.current;
-    const reg = new RegExp(/(\d*d\d+)/, 'g');
-    const parts = main.innerHTML.split(reg);
-    main.innerHTML = parts.map((part, i) => (
-      part.match(reg) ? ReactDOMServer.renderToString(
-        <button
-          key={i}
-          onClick={this.handleClick}
-          className={styles.diceButton}
-        >{part}</button>
-      ) : (part)
-    )).join('');*/
   }
 
   render() {
@@ -64,6 +72,13 @@ class Layout extends React.Component {
         <main
           ref={this.mainRef}
         >
+          <DiceTable
+            amount={this.state.dice.amount}
+            type={this.state.dice.type}
+            modifier={this.state.dice.modifier}
+            rolls={this.state.dice.rolls}
+            result={this.state.dice.result}
+          />
           {this.props.children}
         </main>
       </div>

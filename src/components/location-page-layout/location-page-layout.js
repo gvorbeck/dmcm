@@ -119,18 +119,6 @@ function Navigation(props) {
   );
 }
 
-function DiceTable(props) {
-  const formula = props.amount + 'd' + props.type + '+' + props.modifier;
-  return (
-    <section>
-      <ul>
-        <li>{formula}</li>
-        <li>{props.result}</li>
-      </ul>
-    </section>
-  );
-}
-
 function AnchorLink(props) {
   return (
     <a
@@ -297,14 +285,9 @@ class LocationPage extends React.Component {
   constructor(props) {
     super(props);
     this.handleNavClick = this.handleNavClick.bind(this);
+    this.handleRoll = this.handleRoll.bind(this);
     this.state = {
       anchor: this.props.location.hash,
-      dice: {
-        amount: 0,
-        type: 0,
-        modifier: 0,
-        result: 0,
-      }
     };
   }
 
@@ -329,6 +312,10 @@ class LocationPage extends React.Component {
     this.setState({anchor: hash}, () => navigate(this.state.anchor));
   }
 
+  handleRoll(event) {
+    console.log('foofoofooooo');
+  }
+
   render() {
     return (
       <Layout>
@@ -337,12 +324,6 @@ class LocationPage extends React.Component {
           adventure={`/${this.props.data.adventure.slug}`}
           onclick={this.handleNavClick}
           location={this.state.anchor}
-        />
-        <DiceTable
-          amount={this.state.dice.amount}
-          type={this.state.dice.type}
-          modifier={this.state.dice.modifier}
-          result={this.state.dice.result}
         />
         {this.props.data.mdx.frontmatter.map.image &&
           <Map
