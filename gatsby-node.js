@@ -51,11 +51,30 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           }
         }
       }
+      notes: allMdx(filter: {fields: {slug: {regex: "/notes/"}}}) {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+          }
+        }
+      }
     }
   `);
   if (result.errors) {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
+
+  function findParentAdventure(slug) {
+    for (let i=0,l=adventures.length;i<l;i++) {
+      if (adventures[i].node.fields.slug === slug.split(/locations/)[0]) {
+        return adventures[i].node.id;
+      }
+    }
+  }
+
   const adventures = result.data.adventures.edges;
   adventures.forEach(({ node }, index) => {
     createPage({
@@ -72,19 +91,24 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const locations = result.data.locations.edges;
   locations.forEach(({ node }, index) => {
-    let parent; 
-    for (let i=0,l=adventures.length;i<l;i++) {
-      const slug = node.fields.slug;
-      if (adventures[i].node.fields.slug === slug.split(/locations/)[0]) {
-        parent = adventures[i].node.id
-      }
-    }
     createPage({
       path: node.fields.slug,
       component: path.resolve(`./src/components/location-page-layout/location-page-layout.js`),
       context: {
         id: node.id,
-        pid: parent,
+        pid: findParentAdventure(node.fields.slug),
+      },
+    })
+  });
+
+  const notes = result.data.notes.edges;
+  notes.forEach(({ node }, index) => {
+    createPage({
+      path: node.fields.slug,
+      component: path.resolve(`./src/components/notes-page-layout/notes-page-layout.js`),
+      context: {
+        id: node.id,
+        pid: findParentAdventure(node.fields.slug),
       },
     })
   });
