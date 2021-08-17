@@ -20,16 +20,19 @@ function Header(props) {
         <header
           className={styles.header}
         >
-          <StaticImage
-            src='../../images/wizard.png'
-            alt={data.site.siteMetadata.title}
-            placeholder='blurred'
-            layout='fixed'
-            width={10}
-          />
-          <h1>
-            <Link to='/'>{data.site.siteMetadata.title}</Link>
-          </h1>
+          <div>
+            <StaticImage
+              src='../../images/wizard.png'
+              alt={data.site.siteMetadata.title}
+              placeholder='blurred'
+              layout='fixed'
+              width={40}
+              className={styles.image}
+            />
+            <h1>
+              <Link to='/'>{data.site.siteMetadata.title}</Link>
+            </h1>
+          </div>
           {!props.homeNav &&
             <Navigation/>
           }
