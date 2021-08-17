@@ -1,0 +1,1 @@
+import "@fontsource/space-grotesk"
