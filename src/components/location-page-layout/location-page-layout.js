@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { navigate } from '@reach/router';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import AnchorLink from '../anchorlink/anchorlink';
 import Dice from '../dice/dice';
 import Layout from '../layout/layout';
 import { MDXProvider } from '@mdx-js/react';
@@ -116,17 +117,6 @@ function Navigation(props) {
         {navItemsRender}
       </ul>
     </nav>
-  );
-}
-
-function AnchorLink(props) {
-  return (
-    <a
-      href='!#'
-      id={props.id}
-      dangerouslySetInnerHTML={{ __html: '&nbsp;' }}
-      aria-label='Anchor link'
-    />
   );
 }
 
