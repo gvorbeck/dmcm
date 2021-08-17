@@ -30,7 +30,7 @@ class Layout extends React.Component {
         amount: 0,
         type: 0,
         modifier: 0,
-        rolls: new Array(),
+        rolls: [],
         result: 0,
       }
     }
