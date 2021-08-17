@@ -10,7 +10,7 @@ function DiceTable(props) {
     </li>
   )) : '';
   return (
-    <section>
+    <section className={'diceTable'}>
       <ul>
         <li>{formula}</li>
         {rolls}
