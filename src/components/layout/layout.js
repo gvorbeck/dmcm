@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../header/header';
 import * as styles from './layout.module.scss';
 
 function DiceTable(props) {
@@ -69,6 +70,9 @@ class Layout extends React.Component {
       <div
         className={pageWrapperClasses}
       >
+        <Header
+          homeNav={this.props.homeNav}
+        />
         <main
           ref={this.mainRef}
         >

@@ -20,6 +20,7 @@ class IndexPage extends React.Component {
     return (
       <Layout
         pageWrapper={styles.indexWrapper}
+        homeNav={true}
       >
         <StaticImage
           src='../images/wizard.png'
