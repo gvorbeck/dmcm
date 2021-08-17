@@ -1,3 +1,10 @@
+@import '../../styles/reset.scss';
+@import '../../styles/setup';
+
+body {
+  background-color: $color--rust;
+}
+
 .pageWrapper {
   border: none;
 }
