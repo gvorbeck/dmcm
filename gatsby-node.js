@@ -67,9 +67,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
 
-  function findParentAdventure(slug) {
+  function findParentAdventure(slug, section) {
+    const regex = new RegExp(section);
     for (let i=0,l=adventures.length;i<l;i++) {
-      if (adventures[i].node.fields.slug === slug.split(/locations/)[0]) {
+      if (adventures[i].node.fields.slug === slug.split(regex)[0]) {
         return adventures[i].node.id;
       }
     }
@@ -96,7 +97,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: path.resolve(`./src/components/location-page-layout/location-page-layout.js`),
       context: {
         id: node.id,
-        pid: findParentAdventure(node.fields.slug),
+        pid: findParentAdventure(node.fields.slug, 'locations'),
       },
     })
   });
@@ -108,7 +109,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: path.resolve(`./src/components/notes-page-layout/notes-page-layout.js`),
       context: {
         id: node.id,
-        pid: findParentAdventure(node.fields.slug),
+        pid: findParentAdventure(node.fields.slug, 'notes'),
       },
     })
   });
