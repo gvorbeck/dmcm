@@ -10,7 +10,7 @@ function DiceTable(props) {
     </li>
   )) : '';
   return (
-    <section className={'diceTable'}>
+    <section className={styles.diceTable}>
       <ul>
         <li>{formula}</li>
         {rolls}
@@ -64,7 +64,7 @@ class Layout extends React.Component {
   }
 
   render() {
-    const pageWrapperClasses = [styles.pageWrapper, this.props.pageWrapper, 'dmcm--pageWrapper'].join(' ');
+    const pageWrapperClasses = [styles.pageWrapper, this.props.className, 'dmcm--pageWrapper'].join(' ');
     
     return (
       <div
@@ -75,6 +75,7 @@ class Layout extends React.Component {
         />
         <main
           ref={this.mainRef}
+          className={'dmcm--layout'}
         >
           <DiceTable
             amount={this.state.dice.amount}
@@ -83,8 +84,12 @@ class Layout extends React.Component {
             rolls={this.state.dice.rolls}
             result={this.state.dice.result}
           />
+          <h2 className={styles.pageTitle}>{this.props.title}</h2>
           {this.props.children}
         </main>
+        <footer>
+          <p>© {new Date().getFullYear()} J. Garrett Vorbeck</p>
+        </footer>
       </div>
     );
   }
