@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, StaticQuery, graphql } from 'gatsby';
-import { StaticImage } from 'gatsby-plugin-image';
 import Navigation from '../navigation/navigation';
 import * as styles from './header.module.scss';
 
@@ -17,25 +16,15 @@ function Header(props) {
         }
       `}
       render={data => (
-        <header
-          className={styles.header}
-        >
-          <div>
-            <StaticImage
-              src='../../images/wizard.png'
-              alt={data.site.siteMetadata.title}
-              placeholder='blurred'
-              layout='fixed'
-              width={40}
-              className={styles.image}
-            />
-            <h1>
-              <Link to='/'>{data.site.siteMetadata.title}</Link>
+        <header className={styles.header}>
+          <div className={styles.bar}>
+            <h1 className={styles.title}>
+              <Link to='/'>DMCM</Link>
             </h1>
+            {!props.homeNav &&
+              <Navigation/>
+            }
           </div>
-          {!props.homeNav &&
-            <Navigation/>
-          }
         </header>
       )}
     />
