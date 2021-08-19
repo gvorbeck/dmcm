@@ -2,7 +2,9 @@ import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
+import IconShield from '../components/icon-shield/icon-shield';
 import Layout from '../components/layout/layout';
+import * as styles from '../styles/adventures.module.scss';
 
 export const query = graphql`
   query AdventuresListPageQuery {
@@ -31,23 +33,28 @@ export const query = graphql`
 
 function AdventureItem(props) {
   return (
-    <article>
+    <article className={props.className}>
+      <IconShield/>
       <h1>
         <Link to={props.slug}>{props.title}</Link>
       </h1>
-      <MDXProvider>
-        <MDXRenderer>
-          {props.description}
-        </MDXRenderer>
-      </MDXProvider>
-      <dl>
-        <dt>Setting</dt>
-        <dd>{props.setting}</dd>
-        <dt>Levels</dt>
-        <dd>{props.levels}</dd>
-        <dt>Number of Players</dt>
-        <dd>{props.playernum}</dd>
-      </dl>
+      <div className={styles.content}>
+        <dl>
+          <dt>Setting</dt>
+          <dd>{props.setting}</dd>
+          <dt>Levels</dt>
+          <dd>{props.levels}</dd>
+          <dt>Number of Players</dt>
+          <dd>{props.playernum}</dd>
+        </dl>
+        <div className={styles.description}>
+          <MDXProvider>
+            <MDXRenderer>
+              {props.description}
+            </MDXRenderer>
+          </MDXProvider>
+        </div>
+      </div>
     </article>
   );
 }
@@ -63,13 +70,17 @@ class AdventuresListPage extends React.Component {
           levels={a.node.frontmatter.levels}
           playernum={a.node.frontmatter.playernum}
           description={a.node.body}
+          className={styles.adventureItem}
         />
       </li>
     ));
     console.log(this.props.data.allMdx.edges);
     return (
-      <Layout>
-        <ul>{adventureList}</ul>
+      <Layout
+        className={styles.adventuresWrapper}
+        title='Adventures'
+      >
+        <ul className={styles.adventureList}>{adventureList}</ul>
       </Layout>
     )
   }
