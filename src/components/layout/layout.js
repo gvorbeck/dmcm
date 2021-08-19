@@ -84,7 +84,9 @@ class Layout extends React.Component {
             rolls={this.state.dice.rolls}
             result={this.state.dice.result}
           />
-          <h2 className={styles.pageTitle}>{this.props.title}</h2>
+          {this.props.title &&
+            <h2 className={styles.pageTitle}>{this.props.title}</h2>
+          }
           {this.props.children}
         </main>
         <footer>
