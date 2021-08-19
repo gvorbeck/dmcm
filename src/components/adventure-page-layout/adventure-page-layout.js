@@ -218,7 +218,7 @@ class AdventurePage extends React.Component {
           {this.props.data.mdx.frontmatter.image &&
             <GatsbyImage
               image={getImage(this.props.data.mdx.frontmatter.image)}
-              loading="eager"
+              loading='eager'
               alt={this.props.data.mdx.frontmatter.title}
             />
           }
