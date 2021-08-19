@@ -1,6 +1,5 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { StaticImage } from 'gatsby-plugin-image';
 import Layout from '../components/layout/layout';
 import Navigation from '../components/navigation/navigation';
 import * as styles from '../styles/index.module.scss';
@@ -19,19 +18,14 @@ class IndexPage extends React.Component {
   render() {
     return (
       <Layout
-        pageWrapper={styles.indexWrapper}
+        className={styles.indexWrapper}
         homeNav={true}
       >
-        <StaticImage
-          src='../images/wizard.png'
-          alt={this.props.data.site.siteMetadata.title}
-          placeholder='blurred'
-          layout='fixed'
-          width={300}
-        />
-        <h1>Hail fellow well met.</h1>
+        <h2 className={styles.greeting}>Hail fellow well met.</h2>
         <Navigation/>
-        <p>The DMCM is a React-based campaign manager for any 5E TTRPG.</p>
+        <p className={styles.description}>The DMCM is a React-based campaign manager for your favorite 5E TTRPG.</p>
+
+        <div className={styles.wizard}/>
       </Layout>
     )
   }
