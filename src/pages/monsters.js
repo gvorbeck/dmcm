@@ -300,7 +300,7 @@ class BeastPage extends React.Component {
       searchResults = <p>Please search</p>
     }
     return (
-      <Layout>
+      <Layout title={'Bestiary'}>
         <form
           onSubmit={this.handleSubmit}
         >

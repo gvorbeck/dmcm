@@ -151,7 +151,7 @@ class SpellPage extends React.Component {
     }
 
     return (
-      <Layout>
+      <Layout title='Spellbook'>
         <form
           onSubmit={this.handleSubmit}
         >

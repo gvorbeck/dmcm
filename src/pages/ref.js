@@ -208,7 +208,7 @@ class RefPage extends React.Component {
   render() {
     const articles = this.props.data.allMdx.edges;
     return (
-      <Layout>
+      <Layout title={'Reference'}>
         <TableOfContents
           articles={articles}
         />
