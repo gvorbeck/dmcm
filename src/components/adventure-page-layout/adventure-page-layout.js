@@ -4,6 +4,7 @@ import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { MDXProvider } from '@mdx-js/react'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Layout from '../layout/layout';
+import * as styles from './adventure-page-layout.module.scss';
 
 export const query = graphql`
   query AdventurePageQuery($id: String, $locations: String, $notes: String, $npcs: String) {
@@ -212,57 +213,61 @@ class AdventurePage extends React.Component {
     };
 
     return (
-      <Layout>
-        <h1>{this.props.data.mdx.frontmatter.title}</h1>
-        <section>
-          {this.props.data.mdx.frontmatter.image &&
-            <GatsbyImage
-              image={getImage(this.props.data.mdx.frontmatter.image)}
-              loading='eager'
-              alt={this.props.data.mdx.frontmatter.title}
-            />
+      <Layout
+        title={this.props.data.mdx.frontmatter.title}
+        className={styles.adventureWrapper}
+      >
+        <div className={styles.container}>
+          <section className={styles.details}>
+            {/*this.props.data.mdx.frontmatter.image &&
+              <GatsbyImage
+                image={getImage(this.props.data.mdx.frontmatter.image)}
+                loading='eager'
+                alt={this.props.data.mdx.frontmatter.title}
+              />
+            */}
+            {this.props.data.mdx.body &&
+              <div>
+                <MDXProvider>
+                  <MDXRenderer>{this.props.data.mdx.body}</MDXRenderer>
+                </MDXProvider>
+              </div>
+            }
+            <dl>
+              {this.props.data.mdx.frontmatter.levels &&
+                <React.Fragment>
+                  <dt>Levels</dt>
+                  <dd>{this.props.data.mdx.frontmatter.levels}</dd>
+                </React.Fragment>
+              }
+              {this.props.data.mdx.frontmatter.playernum &&
+                <React.Fragment>
+                  <dt>Number of Players</dt>
+                  <dd>{this.props.data.mdx.frontmatter.playernum}</dd>
+                </React.Fragment>
+              }
+              {this.props.data.mdx.frontmatter.setting &&
+                <React.Fragment>
+                  <dt>Setting</dt>
+                  <dd>{this.props.data.mdx.frontmatter.setting}</dd>
+                </React.Fragment>
+              }
+            </dl>
+          </section>
+          <section className={styles.links}>{adventureSections}</section>
+          {this.props.data.npcs &&
+            <table className={styles.npcs}>
+              <thead>
+                <tr>
+                  {tableColumns}
+                </tr>
+              </thead>
+              <tbody>
+                {tableRows}
+              </tbody>
+            </table>
           }
-          {this.props.data.mdx.body &&
-            <div>
-              <MDXProvider>
-                <MDXRenderer>{this.props.data.mdx.body}</MDXRenderer>
-              </MDXProvider>
-            </div>
-          }
-          <dl>
-            {this.props.data.mdx.frontmatter.levels &&
-              <React.Fragment>
-                <dt>Levels</dt>
-                <dd>{this.props.data.mdx.frontmatter.levels}</dd>
-              </React.Fragment>
-            }
-            {this.props.data.mdx.frontmatter.playernum &&
-              <React.Fragment>
-                <dt>Number of Players</dt>
-                <dd>{this.props.data.mdx.frontmatter.playernum}</dd>
-              </React.Fragment>
-            }
-            {this.props.data.mdx.frontmatter.setting &&
-              <React.Fragment>
-                <dt>Setting</dt>
-                <dd>{this.props.data.mdx.frontmatter.setting}</dd>
-              </React.Fragment>
-            }
-          </dl>
-        </section>
-        <section>{adventureSections}</section>
-        {this.props.data.npcs &&
-          <table>
-            <thead>
-              <tr>
-                {tableColumns}
-              </tr>
-            </thead>
-            <tbody>
-              {tableRows}
-            </tbody>
-          </table>
-        }
+        </div>
       </Layout>
     );
   }
