@@ -10,6 +10,8 @@
 
     > h2 {
       padding-right: 10rem;
+      position: relative;
+      min-height: rem(160px);
 
       &::before,
       &::after {
@@ -20,13 +22,25 @@
       }
 
       &::before {
-        top: 0;
+        top: rem(72px);
         right: 6rem;
         color: $color--11;
+        z-index: -1;
+        box-shadow: 0 0 0 0.75rem $color--12,
+                    0 0 0 1.5rem $color--11,
+                    0 0 0 2.25rem $color--10,
+                    0 0 0 3rem $color--09,
+                    0 0 0 3.75rem $color--08,
+                    0 0 0 4.5rem $color--07,
+                    0 0 0 5.25rem $color--06,
+                    0 0 0 6rem $color--05,
+                    0 0 0 6.75rem $color--04,
+                    0 0 0 7.5rem $color--03,
+                    0 0 0 8.25rem $color--02;
       }
 
       &::after {
-        top: 0;
+        top: 3.75rem;
         right: 12rem;
         font-size: 8rem;
         color: $color--12;
@@ -77,7 +91,7 @@
 
 .links {
   display: grid;
-  grid-template: repeat(2, 1fr)/repeat(2, 1fr);
+  grid-template: repeat(2, auto)/repeat(2, 1fr);
   grid-gap: 1rem;
 
   section:nth-child(1) {
@@ -109,5 +123,54 @@
 
   li + li {
     margin-top: 1rem
+  }
+}
+
+.npcs {
+  margin-top: 4rem;
+
+  thead {
+    background: $color--08;
+
+    tr {
+      border-right: rem(1px) solid $color--08;
+    }
+
+    th {
+      text-align: left;
+      padding: .5rem;
+      text-transform: capitalize;
+      font-family: "Space Grotesk";
+    }
+  }
+
+  tbody {
+    border: rem(1px) solid $color--13;
+    border-top-width: 0;
+
+    .notes {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease-in-out;
+    }
+
+    tr {
+
+      &:nth-child(4n+1) {
+        background: $color--13;
+        color: $color--01;
+      }
+
+      &:nth-child(odd) {
+
+        td {
+          padding: .5rem 0 .5rem .5rem;
+        }
+      }
+    }
+
+    td {
+      font-size: .8rem;
+    } 
   }
 }

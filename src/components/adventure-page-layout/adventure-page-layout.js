@@ -196,10 +196,8 @@ class AdventurePage extends React.Component {
         <React.Fragment key={i}>
           <tr>{tableCell}</tr>
           <tr>
-            <td
-              colSpan='100%'
-            >
-              <div>
+            <td colSpan='100%'>
+              <div className={styles.notes}>
                 <MDXProvider>
                   <MDXRenderer>
                     {this.props.data.npcs.edges[i].node.body}
@@ -216,16 +214,10 @@ class AdventurePage extends React.Component {
       <Layout
         title={this.props.data.mdx.frontmatter.title}
         className={styles.adventureWrapper}
+        icon='game-icon-spiked-dragon-head dmcm--adventure-icon'
       >
         <div className={styles.container}>
           <section className={styles.details}>
-            {/*this.props.data.mdx.frontmatter.image &&
-              <GatsbyImage
-                image={getImage(this.props.data.mdx.frontmatter.image)}
-                loading='eager'
-                alt={this.props.data.mdx.frontmatter.title}
-              />
-            */}
             {this.props.data.mdx.body &&
               <div>
                 <MDXProvider>
@@ -254,7 +246,9 @@ class AdventurePage extends React.Component {
               }
             </dl>
           </section>
-          <section className={styles.links}>{adventureSections}</section>
+          <section className={styles.links}>
+            {adventureSections}
+          </section>
           {this.props.data.npcs &&
             <table className={styles.npcs}>
               <thead>
