@@ -26,16 +26,6 @@ function Header(props) {
               <Navigation/>
             }
           </div>
-            {!props.homeNav &&
-              <StaticImage
-                src='../../images/wizard.png'
-                alt={data.site.siteMetadata.title}
-                placeholder='blurred'
-                layout='fixed'
-                width={150}
-                className={styles.image}
-              />
-            } 
         </header>
       )}
     />
