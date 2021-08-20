@@ -1,4 +1,5 @@
 @import '../../styles/reset.scss';
+// @import '../../styles/game-icons.scss';
 @import '../../styles/setup';
 
 body {
@@ -39,34 +40,10 @@ main {
 }
 
 .pageTitle {
-  position: relative;
   grid-column-end: 12;
   color: $color--13;
   font-size: 5rem;  
   font-weight: 700;
-
-  &::before {
-    content: '';
-    width: 2rem;
-    height: 2rem;
-    background-color: $color--13;
-    position: absolute;
-    right: calc(50% - 1rem);
-    top: -5rem;
-    z-index: -1;
-    border-radius: 50%;
-    box-shadow: 0 0 0 0.75rem $color--12,
-                0 0 0 1.5rem $color--11,
-                0 0 0 2.25rem $color--10,
-                0 0 0 3rem $color--09,
-                0 0 0 3.75rem $color--08,
-                0 0 0 4.5rem $color--07,
-                0 0 0 5.25rem $color--06,
-                0 0 0 6rem $color--05,
-                0 0 0 6.75rem $color--04,
-                0 0 0 7.5rem $color--03,
-                0 0 0 8.25rem $color--02;
-  }
 }
 
 footer {

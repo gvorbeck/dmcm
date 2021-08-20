@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
-import IconShield from '../components/icon-shield/icon-shield';
+import IconShield from '../components/icons/shield/shield';
 import Layout from '../components/layout/layout';
 import * as styles from '../styles/adventures.module.scss';
 

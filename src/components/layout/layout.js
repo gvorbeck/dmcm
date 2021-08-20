@@ -77,6 +77,9 @@ class Layout extends React.Component {
           ref={this.mainRef}
           className={'dmcm--layout'}
         >
+          {this.props.icon &&
+            <div className={'game-icon ' + this.props.icon}/>
+          }
           <DiceTable
             amount={this.state.dice.amount}
             type={this.state.dice.type}
