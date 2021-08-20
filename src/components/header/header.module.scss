@@ -1,0 +1,58 @@
+@import '../../styles/setup';
+
+.bar {
+  background-color: $color--08;
+  font-family: "Space Grotesk";
+  height: rem(60px);
+  display: grid;
+  grid-template: 1fr / repeat(12, 1fr);
+  position: relative;
+}
+
+.title {
+  display: inline-block;
+  font-size: 1.5rem;
+  grid-column: 2/3;
+  position: absolute;
+
+  a {
+    background: url(../../images/wizard.png) center bottom no-repeat $color--13;
+    background-size: calc(100% - 1rem) auto;
+    padding: .5rem .5rem rem(80px);
+    border-bottom: .5rem solid $color--13;
+    display: block;
+    text-decoration: none;
+    color: $color--01;
+    font-weight: 700;
+  }
+}
+
+.header {
+  margin-bottom: 5rem;
+  position: relative;
+
+  nav {
+    grid-column: 6/12;
+  
+    ul {
+      display: flex;
+      justify-content: space-between;
+      height: 100%;
+
+      a {
+        // height: 100%;
+        // display: block;
+        // line-height: rem(60px);
+        padding-top: rem(20px);
+        @include link;
+      }
+    }
+  }
+}
+
+.image {
+  filter: contrast(0) brightness(.196) sepia(78%) saturate(2257%) hue-rotate(354deg) brightness(91%) contrast(114%);
+  position: absolute;
+  left: calc(50% - 75px);
+  top: calc(60px + 1rem);
+}

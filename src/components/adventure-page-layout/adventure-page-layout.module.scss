@@ -1,0 +1,113 @@
+@import '../../styles/setup';
+
+.adventureWrapper {
+
+  main {
+
+    & > * {
+      grid-column-end: 12;
+    }
+
+    > h2 {
+      padding-right: 10rem;
+
+      &::before,
+      &::after {
+        width: 0;
+        height: 0;
+        content: '▲';
+        position: absolute;
+      }
+
+      &::before {
+        top: 0;
+        right: 6rem;
+        color: $color--11;
+      }
+
+      &::after {
+        top: 0;
+        right: 12rem;
+        font-size: 8rem;
+        color: $color--12;
+        z-index: -1;
+      }
+    }
+  }
+}
+
+.container {
+
+  h3 {
+    background-color: $color--08;
+    color: $color--01;
+    padding: 1rem;
+    box-shadow: inset -2rem 0 0 $color--13,
+                inset -4rem 0 0 $color--12,
+                inset -6rem 0 0 $color--11,
+                inset -8rem 0 0 $color--10,
+                inset -10rem 0 0 $color--09;
+  }
+}
+
+.details {
+  margin: 2rem 0 4rem;
+  border: rem(1px) solid $color--13;
+
+  > div {
+    padding: 1rem;
+  }
+
+  dl {
+    color: $color--01;
+    background-color: $color--13;
+    font-family: "Space Grotesk";
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+
+    dt {
+
+      &::after {
+        content: ':';
+      }
+    }
+  }
+}
+
+.links {
+  display: grid;
+  grid-template: repeat(2, 1fr)/repeat(2, 1fr);
+  grid-gap: 1rem;
+
+  section:nth-child(1) {
+    grid-row: 1/2;
+  }
+
+  section {
+
+    &:nth-child(1) {
+      grid-row: 1/3;
+      grid-column: 2/3;
+    }
+
+    &:nth-child(2) {
+      grid-row: 1/2;
+      grid-column: 1/2;
+    }
+
+    &:nth-child(3) {
+      grid-row: 2/3;
+      grid-column: 1/2;
+    }
+  }
+
+  ul {
+    background-color: $color--13;
+    padding: 1rem;
+  }
+
+  li + li {
+    margin-top: 1rem
+  }
+}

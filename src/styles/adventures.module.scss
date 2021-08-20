@@ -1,0 +1,90 @@
+@import './setup';
+
+.adventuresWrapper{
+
+  main > h2 {
+  }
+}
+
+.adventureList {
+  grid-column-end: 12;
+  display: grid;
+  grid-template: auto/ 50fr 50fr;
+  grid-gap: 1rem;
+
+  & > li + li {
+  }
+}
+
+.adventureItem {
+  position: relative;
+
+  svg {
+    width: 5rem;
+    fill: $color--13;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  h1 {
+    font-size: 4rem;
+    background-color: $color--13;
+    padding: 1rem;
+    box-shadow: inset -6rem 0 0 $color--08,
+                inset -12rem 0 0 $color--09,
+                inset -18rem 0 0 $color--10,
+                inset -24rem 0 0 $color--11,
+                inset -30rem 0 0 $color--12;
+
+    a {
+      color: #000000;
+      z-index: 1;
+      position: relative;
+    }
+  }
+
+   dl {
+     display: flex;
+     font-family: "Space Grotesk";
+     padding: .5rem;
+     border-bottom: 1px solid $color--13;
+     color: $color--01;
+     font-size: .8rem;
+     background-color: $color--13;
+     box-shadow: inset -3rem 0 0 $color--08,
+                 inset -6rem 0 0 $color--09,
+                 inset -9rem 0 0 $color--10,
+                 inset -12rem 0 0 $color--11,
+                 inset -15rem 0 0 $color--12;
+
+     dt {
+       font-weight: 700;
+       margin-right: .5rem;
+       
+      &::after {
+        content: ':';
+      }
+     }
+
+     dd {
+       font-style: italic;
+     }
+
+     dd + dt {
+       margin-left: 1.5rem;
+     }
+   }
+
+   .description {
+     border-left: 1px solid;
+     border-right: 1px solid;
+     border-bottom: 1px solid;
+     padding: 1rem;
+   }
+
+   .image {
+     left: 0;
+     top: -50%;
+   }
+}

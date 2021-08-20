@@ -1,3 +1,67 @@
+@import './setup';
+
 .indexWrapper {
-  border: none;
+
+  nav {
+    grid-column: 9 / 12;
+    grid-row: 1 / 3;
+  
+    li {
+      background-color: $color--12;
+      padding: 2rem;
+  
+      a {
+        @include link;
+        font-size: 2rem;
+      }
+    }
+  
+    li + li {
+      margin-top: 1rem;
+    }
+  }
+}
+
+.greeting {
+  font-family: "Space Grotesk";
+  color: $color--13;
+  font-size: 5rem;
+  font-weight: 700;
+  grid-column-end: 7;
+}
+
+.description {
+  grid-column-end: 7;
+  color: $color--13;
+  font-family: "IBM Plex Sans";
+  border-top: 1px solid;
+  padding-top: 1rem;
+}
+
+.colors {
+  grid-column-end: 12;
+  width: 100%;
+  height: 72px;
+  margin-top: 1rem;
+  display: flex;
+}
+
+.wizard {
+  grid-column: 3/11;
+  background: $color--13;
+  height: 5rem;
+  margin-top: 1rem;
+  box-shadow: inset 4.5vw 0 0 $color--01, 
+              inset 9vw 0 0 $color--02,
+              inset 13.5vw 0 0 $color--03,
+              inset 18vw 0 0 $color--04,
+              inset 22.5vw 0 0 $color--05,
+              inset 27vw 0 0 $color--06,
+              inset 31.5vw 0 0 $color--07,
+              inset 45vw 0 0 $color--08,
+              inset 49.5vw 0 0 $color--09,
+              inset 54vw 0 0 $color--10,
+              inset 58.5vw 0 0 $color--11,
+              inset 63vw 0 0 $color--12,
+              inset 67.5vw 0 0 $color--13;
 }
