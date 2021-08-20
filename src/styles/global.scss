@@ -1,0 +1,13 @@
+@import './setup';
+
+.dmcm--adventure-icon {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    right: 3.5rem;
+    top: 2rem;
+    color: $color--01;
+    font-size: 5rem;
+  }
+}
