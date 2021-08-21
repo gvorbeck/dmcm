@@ -1,6 +1,5 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { MDXProvider } from '@mdx-js/react'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Layout from '../layout/layout';
@@ -13,6 +12,7 @@ export const query = graphql`
       body
       frontmatter {
         title
+        icon
         levels
         playernum
         setting
@@ -214,7 +214,7 @@ class AdventurePage extends React.Component {
       <Layout
         title={this.props.data.mdx.frontmatter.title}
         className={styles.adventureWrapper}
-        icon='game-icon-spiked-dragon-head dmcm--adventure-icon'
+        icon={this.props.data.mdx.frontmatter.icon + ' dmcm--adventure-icon'}
       >
         <div className={styles.container}>
           <section className={styles.details}>
