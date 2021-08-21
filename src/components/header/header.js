@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, StaticQuery, graphql } from 'gatsby';
-import { StaticImage } from 'gatsby-plugin-image';
 import Navigation from '../navigation/navigation';
 import * as styles from './header.module.scss';
 
