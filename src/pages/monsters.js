@@ -1,7 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import showdown from 'showdown';
+import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
+import * as styles from '../styles/monsters.module.scss';
 
 export const query = graphql`
   query MonsterPageQuery {
@@ -75,10 +77,14 @@ const converter = new showdown.Converter();
 function monsterAdvBlocks(monster, area) {
   const formattedItems = [];
   for (let i=0,l=area.length;i<l;i++) {
+    let content = area[i].content.split(/(\d*d\d+\+?-?\d*)/);
+    for (let x=1,y=content.length;x<y;x+=2) {
+      content[x] = <Dice key={x}>{content[x]}</Dice>;
+    }
     formattedItems.push(
       <li key={i}>
         <h4>{area[i].name}</h4>
-        <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(area[i].content)}} />
+        <div>{content}</div>
       </li>
     );
   }
@@ -107,104 +113,109 @@ function resultMarkup(monster, index) {
 
   for (const [key, value] of Object.entries(monster.abilities)) {
     abilityList.push(
-      <React.Fragment key={key}>
-        <dt>{key.toUpperCase()}</dt>
-        <dd>
-          <span>{value}</span>
-          <span></span>
-        </dd>
-      </React.Fragment>
+      <li 
+        key={key}
+        className={styles.ability}
+      >
+        <p>{key.toUpperCase()}</p>
+        <p className={styles.modifier}>{Math.floor(value - 10 / 2)}</p>
+        <p className={styles.value}>{value}</p>
+      </li>
     );
   }
   return (
     <article key={index}>
       <h1>{monster.name}</h1>
-      <h2>{monster.type}</h2>
-      <dl>
-        <dt>Armor Class</dt>
-        <dd>{monster.ac.value}{monster.ac.notes}</dd>
-        <dt>Hit Points</dt>
-        <dd>{monster.hp.value}{monster.hp.notes}</dd>
-        <dt>Speed</dt>
-        <dd>
-          <ul>{speedList}</ul>
-        </dd>
-      </dl>
-      <dl>{abilityList}</dl>
-      <dl>
-        {monster.saves &&
-          <React.Fragment>
-            <dt>Saving Throws</dt>
-            <dd>
-              <ul>{monsterSimpleBlocks(monster, monster.saves)}</ul>
-            </dd>
-          </React.Fragment>
+      <ul className={styles.abilities}>{abilityList}</ul>
+      <div className={styles.short}>
+        <h2>{monster.type}</h2>
+        <dl>
+          <dt>Armor Class</dt>
+          <dd>{monster.ac.value}{monster.ac.notes}</dd>
+          <dt>Hit Points</dt>
+          <dd>{monster.hp.value}{monster.hp.notes}</dd>
+          <dt>Speed</dt>
+          <dd>
+            <ul>{speedList}</ul>
+          </dd>
+        </dl>
+        <dl>
+          {monster.saves &&
+            <React.Fragment>
+              <dt>Saving Throws</dt>
+              <dd>
+                <ul>{monsterSimpleBlocks(monster, monster.saves)}</ul>
+              </dd>
+            </React.Fragment>
+          }
+          {monster.skills &&
+            <React.Fragment>
+              <dt>Skills</dt>
+              <dd>
+                <ul>{monsterSimpleBlocks(monster, monster.skills)}</ul>
+              </dd>
+            </React.Fragment>
+          }
+          {monster.dmgvulnerabilities &&
+            <React.Fragment>
+              <dt>Damage Vulnerabilities</dt>
+              <dd>{monster.dmgvulnerabilities.join(', ')}</dd>
+            </React.Fragment>
+          }
+          {monster.dmgresistances &&
+            <React.Fragment>
+              <dt>Damage Resistances</dt>
+              <dd>{monster.dmgresistances.join(', ')}</dd>
+            </React.Fragment>
+          }
+          {monster.dmgimmunities &&
+            <React.Fragment>
+              <dt>Damage Immunities</dt>
+              <dd>{monster.dmgimmunities.join(', ')}</dd>
+            </React.Fragment>
+          }
+          {monster.cdnimmunities &&
+            <React.Fragment>
+              <dt>Condition Immunities</dt>
+              <dd>{monster.cdnimmunities.join(', ')}</dd>
+            </React.Fragment>
+          }
+          <dt>Senses</dt>
+          <dd>{monster.senses.join(', ')}</dd>
+          <dt>Languages</dt>
+          <dd>{monster.languages.join(', ')}</dd>
+          <dt>Challenge</dt>
+          <dd>{monster.challenge}</dd>
+        </dl>
+      </div>
+      <div className={styles.long}>
+        {monster.traits &&
+          <div>
+            <h3>Traits</h3>
+            <ul>{monsterAdvBlocks(monster, monster.traits)}</ul>
+          </div>
         }
-        {monster.skills &&
-          <React.Fragment>
-            <dt>Skills</dt>
-            <dd>
-              <ul>{monsterSimpleBlocks(monster, monster.skills)}</ul>
-            </dd>
-          </React.Fragment>
+        {monster.actions &&
+          <div>
+            <h3>Actions</h3>
+            <ul>{monsterAdvBlocks(monster, monster.actions)}</ul>
+          </div>
         }
-        {monster.dmgvulnerabilities &&
-          <React.Fragment>
-            <dt>Damage Vulnerabilities</dt>
-            <dd>{monster.dmgvulnerabilities.join(', ')}</dd>
-          </React.Fragment>
+        {monster.reactions &&
+          <div>
+            <h3>Reactions</h3>
+            <ul>{monsterAdvBlocks(monster, monster.reactions)}</ul>
+          </div>
         }
-        {monster.dmgresistances &&
-          <React.Fragment>
-            <dt>Damage Resistances</dt>
-            <dd>{monster.dmgresistances.join(', ')}</dd>
-          </React.Fragment>
+        {monster.lgdyactions &&
+          <div>
+            <h3>Legendary Actions</h3>
+            <ul>{monsterAdvBlocks(monster, monster.lgdyactions)}</ul>
+          </div>
         }
-        {monster.dmgimmunities &&
-          <React.Fragment>
-            <dt>Damage Immunities</dt>
-            <dd>{monster.dmgimmunities.join(', ')}</dd>
-          </React.Fragment>
-        }
-        {monster.cdnimmunities &&
-          <React.Fragment>
-            <dt>Condition Immunities</dt>
-            <dd>{monster.cdnimmunities.join(', ')}</dd>
-          </React.Fragment>
-        }
-        <dt>Senses</dt>
-        <dd>{monster.senses.join(', ')}</dd>
-        <dt>Languages</dt>
-        <dd>{monster.languages.join(', ')}</dd>
-        <dt>Challenge</dt>
-        <dd>{monster.challenge}</dd>
-      </dl>
-      {monster.traits &&
-        <div>
-          <h3>Traits</h3>
-          <ul>{monsterAdvBlocks(monster, monster.traits)}</ul>
-        </div>
-      }
-      {monster.actions &&
-        <div>
-          <h3>Actions</h3>
-          <ul>{monsterAdvBlocks(monster, monster.actions)}</ul>
-        </div>
-      }
-      {monster.reactions &&
-        <div>
-          <h3>Reactions</h3>
-          <ul>{monsterAdvBlocks(monster, monster.reactions)}</ul>
-        </div>
-      }
-      {monster.lgdyactions &&
-        <div>
-          <h3>Legendary Actions</h3>
-          <ul>{monsterAdvBlocks(monster, monster.lgdyactions)}</ul>
-        </div>
-      }
-      <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(monster.description)}} />
-      <p>{monster.source}</p>
+        <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(monster.description)}} />
+        <p>{monster.source}</p>
+      </div>
     </article>
   );
 }
@@ -234,6 +245,7 @@ class SearchTextInput extends React.Component {
         <label>
           Name: 
           <input
+            type='text'
             value={text}
             onChange={this.handleChange}
           />
@@ -297,10 +309,13 @@ class BeastPage extends React.Component {
     if (results.length) {
       searchResults = resultList(results);
     } else {
-      searchResults = <p>Please search</p>
+      searchResults = ''
     }
     return (
-      <Layout title={'Bestiary'}>
+      <Layout
+        title={'Bestiary'}
+        className={styles.bestiaryWrapper}
+      >
         <form
           onSubmit={this.handleSubmit}
         >
@@ -313,7 +328,9 @@ class BeastPage extends React.Component {
             value='Submit'
           />
         </form>
-        <div>{searchResults}</div>
+        <div className={styles.results}>
+          {searchResults}
+        </div>
       </Layout>
     );
   }
