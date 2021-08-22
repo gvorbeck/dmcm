@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import showdown from 'showdown';
 import Layout from '../components/layout/layout';
+import * as styles from '../styles/spells.module.scss';
 
 export const query = graphql`
   query SpellPageQuery {
@@ -151,7 +152,10 @@ class SpellPage extends React.Component {
     }
 
     return (
-      <Layout title='Spellbook'>
+      <Layout
+        title='Spellbook'
+        className={styles.spellsWrapper}
+      >
         <form
           onSubmit={this.handleSubmit}
         >
