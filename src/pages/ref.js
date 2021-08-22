@@ -3,6 +3,7 @@ import { graphql, Link } from 'gatsby';
 import showdown from 'showdown';
 import AnchorLink from '../components/anchorlink/anchorlink';
 import Layout from '../components/layout/layout';
+import * as styles from '../styles/ref.module.scss';
 
 export const query = graphql`
   query ReferenceQuery {
@@ -93,7 +94,7 @@ function TableOfContents(props) {
   return (
     <section>
       <h3>Table of Contents</h3>
-      <ol>
+      <ol className={styles.toc}>
         {tocItems}
       </ol>
     </section>
@@ -208,7 +209,10 @@ class RefPage extends React.Component {
   render() {
     const articles = this.props.data.allMdx.edges;
     return (
-      <Layout title={'Reference'}>
+      <Layout
+        title={'Reference'}
+        className={styles.refWrapper}
+      >
         <TableOfContents
           articles={articles}
         />
