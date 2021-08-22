@@ -3,11 +3,6 @@
 .bestiaryWrapper {
 
   main {
-
-    & > * {
-      grid-column-end: 12;
-    }
-
     & > h2 {
       position: relative;
       margin-bottom: 8rem;
