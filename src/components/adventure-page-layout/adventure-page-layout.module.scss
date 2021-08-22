@@ -4,10 +4,6 @@
 
   main {
 
-    & > * {
-      grid-column-end: 12;
-    }
-
     > h2 {
       padding-right: 10rem;
       position: relative;
