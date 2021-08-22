@@ -12,7 +12,7 @@ main {
   font-family: "IBM Plex Sans";
 
   & > * {
-    grid-column-start: 2;
+    grid-column: 2/12;
   }
 
   a {

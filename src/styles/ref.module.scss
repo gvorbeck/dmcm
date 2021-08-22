@@ -1,0 +1,102 @@
+@import './setup';
+
+.refWrapper {
+
+  main {
+
+    & > h2 {
+      position: relative;
+      z-index: -1;
+
+      &::before,
+      &::after {
+        position: absolute;
+        content: '';
+        width: 5rem;
+        height: 5rem;
+        display: block;
+        top: 0;
+        transform: rotate(45deg);
+      }
+
+      &::before {
+        left: 20rem;
+        box-shadow: $color--02 1rem -1rem 0 rem(2px),
+                    $color--03 2rem -3rem 0 rem(2px),
+                    $color--04 3rem -5rem 0 rem(2px),
+                    $color--05 4rem -3rem 0 rem(2px),
+                    $color--06 5rem -5rem 0 rem(2px),
+                    $color--07 6rem -6rem 0 rem(2px),
+                    $color--08 7rem -9rem 0 rem(2px),
+                    $color--09 8rem -8rem 0 rem(2px),
+                    $color--10 9rem -2rem 0 rem(2px),
+                    $color--11 10rem -5rem 0 rem(2px),
+                    $color--12 11rem -11rem 0 rem(2px),
+                    $color--13 12rem -12rem 0 rem(2px),
+                    $color--12 13rem -16rem 0 rem(2px),
+                    $color--11 14rem -14rem 0 rem(2px),
+                    $color--10 15rem -19rem 0 rem(2px),
+                    $color--09 16rem -6rem 0 rem(2px),
+                    $color--08 17rem -17rem 0 rem(2px),
+                    $color--07 18rem -25rem 0 rem(2px),
+                    $color--06 19rem -14rem 0 rem(2px),
+                    $color--05 20rem -8rem 0 rem(2px),
+                    $color--04 21rem -1rem 0 rem(2px),
+                    $color--03 22rem -22rem 0 rem(2px),
+                    $color--02 23rem -23rem 0 rem(2px);
+      }
+    }
+
+    h3 {
+      font-family: "Space Grotesk";
+      font-size: 2rem;
+    }
+  }
+}
+
+.toc {
+  display: flex;
+  flex-direction: row;
+
+  & > li {
+    flex: 1;
+    padding: 1rem;
+    border-bottom: .5rem solid;
+    border-top: .5rem solid;
+
+    &:nth-child(1) {
+      background: $color--10;
+      border-bottom-color: $color--05;
+      border-top-color: $color--09;
+    }
+
+    &:nth-child(2) {
+      background: $color--09;
+      border-bottom-color: $color--04;
+      border-top-color: $color--10;
+    }
+
+    &:nth-child(3) {
+      background: $color--08;
+      border-bottom-color: $color--03;
+      border-top-color: $color--11;
+    }
+
+    &:nth-child(4) {
+      background: $color--07;
+      border-bottom-color: $color--02;
+      border-top-color: $color--12;
+    }
+
+    &:nth-child(5) {
+      background: $color--06;
+      border-bottom-color: $color--01;
+      border-top-color: $color--13;
+    }
+  }
+
+  h4 {
+    color: $color--01;
+    margin-bottom: 1rem;
+  }
+}

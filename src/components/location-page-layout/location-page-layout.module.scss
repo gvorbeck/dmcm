@@ -1,0 +1,178 @@
+@import '../../styles/setup';
+
+.locationWrapper {
+
+  main {
+    
+    & > h2 {
+      position: relative;
+      z-index: -1;
+
+      &::before,
+      &::after {
+        position: absolute;
+        content: '';
+        width: 5rem;
+        height: 1rem;
+        display: block;
+        top: 1rem;
+        transform: skew();
+      }
+
+      &::before {
+        transform: skew(29deg,10deg);
+        top: -2rem;
+        left: 6rem;
+        z-index: -1;
+        background: $color--12;
+        box-shadow:
+          $color--02 5.25rem 1.25rem 0 0,
+          $color--03 5.25rem 0 0 0,
+          $color--08 10.5rem 0 0 0,
+          $color--06 15.75rem 0 0 0,
+          $color--07 15.75rem 1.25rem 0 0,
+          $color--10 10.5rem 1.25rem 0 0,
+          $color--10 10.5rem -1.25rem 0 0,
+          $color--12 15.75rem -2.5rem 0 0,
+          $color--09 21rem -1.25rem 0 0,
+          $color--03 21rem 0 0 0,
+          $color--02 21rem -2.5rem 0 0,
+          $color--04 26.25rem -2.5rem 0 0,
+          $color--13 26.25rem -5rem 0 0,
+          $color--09 15.75rem -5rem 0 0,
+          $color--08 15.75rem 5rem 0 0,
+          $color--07 31.5rem 5rem 0 0,
+          $color--03 31.5rem 2.5rem 0 0,
+          $color--05 31.5rem 1.25rem 0 0,
+          $color--05 21rem 2.5rem 0 0,
+          $color--06 26.25rem 2.5rem 0 0,
+          $color--02 31.5rem 3.75rem 0 0,
+          $color--04 31.5rem -3.75rem 0 0,
+          $color--13 31.5rem -6.25rem 0 0,
+          $color--08 36.75rem -6.25rem 0 0,
+          $color--09 42rem -7.5rem 0 0,
+          $color--03 42rem -2.5rem 0 0,
+          $color--04 42rem -1.5rem 0 0;
+      }
+    }
+  }
+
+}
+
+.navigation {
+  z-index: 1;
+  position: sticky;
+  top: 0;
+  left: 0;
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 25%;
+    height: 3rem;
+
+    li {
+      width: 100%;
+      height: 100%;
+      background: $color--13;
+
+      & > * {
+        box-sizing: border-box;
+        display: block;
+        background: transparent;
+        border: 0;
+        width: 100%;
+        height: 100%;
+        line-height: 3rem;
+        font-size: 1.75rem;
+        text-align: center;
+        padding: 0;
+        font-weight: 300;
+        font-family: sans-serif;
+        cursor: pointer;
+
+        &:active {
+          background: rgba(#000000, .1);
+        }
+      }
+
+      &:nth-child(2) {
+        background: $color--12;
+      }
+
+      &:nth-child(3) {
+        background: $color--11;
+      }
+
+      &:nth-child(4) {
+        background: $color--10;
+      }
+
+      &:nth-child(5) {
+        background: $color--09;
+      }
+    }
+  }
+}
+
+.map {
+  position: relative;
+}
+
+.mapArea {
+  // display: none;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1vh;
+
+  div {
+    display: none;
+  }
+
+  a {
+    border: 0;
+    padding: 0;
+    line-height: 1vw;
+    font-weight: normal;
+    font-size: 1vw;
+    font-family: monospace;
+    background: $color--13;
+
+    span {
+      line-height: 1.25;
+    }
+  }
+
+  // a {
+  //   border: none;
+  //   padding: 0;
+  //   display: block;
+  //   height: 100%;
+  //   width: 100%;
+  //   line-height: 1;
+  //   font-size: 1vw;
+  //   color: #000000;
+  //   background: $color--13;
+
+  //   span {
+  //     font-size: 1vw;
+  //     width: 100%;
+  //     height: 100%;
+  //     display: block;
+  //   }
+  // }
+}
+
+.grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}

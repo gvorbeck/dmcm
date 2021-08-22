@@ -1,0 +1,8 @@
+@import './setup';
+
+.spellsWrapper {
+
+  & > h2 {
+    position: relative;
+  }
+}
