@@ -318,9 +318,7 @@ class BeastPage extends React.Component {
         title={'Bestiary'}
         className={styles.bestiaryWrapper}
       >
-        <form
-          onSubmit={this.handleSubmit}
-        >
+        <form onSubmit={this.handleSubmit}>
           <SearchTextInput
             onTextChange={this.handleTextChange}
             text={text}
