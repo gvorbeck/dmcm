@@ -213,8 +213,10 @@ function resultMarkup(monster, index) {
             <ul>{monsterAdvBlocks(monster, monster.lgdyactions)}</ul>
           </div>
         }
-        <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(monster.description)}} />
-        <p>{monster.source}</p>
+        {monster.description &&
+          <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(monster.description)}} />
+        }
+        <p className={styles.source}>{monster.source}</p>
       </div>
     </article>
   );
