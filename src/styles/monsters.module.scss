@@ -1,0 +1,149 @@
+@import './setup';
+
+.bestiaryWrapper {
+
+  main {
+
+    & > * {
+      grid-column-end: 12;
+    }
+
+    & > h2 {
+      position: relative;
+      margin-bottom: 8rem;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 8rem;
+        height: 8rem;
+        background: $color--01;
+        display: block;
+        border-radius: 50%;
+        z-index: -1;
+        top: -1rem;
+        left: 5rem;
+        box-shadow: 5rem 2.5rem 0 $color--02,
+                    10rem 5rem 0 $color--03,
+                    15rem 2.5rem 0 $color--04,
+                    20rem 0 0 $color--05,
+                    25rem 2.5rem 0 $color--06,
+                    30rem 5rem 0 $color--07,
+                    35rem 2.5rem 0 $color--08,
+                    40rem 0 0 $color--09,
+                    45rem 2.5rem 0 $color--10,
+                    50rem 5rem 0 $color--11,
+                    55rem 2.5rem 0 $color--12,
+                    60rem 0 0 $color--13;
+      }
+    }
+  }
+}
+
+.results {
+
+  .abilities {
+    grid-column: 1/2;
+    grid-row: 2/4;
+  }
+
+  .ability {
+    width: 100%;
+    background: $color--08;
+    color: $color--01;
+    font-family: "Space Grotesk";
+
+    & + .ability {
+      margin-top: 1rem;
+    }
+
+    p {
+      text-align: center;
+
+      & + p {
+        margin-top: 0;
+      }
+    }
+
+    .modifier {
+      font-size: 1.2rem;
+    }
+
+    .value {
+      font-size: .8rem;
+    }
+  }
+
+  .short,
+  .long {
+    padding: 1rem;
+    grid-column: 2/3;
+  }
+
+  .short {
+    grid-row: 2/3;
+    background: $color--13;
+    color: $color--01;
+
+    h2 {
+      font-style: italic;
+      font-weight: 700;
+      font-family: "Space Grotesk";
+    }
+
+    dt {
+      font-family: "Space Grotesk";
+      margin-top: 1rem;
+      float: left;
+      width: 50%;
+    }
+
+    dd {
+      padding-top: 1rem;
+      font-family: "IBM Plex Sans";
+      overflow: auto;
+      line-height: 1.25rem;
+
+      li + li {
+        margin-top: .5rem
+      }
+    }
+  }
+
+  .long {
+    grid-row: 3/4;
+    border-left: rem(2px) solid $color--13;
+
+    div + div {
+      margin-top: 2rem;
+    }
+
+    li {
+      padding-bottom: 1rem;
+      border-bottom: rem(2px) solid $color--13;
+    }
+
+    li + li {
+      margin-top: 1rem;
+    }
+
+    h3,
+    h4 {
+      font-family: "Space Grotesk";
+    }
+
+    h4 {
+      font-style: italic;
+      margin: 1rem 0 .5rem;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    .source {
+      font-size: .75rem;
+      font-style: italic;
+    }
+  }
+}
