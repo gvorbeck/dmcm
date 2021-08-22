@@ -1,5 +1,4 @@
 @import '../../styles/reset.scss';
-// @import '../../styles/game-icons.scss';
 @import '../../styles/setup';
 
 body {
@@ -32,6 +31,60 @@ main {
     margin-bottom: 2rem;
     font-family: "Space Grotesk";
     font-size: 1.5rem;
+  }
+
+  form {
+    background: $color--13;
+    padding: 1rem;
+    color: #000000;
+
+    label {
+      font-size: 2rem;
+    }
+
+    input {
+
+      &[type=text] {
+        border: 0;
+        background: transparent;
+        border-bottom: .2rem solid #000000;
+        width: 100%;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      &[type=submit] {
+        background: $color--13;
+        border: rem(2px) solid #000000;
+        font-family: "Space Grotesk";
+        font-size: 1.5rem;
+      }
+    }
+
+    // .results
+    ~ div {
+      display: grid;
+      grid-gap: 1rem;
+      grid-template: auto/repeat(2, 1fr);
+      margin-top: 4rem;
+
+      article {
+        border: rem(2px) solid $color--13;
+        display: grid;
+        grid-template: auto 1fr auto/12% auto;
+
+        h1 {
+          grid-column: 1/3;
+          grid-row: 1/2;
+          font-size: 5rem; 
+          font-family: "Space Grotesk";
+        }
+      }
+    }
   }
 }
 
