@@ -41,6 +41,9 @@ query ($id: String, $pid: String) {
             gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
           }
         }
+        width
+        height
+        padding
       }
     }
   }
@@ -64,7 +67,7 @@ const shortcodes = { Dice };
 function Navigation(props) {
   const navItemsData = [
     {
-      title: 'Back',
+      title: 'Back to ' + props.adventureTitle,
       url: props.adventure,
       content: `&lt;`,
     },
@@ -97,7 +100,7 @@ function Navigation(props) {
           <Link
             to={item.url}
             dangerouslySetInnerHTML={{ __html: item.content }}
-            title={'Back to ' + this.props.data.adventure.title}
+            title={item.title}
           />
         </li>
       );
@@ -128,6 +131,14 @@ function Navigation(props) {
 function Map(props) {
   const areasData = props.areas;
   const traps = [];
+  let screenFrame;
+  if (props.map && props.map.image && props.map.width && props.map.height && props.map.padding) {
+    screenFrame = {
+      padding: props.map.padding,
+      gridTemplateColumns: 'repeat(' + props.map.width + ', 1fr)',
+      gridTemplateRows: 'repeat(' + props.map.height + ', 1fr)',
+    };
+  }
   const areasRender = areasData.map((area, i) => {
     const style = {
       gridColumnStart: area.x,
@@ -149,6 +160,7 @@ function Map(props) {
       <li
         key={i}
         style={style}
+        className={styles.mapArea}
       >
         <div>
           <p>{area.name}</p>
@@ -181,13 +193,16 @@ function Map(props) {
       <AnchorLink
         id='map'
       />
-      <section>
+      <section className={styles.map}>
         <GatsbyImage
           image={props.image}
           loading='eager'
           alt={'Map of ' + props.title}
         />
-        <ul>
+        <ul
+          className={styles.grid}
+          style={screenFrame}
+        >
           {areasRender}
           {trapsRender}
         </ul>
@@ -322,10 +337,12 @@ class LocationPage extends React.Component {
           adventure={`/${this.props.data.adventure.slug}`}
           onclick={this.handleNavClick}
           location={this.state.anchor}
+          adventureTitle={this.props.data.adventure.frontmatter.title}
         />
         {this.props.data.mdx.frontmatter.map.image &&
           <Map
             image={getImage(this.props.data.mdx.frontmatter.map.image)}
+            map={this.props.data.mdx.frontmatter.map}
             title={this.props.data.mdx.frontmatter.title}
             areas={this.props.data.mdx.frontmatter.areas}
           />
