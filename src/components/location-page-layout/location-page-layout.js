@@ -8,6 +8,7 @@ import Layout from '../layout/layout';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import showdown from 'showdown';
+import * as styles from './location-page-layout.module.scss';
 
 export const query = graphql`
 query ($id: String, $pid: String) {
@@ -46,6 +47,7 @@ query ($id: String, $pid: String) {
   adventure: mdx(id: {eq: $pid}) {
     slug
     frontmatter {
+      title
       players {
         class
         name
@@ -70,6 +72,7 @@ function Navigation(props) {
       title: 'Map',
       url: '#map',
       content: ' ',
+      class: 'game-icon game-icon-treasure-map'
     },
     {
       title: 'General Features',
@@ -94,6 +97,7 @@ function Navigation(props) {
           <Link
             to={item.url}
             dangerouslySetInnerHTML={{ __html: item.content }}
+            title={'Back to ' + this.props.data.adventure.title}
           />
         </li>
       );
@@ -106,13 +110,14 @@ function Navigation(props) {
             data-anchor={item.url}
             aria-label={`Navigation button: ${item.title}`}
             dangerouslySetInnerHTML={{ __html: item.content }}
+            className={item.class}
           />
         </li>
       );
     }
   });
   return (
-    <nav>
+    <nav className={styles.navigation}>
       <ul>
         {navItemsRender}
       </ul>
@@ -308,7 +313,10 @@ class LocationPage extends React.Component {
 
   render() {
     return (
-      <Layout>
+      <Layout
+        title={this.props.data.mdx.frontmatter.title}
+        className={styles.locationWrapper}
+      >
         <header></header>
         <Navigation
           adventure={`/${this.props.data.adventure.slug}`}
