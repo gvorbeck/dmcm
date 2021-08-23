@@ -90,6 +90,31 @@ main {
 
 .diceTable {
   display: none;
+  z-index: 1;
+  position: sticky;
+  top: 0;
+  height: 3rem;
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  li {
+    padding: 1rem;
+    background: $color--07;
+    color: #000000;
+
+    &.diceFormula {
+      background-color: $color--08;
+    }
+
+    &.diceResult {
+      background: $color--06;
+    }
+  }
 }
 
 .pageTitle {

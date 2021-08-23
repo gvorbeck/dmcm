@@ -122,15 +122,30 @@
 }
 
 .mapArea {
-  // display: none;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   text-align: center;
   line-height: 1vh;
 
+  &:hover {
+    position: relative;
+    z-index: 1;
+
+    div {
+      display: block;
+    }
+  }
+
   div {
     display: none;
+    position: absolute;
+    top: -.25rem;
+    left: -.25rem;
+    background: $color--13;
+    padding: 0 .25rem 0 130%;
+    color: #000000;
+    text-align: right;
   }
 
   a {
@@ -141,30 +156,19 @@
     font-size: 1vw;
     font-family: monospace;
     background: $color--13;
+    position: relative;
 
     span {
       line-height: 1.25;
     }
+
+    &:hover {
+
+      & ~ div {
+        display: block;
+      }
+    }
   }
-
-  // a {
-  //   border: none;
-  //   padding: 0;
-  //   display: block;
-  //   height: 100%;
-  //   width: 100%;
-  //   line-height: 1;
-  //   font-size: 1vw;
-  //   color: #000000;
-  //   background: $color--13;
-
-  //   span {
-  //     font-size: 1vw;
-  //     width: 100%;
-  //     height: 100%;
-  //     display: block;
-  //   }
-  // }
 }
 
 .grid {
@@ -175,4 +179,90 @@
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+}
+
+.flags {
+  display: flex;
+  font-size: 1.5rem;
+}
+
+.general {
+  margin-top: 4rem;
+  border: rem(2px) solid $color--13;
+  padding: 1rem;
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Space Grotesk";
+    background: $color--13;
+    padding: .5rem;
+    box-shadow:
+    inset 3rem 0 0 0 $color--01,
+    inset 6rem 0 0 0 $color--02,
+    inset 9rem 0 0 0 $color--03,
+    inset 12rem 0 0 0 $color--04,
+    inset 15rem 0 0 0 $color--05,
+    inset 18rem 0 0 0 $color--06,
+    inset 21rem 0 0 0 $color--07,
+    inset 24rem 0 0 0 $color--08,
+    inset 27rem 0 0 0 $color--09,
+    inset 30rem 0 0 0 $color--10,
+    inset 33rem 0 0 0 $color--11,
+    inset 36rem 0 0 0 $color--12,
+    inset 39rem 0 0 0 $color--13;
+
+    &:not(:first-child) {
+      margin-top: 2rem;
+    }
+  }
+
+  h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+}
+
+.areaList {
+
+  > li {
+    position: relative;
+
+    & > section {
+      margin-top: 4rem;
+
+      & > div {
+        background: $color--13;
+        color: #000000;
+        padding: 1rem;
+      }
+
+      a {
+        padding-bottom: 0;
+        display: inline-block;
+        font-weight: normal;
+      }
+    }
+  }
+  
+  h4,
+  h5 {
+    font-family: "Space Grotesk";
+  }
+
+  h4 {
+    font-size: 3rem;
+
+    span {
+      font-size: 1rem;
+      font-family: "Space Grotesk";
+      margin-right: 1rem;
+    }
+  }
+
+  h5 {
+    font-size: 2rem;
+  }
 }
