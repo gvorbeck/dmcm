@@ -19,7 +19,10 @@ function Header(props) {
         <header className={styles.header}>
           <div className={styles.bar}>
             <h1 className={styles.title}>
-              <Link to='/'>DMCM</Link>
+              <Link
+                to='/'
+                className={'game-icon game-icon-black-bridge'}
+              >DMCM</Link>
             </h1>
             {!props.homeNav &&
               <Navigation/>
