@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../header/header';
 import * as styles from './layout.module.scss';
 
-function DiceTable(props) {
+const DiceTable = React.forwardRef((props, ref) => {
   const formula = props.amount + 'd' + props.type + '+' + props.modifier;
   const rolls = props.rolls ? props.rolls.map((roll, i) => (
     <li key={i}>
@@ -10,21 +10,22 @@ function DiceTable(props) {
     </li>
   )) : '';
   return (
-    <section className={styles.diceTable}>
+    <section ref={ref} className={styles.diceTable}>
       <ul>
-        <li>{formula}</li>
+        <li className={styles.diceFormula}>{formula}</li>
         {rolls}
-        <li>{props.result}</li>
+        <li className={styles.diceResult}>{props.result}</li>
       </ul>
     </section>
   );
-}
+})
 
 class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.mainRef = React.createRef();
     this.diceButtonRef = React.createRef();
+    this.diceTable = React.createRef();
     this.handleClick = this.handleClick.bind(this);
     this.state = {
       dice: {
@@ -53,7 +54,7 @@ class Layout extends React.Component {
 
     dice.result = total + dice.modifier;
     this.setState( { dice });
-    console.log(this.state.dice);
+    this.diceTable.current.style.display = 'block';
   }
 
   componentDidMount() {
@@ -80,16 +81,17 @@ class Layout extends React.Component {
           {this.props.icon &&
             <div className={'game-icon ' + this.props.icon}/>
           }
+          {this.props.title &&
+            <h2 className={styles.pageTitle}>{this.props.title}</h2>
+          }
           <DiceTable
             amount={this.state.dice.amount}
             type={this.state.dice.type}
             modifier={this.state.dice.modifier}
             rolls={this.state.dice.rolls}
             result={this.state.dice.result}
+            ref={this.diceTable}
           />
-          {this.props.title &&
-            <h2 className={styles.pageTitle}>{this.props.title}</h2>
-          }
           {this.props.children}
         </main>
         <footer>
