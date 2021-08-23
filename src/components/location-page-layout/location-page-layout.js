@@ -165,11 +165,11 @@ function Map(props) {
         <div>
           <p>{area.name}</p>
           {area.flags &&
-            <ul>
+            <ul className={styles.flags}>
               {area.flags.map((flag, i) => (
-                <li
-                  key={i}
-                />
+                <li key={i}>
+                  <p className={'game-icon game-icon-' + flag}/>
+                </li>
               ))}
             </ul>
           }
@@ -214,10 +214,9 @@ function Map(props) {
 function GeneralFeatures(props) {
   return (
     <React.Fragment>
-      <AnchorLink
-        id='general'
-      />
-      <section>
+      <AnchorLink id='general'/>
+      <section className={styles.general + ' dmcm--text'}>
+        <h3>General Features</h3>
         <MDXProvider components={ shortcodes }>
           <MDXRenderer>
             {props.body}
@@ -230,20 +229,28 @@ function GeneralFeatures(props) {
 
 function Areas(props) {
   const areasList = props.areas.map((area, i) => {
+    const pad = (number) => {
+      number = number.toString();
+      number = number < 10 ? '0' + number : number;
+      return number;
+    }
     const areaItem = (
       <React.Fragment>
         <AnchorLink
           id={i+1}
         />
-        <section>
+        <section className={'dmcm--text'}>
+          <h4><span>{pad(i+1)}.</span>{area.name}</h4>
           {area.flavor &&
             <div
               dangerouslySetInnerHTML={{ __html: converter.makeHtml(area.flavor) }}
+              className='flavor'
             />
           }
           {area.callout &&
             <div
               dangerouslySetInnerHTML={{ __html: converter.makeHtml(area.callout) }}
+              className='callout'
             />
           }
           <div
@@ -258,7 +265,7 @@ function Areas(props) {
   });
 
   return (
-    <ol>
+    <ol className={styles.areaList}>
       {areasList}
     </ol>
   );
@@ -332,7 +339,6 @@ class LocationPage extends React.Component {
         title={this.props.data.mdx.frontmatter.title}
         className={styles.locationWrapper}
       >
-        <header></header>
         <Navigation
           adventure={`/${this.props.data.adventure.slug}`}
           onclick={this.handleNavClick}
