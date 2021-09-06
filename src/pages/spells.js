@@ -86,6 +86,7 @@ class SearchTextInput extends React.Component {
           Name:
           <input
             value={text}
+            type='text'
             onChange={this.handleChange}
           />
         </label>
