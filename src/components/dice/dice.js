@@ -4,7 +4,7 @@ import * as styles from './dice.module.scss';
 class Dice extends React.Component {
   render() {
     const regex = new RegExp(/(\W*)(\d*d\d+\+?-?\d*)(\W*)/),
-    formula = regex.test(this.props.children) === true ? this.props.children.trim() : '???',
+    formula = regex.test(this.props.children) === true ? JSON.stringify(this.props.children).replace(/"]|[["]/g, '') : '???',
     amount = formula.split('d')[0],
     type = formula.split('d')[1].split(/[+-]/)[0],
     modifier = formula.split(/\d*d\d+/)[1];
