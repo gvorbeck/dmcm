@@ -38,6 +38,127 @@ export const query = graphql`
 `
 const converter = new showdown.Converter();
 
+function ArticleItems(props) {
+  const articles = [];
+  for (let i=0,l=props.articles.length;i<l;i++) {
+    if (props.articles[i].frontmatter.category === props.category) {
+      articles.push(
+        <li 
+          key={i}
+          className={`${styles.articleContainer} ${styles.closed}`}
+        >
+          <AnchorLink
+            id={encodeURI(props.articles[i].frontmatter.title.toLowerCase().replace(/[^0-9a-z]/gi, ''))}
+          />
+          <article>
+            <header>
+              <h1>{props.articles[i].frontmatter.title}</h1>
+            </header>
+              {props.articles[i].frontmatter.content &&
+                props.articles[i].frontmatter.content.map((content, i) => {
+                  if (content.type === 'table') {
+                    return (
+                      <div
+                        key={i}
+                        className={`dmcm--text ${styles.content} dmcm--closed`}
+                      >
+                        <table>
+                          <thead>
+                            <tr>
+                              {content.headers.map((header, i) => (
+                                <th
+                                  key={i}
+                                  aria-label={header}
+                                >{header}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {content.rows.map((row, i) => (
+                              <tr key={i}>
+                                {row.map((cell, i) => (
+                                  <td key={i} dangerouslySetInnerHTML={{ __html: converter.makeHtml(cell)}}/>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    );
+                  } else if (content.type === 'definitions') {
+                    return (
+                      <div
+                        className={`dmcm--text ${styles.content} dmcm--closed`}
+                        key={i}
+                      >
+                        <ul className={styles.definitions}>
+                          {content.terms.map((term, i) => (
+                            <li
+                              key={i}
+                              className={styles.definition}
+                            >
+                              <div className={styles.header}>
+                                <h2 className={styles.term}>{term.title}</h2>
+                                <p className={styles.short}>{term.short}</p>
+                                <p className={styles.cite}>{term.cite}</p>
+                              </div>
+                              <div
+                                dangerouslySetInnerHTML={{ __html: converter.makeHtml(term.text) }}
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  } else if (content.type === 'markdown') {
+                    return (
+                      <div
+                        key={i}
+                        className={`dmcm--text ${styles.content} dmcm--closed`}
+                        dangerouslySetInnerHTML={{ __html: converter.makeHtml(content.text) }}
+                      />
+                    );
+                  }
+                  return ('');
+                })
+              }
+          </article>
+        </li>
+      )
+    }
+  }
+  return articles;
+}
+
+function Articles(props) {
+  const tocData = tableOfContentsData(props.articles);
+  const refItems = tocData.categories.map((category, i) => (
+    <li
+      key={i}
+      className={styles.category}
+    >
+      <h4>
+        <Link to='#toc'>
+          <span>{i + 1}.</span> {category}
+        </Link>
+      </h4>
+      <ul>
+        <ArticleItems
+          articles={tocData.articles}
+          category={category}
+        />
+      </ul>
+    </li>
+  ));
+  return (
+    <section>
+      <ul>
+        {refItems}
+      </ul>
+    </section>
+  );
+}
+
 function tableOfContentsData(articles) {
   const toc = {
     categories: [],
@@ -93,114 +214,11 @@ function TableOfContents(props) {
   ));
   return (
     <section>
+      <AnchorLink id='toc'/>
       <h3>Table of Contents</h3>
       <ol className={styles.toc}>
         {tocItems}
       </ol>
-    </section>
-  );
-}
-
-function ArticleItems(props) {
-  const articles = [];
-  for (let i=0,l=props.articles.length;i<l;i++) {
-    if (props.articles[i].frontmatter.category === props.category) {
-      articles.push(
-        <li key={i}>
-          <AnchorLink
-            id={encodeURI(props.articles[i].frontmatter.title.toLowerCase().replace(/[^0-9a-z]/gi, ''))}
-          />
-          <article>
-            <header>
-              <h1>{props.articles[i].frontmatter.title}</h1>
-            </header>
-            <div>
-              {props.articles[i].frontmatter.content &&
-                props.articles[i].frontmatter.content.map((content, i) => {
-                  if (content.type === 'table') {
-                    return (
-                      <table
-                        key={i}
-                      >
-                        <thead>
-                          <tr>
-                            {content.headers.map((header, i) => (
-                              <th
-                                key={i}
-                                aria-label={header}
-                              >{header}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {content.rows.map((row, i) => (
-                            <tr key={i}>
-                              {row.map((cell, i) => (
-                                <td key={i}>
-                                  {cell}
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    );
-                  } else if (content.type === 'definitions') {
-                    return (
-                      <ul key={i}>
-                        {content.terms.map((term, i) => (
-                          <li key={i}>
-                            <div>
-                              <h2>{term.title}</h2>
-                              <p>{term.short}</p>
-                              <p>{term.cite}</p>
-                            </div>
-                            <div
-                              dangerouslySetInnerHTML={{ __html: converter.makeHtml(term.text) }}
-                            />
-                          </li>
-                        ))}
-                      </ul>
-                    );
-                  } else if (content.type === 'markdown') {
-                    return (
-                      <div
-                        key={i}
-                        dangerouslySetInnerHTML={{ __html: converter.makeHtml(content.text) }}
-                      />
-                    );
-                  }
-                  return ('');
-                })
-              }
-            </div>
-          </article>
-        </li>
-      )
-    }
-  }
-  return articles;
-}
-
-function Articles(props) {
-  const tocData = tableOfContentsData(props.articles);
-  const refItems = tocData.categories.map((category, i) => (
-    <li key={i}>
-      <h4>
-        <span>{i + 1}.</span> {category}</h4>
-      <ul>
-        <ArticleItems
-          articles={tocData.articles}
-          category={category}
-        />
-      </ul>
-    </li>
-  ));
-  return (
-    <section>
-      <ul>
-        {refItems}
-      </ul>
     </section>
   );
 }
