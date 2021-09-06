@@ -8,6 +8,7 @@ import Layout from '../layout/layout';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import showdown from 'showdown';
+import MarkdownView from 'react-showdown';
 import * as styles from './location-page-layout.module.scss';
 
 export const query = graphql`
@@ -239,7 +240,7 @@ function Areas(props) {
         <AnchorLink
           id={i+1}
         />
-        <section className={'dmcm--text'}>
+        <section className={`dmcm--text ${styles.area}`}>
           <h4><span>{pad(i+1)}.</span>{area.name}</h4>
           {area.flavor &&
             <div
@@ -253,8 +254,9 @@ function Areas(props) {
               className='callout'
             />
           }
-          <div
-            dangerouslySetInnerHTML={{ __html: converter.makeHtml(area.content) }}
+          <MarkdownView
+            markdown={area.content}
+            components={{Dice}}
           />
         </section>
       </React.Fragment>
