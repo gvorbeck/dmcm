@@ -3,8 +3,9 @@ import Header from '../header/header';
 import * as styles from './layout.module.scss';
 
 const DiceTable = React.forwardRef((props, ref) => {
-  const formula = props.amount + 'd' + props.type + '+' + props.modifier;
-  const rolls = props.rolls ? props.rolls.map((roll, i) => (
+  const modifierSign = props.modifier > 0 ? '+' : '',
+  formula = props.amount + 'd' + props.type + modifierSign + (props.modifier === 0 ? '' : props.modifier),
+  rolls = props.rolls ? props.rolls.map((roll, i) => (
     <li key={i}>
       {roll}
     </li>
@@ -14,7 +15,9 @@ const DiceTable = React.forwardRef((props, ref) => {
       <ul>
         <li className={styles.diceFormula}>{formula}</li>
         {rolls}
-        <li className={styles.diceResult}>{props.result}</li>
+        {props.amount > 1 &&
+          <li className={styles.diceResult}>{props.result}</li>
+        }
       </ul>
     </section>
   );
