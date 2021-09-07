@@ -47,6 +47,8 @@
     background: $color--08;
     color: $color--01;
     font-family: "Space Grotesk";
+    padding: 0 .25rem;
+    box-sizing: border-box;
 
     & + .ability {
       margin-top: 1rem;

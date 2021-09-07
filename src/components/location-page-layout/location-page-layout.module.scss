@@ -223,6 +223,13 @@
     margin-bottom: 1rem;
     padding: 1rem;
   }
+
+  a {
+    display: inline-block;
+    background: $color--13;
+    padding: 0 .25rem;
+    border-bottom-color: $color--08;
+  }
 }
 
 .areaList {
@@ -264,5 +271,19 @@
 
   h5 {
     font-size: 2rem;
+  }
+}
+
+.area {
+
+  h1,h2,h3,h4,h5,h6 {
+
+    &:not(:first-child) {
+      margin-top: 2rem;
+    }
+  }
+
+  * + * {
+    // margin-top: 1rem;
   }
 }
