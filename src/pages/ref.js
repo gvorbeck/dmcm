@@ -1,8 +1,10 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
-import showdown from 'showdown';
 import AnchorLink from '../components/anchorlink/anchorlink';
+import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
+import showdown from 'showdown';
+import MarkdownView from 'react-showdown';
 import * as styles from '../styles/ref.module.scss';
 
 export const query = graphql`
@@ -102,8 +104,9 @@ function ArticleItems(props) {
                                 <p className={styles.short}>{term.short}</p>
                                 <p className={styles.cite}>{term.cite}</p>
                               </div>
-                              <div
-                                dangerouslySetInnerHTML={{ __html: converter.makeHtml(term.text) }}
+                              <MarkdownView
+                                markdown={term.text}
+                                components={{Dice}}
                               />
                             </li>
                           ))}
@@ -112,10 +115,11 @@ function ArticleItems(props) {
                     );
                   } else if (content.type === 'markdown') {
                     return (
-                      <div
+                      <MarkdownView
                         key={i}
-                        className={`dmcm--text ${styles.content} dmcm--closed`}
-                        dangerouslySetInnerHTML={{ __html: converter.makeHtml(content.text) }}
+                        className={`dmcm--text ${styles.content}`}
+                        markdown={content.text}
+                        components={{Dice}}
                       />
                     );
                   }
