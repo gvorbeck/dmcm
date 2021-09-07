@@ -130,7 +130,7 @@ function Navigation(props) {
 }
 
 function Map(props) {
-  const areasData = props.areas;
+  const areasData = props.areas ? props.areas : [];
   const traps = [];
   let screenFrame;
   if (props.map && props.map.image && props.map.width && props.map.height && props.map.padding) {
@@ -311,7 +311,7 @@ class LocationPage extends React.Component {
 
   handleNavClick(event) {
     let hash = parseInt(this.props.location.hash.substring(1));
-    const max = this.props.data.mdx.frontmatter.areas.length;
+    const max = this.props.data.mdx.frontmatter.areas ? this.props.data.mdx.frontmatter.areas.length : 1;
     if (event.target.title === 'Down') {
       if (hash >= 1 && hash !== max) {
         hash = '#' + (hash+1);
@@ -342,7 +342,7 @@ class LocationPage extends React.Component {
           location={this.state.anchor}
           adventureTitle={this.props.data.adventure.frontmatter.title}
         />
-        {this.props.data.mdx.frontmatter.map.image &&
+        {this.props.data.mdx.frontmatter.map && this.props.data.mdx.frontmatter.map.image &&
           <Map
             image={getImage(this.props.data.mdx.frontmatter.map.image)}
             map={this.props.data.mdx.frontmatter.map}
