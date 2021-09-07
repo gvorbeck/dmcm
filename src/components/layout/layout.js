@@ -86,6 +86,11 @@ class Layout extends React.Component {
     }, 500);
   }
 
+  componentDidUpdate() {
+    /* Runs again so that when searching, new results containing buttons are given event listeners. */
+    this.getButtons();
+  }
+
   render() {
     return (
       <div
