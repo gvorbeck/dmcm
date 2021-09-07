@@ -5,11 +5,21 @@ import * as styles from './layout.module.scss';
 const DiceTable = React.forwardRef((props, ref) => {
   const modifierSign = props.modifier > 0 ? '+' : '',
   formula = props.amount + 'd' + props.type + modifierSign + (props.modifier === 0 ? '' : props.modifier),
-  rolls = props.rolls ? props.rolls.map((roll, i) => (
-    <li key={i}>
-      {roll}
-    </li>
-  )) : '';
+  rolls = props.rolls ? props.rolls.map((roll, i) => {
+    if (props.rolls.length === i + 1) {
+      return (
+        <li key={i}>
+          {roll + props.modifier}
+        </li>
+      );
+    } else {
+      return (
+        <li key={i}>
+          {roll}
+        </li>
+      );
+    }
+  }) : '';
   return (
     <section ref={ref} className={styles.diceTable}>
       <ul>
@@ -30,6 +40,7 @@ class Layout extends React.Component {
     this.diceButtonRef = React.createRef();
     this.diceTable = React.createRef();
     this.handleClick = this.handleClick.bind(this);
+    this.getButtons = this.getButtons.bind(this);
     this.state = {
       dice: {
         amount: 0,
@@ -56,15 +67,23 @@ class Layout extends React.Component {
     }
 
     dice.result = total + dice.modifier;
-    this.setState( { dice });
+    this.setState({ dice });
     this.diceTable.current.style.display = 'block';
   }
 
-  componentDidMount() {
+  getButtons() {
     const buttons = this.mainRef.current.getElementsByClassName('dmcm--dice-button');
     for (let i=0,l=buttons.length;i<l;i++) {
       buttons[i].addEventListener('click', this.handleClick);
     }
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      /* this is delayed because some pages render their <Dice/> components AFTER layout and makes buttons not work. */
+      /* I know this is less than ideal, but it works. I'll fix... some day. */
+      this.getButtons();
+    }, 500);
   }
 
   render() {
