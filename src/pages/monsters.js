@@ -124,12 +124,15 @@ function resultMarkup(monster, index) {
     );
   }
   return (
-    <article key={index}>
+    <article
+      key={index}
+      className={styles.monster}
+    >
       <h1>{monster.name}</h1>
+      <h2>{monster.type}</h2>
       <ul className={styles.abilities}>{abilityList}</ul>
       <div className={styles.short}>
-        <h2>{monster.type}</h2>
-        <dl>
+        <dl className={styles.stats}>
           <dt>Armor Class</dt>
           <dd>{monster.ac.value}{monster.ac.notes}</dd>
           <dt>Hit Points</dt>
@@ -139,7 +142,7 @@ function resultMarkup(monster, index) {
             <ul>{speedList}</ul>
           </dd>
         </dl>
-        <dl>
+        <dl className={styles.stats}>
           {monster.saves &&
             <React.Fragment>
               <dt>Saving Throws</dt>
@@ -332,7 +335,7 @@ class BeastPage extends React.Component {
             value='Submit'
           />
         </form>
-        <div className={styles.results}>
+        <div>
           {searchResults}
         </div>
       </Layout>

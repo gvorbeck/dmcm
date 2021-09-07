@@ -35,11 +35,20 @@
   }
 }
 
-.results {
+.monster {
+
+  h2 {
+    font-family: "Space Grotesk";
+    grid-row: 2/3;
+    padding: 0 .5rem;
+    font-style: italic;
+    grid-column: 1/3;
+    margin: 1rem 0;
+  }
 
   .abilities {
     grid-column: 1/2;
-    grid-row: 2/4;
+    grid-row: 3/5;
   }
 
   .ability {
@@ -73,33 +82,17 @@
 
   .short,
   .long {
-    padding: 1rem;
     grid-column: 2/3;
   }
 
   .short {
-    grid-row: 2/3;
-    background: $color--13;
-    color: $color--01;
+    grid-row: 3/4;
 
-    h2 {
-      font-style: italic;
-      font-weight: 700;
-      font-family: "Space Grotesk";
-    }
-
-    dt {
-      font-family: "Space Grotesk";
-      margin-top: 1rem;
-      float: left;
-      width: 50%;
+    .stats {
+      @include statblock;
     }
 
     dd {
-      padding-top: 1rem;
-      font-family: "IBM Plex Sans";
-      overflow: auto;
-      line-height: 1.25rem;
 
       li + li {
         margin-top: .5rem
@@ -108,7 +101,8 @@
   }
 
   .long {
-    grid-row: 3/4;
+    padding: 1rem;
+    grid-row: 4/5;
     border-left: rem(2px) solid $color--13;
 
     div + div {

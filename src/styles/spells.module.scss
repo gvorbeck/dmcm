@@ -30,29 +30,7 @@
   }
 
   .stats {
-    grid-row: 4/5;
-    display: flex;
-    flex-flow: row wrap;
-    border: solid $color--13;
-    border-width: rem(1px) 0 0;
-
-    dt,dd {
-      box-sizing: border-box;
-      padding: .25rem .5rem;
-      line-height: 1.5;
-    }
-
-    dt {
-      flex-basis: 30%;
-      background: $color--13;
-      text-align: right;
-      color: $color--01;
-    }
-    dd {
-      flex-basis: 70%;
-      flex-grow: 1;
-      border-bottom: rem(1px) solid $color--13;
-    }
+    @include statblock;
   }
 
   .content {
