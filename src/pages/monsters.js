@@ -118,7 +118,7 @@ function resultMarkup(monster, index) {
         className={styles.ability}
       >
         <p>{key.toUpperCase()}</p>
-        <p className={styles.modifier}>{Math.floor(value - 10 / 2)}</p>
+        <p className={styles.modifier}>{Math.floor((value - 10) / 2)}</p>
         <p className={styles.value}>{value}</p>
       </li>
     );
@@ -180,8 +180,12 @@ function resultMarkup(monster, index) {
               <dd>{monster.cdnimmunities.join(', ')}</dd>
             </React.Fragment>
           }
-          <dt>Senses</dt>
-          <dd>{monster.senses.join(', ')}</dd>
+          {monster.senses &&
+            <React.Fragment>
+              <dt>Senses</dt>
+              <dd>{monster.senses.join(', ')}</dd>
+            </React.Fragment>
+          }
           <dt>Languages</dt>
           <dd>{monster.languages.join(', ')}</dd>
           <dt>Challenge</dt>
