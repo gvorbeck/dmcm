@@ -1,7 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import showdown from 'showdown';
+import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
+import showdown from 'showdown';
+import MarkdownView from 'react-showdown';
 import * as styles from '../styles/spells.module.scss';
 
 export const query = graphql`
@@ -36,26 +38,57 @@ const converter = new showdown.Converter();
 
 function resultMarkup(spell, index) {
   return(
-    <article key={index}>
+    <article
+      key={index}
+      className={styles.spell}
+    >
       <h1>{spell.name}</h1>
       <h2>{spell.level} {spell.school}{spell.ritual? ' (ritual)':''}</h2>
       <h3>{spell.classes.join(', ')}</h3>
-      <dl>
-        <dt>Casting Time</dt>
-        <dd>{spell.castingtime}</dd>
-        <dt>Range</dt>
-        <dd>{spell.range}</dd>
-        <dt>Components</dt>
-        <dd>{spell.components}</dd>
-        <dt>Duration</dt>
-        <dd>{spell.duration}</dd>
-        <dt>Attack/Save</dt>
-        <dd>{spell.attacksave}</dd>
-        <dt>Damage</dt>
-        <dd>{spell.damage}</dd>
+      <dl className={styles.stats}>
+        {spell.castingtime &&
+          <React.Fragment>
+            <dt>Casting Time</dt>
+            <dd>{spell.castingtime}</dd>
+          </React.Fragment>
+        }
+        {spell.range &&
+          <React.Fragment>
+            <dt>Range</dt>
+            <dd>{spell.range}</dd>
+          </React.Fragment>
+        }
+        {spell.components &&
+          <React.Fragment>
+            <dt>Components</dt>
+            <dd>{spell.components}</dd>
+          </React.Fragment>
+        }
+        {spell.duration &&
+          <React.Fragment>
+            <dt>Duration</dt>
+            <dd>{spell.duration}</dd>
+          </React.Fragment>
+        }
+        {spell.attacksave &&
+          <React.Fragment>
+            <dt>Attack/Save</dt>
+            <dd>{spell.attacksave}</dd>
+          </React.Fragment>
+        }
+        {spell.damage &&
+          <React.Fragment>
+            <dt>Damage</dt>
+            <dd>{spell.damage}</dd>
+          </React.Fragment>
+        }
       </dl>
-      <div dangerouslySetInnerHTML={{ __html: converter.makeHtml(spell.description)}} />
-      <p>{spell.source}</p>
+      <MarkdownView
+        className={styles.content}
+        markdown={spell.description}
+        components={{Dice}}
+      />
+      <p className={styles.source}>{spell.source}</p>
     </article>
   );
 }
