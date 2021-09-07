@@ -1,8 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import showdown from 'showdown';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
+import showdown from 'showdown';
+import MarkdownView from 'react-showdown';
 import * as styles from '../styles/monsters.module.scss';
 
 export const query = graphql`
@@ -74,24 +75,23 @@ export const query = graphql`
 `
 const converter = new showdown.Converter();
 
-function monsterAdvBlocks(monster, area) {
+function monsterAdvBlocks(area) {
   const formattedItems = [];
   for (let i=0,l=area.length;i<l;i++) {
-    let content = area[i].content.split(/(\d*d\d+\+?-?\d*)/);
-    for (let x=1,y=content.length;x<y;x+=2) {
-      content[x] = <Dice key={x}>{content[x]}</Dice>;
-    }
     formattedItems.push(
       <li key={i}>
         <h4>{area[i].name}</h4>
-        <div>{content}</div>
+        <MarkdownView
+          markdown={area[i].content}
+          components={{Dice}}
+        />
       </li>
     );
   }
   return formattedItems;
 }
 
-function monsterSimpleBlocks(monster, area) {
+function monsterSimpleBlocks(area) {
   const formattedItems = [];
   for (let i=0,l=area.length;i<l;i++) {
     formattedItems.push(
@@ -124,7 +124,10 @@ function resultMarkup(monster, index) {
     );
   }
   return (
-    <article key={index}>
+    <article
+      key={index}
+      className={styles.monster}
+    >
       <h1>{monster.name}</h1>
       <ul className={styles.abilities}>{abilityList}</ul>
       <div className={styles.short}>
@@ -144,7 +147,7 @@ function resultMarkup(monster, index) {
             <React.Fragment>
               <dt>Saving Throws</dt>
               <dd>
-                <ul>{monsterSimpleBlocks(monster, monster.saves)}</ul>
+                <ul>{monsterSimpleBlocks(monster.saves)}</ul>
               </dd>
             </React.Fragment>
           }
@@ -152,7 +155,7 @@ function resultMarkup(monster, index) {
             <React.Fragment>
               <dt>Skills</dt>
               <dd>
-                <ul>{monsterSimpleBlocks(monster, monster.skills)}</ul>
+                <ul>{monsterSimpleBlocks(monster.skills)}</ul>
               </dd>
             </React.Fragment>
           }
@@ -192,25 +195,25 @@ function resultMarkup(monster, index) {
         {monster.traits &&
           <div>
             <h3>Traits</h3>
-            <ul>{monsterAdvBlocks(monster, monster.traits)}</ul>
+            <ul>{monsterAdvBlocks(monster.traits)}</ul>
           </div>
         }
         {monster.actions &&
           <div>
             <h3>Actions</h3>
-            <ul>{monsterAdvBlocks(monster, monster.actions)}</ul>
+            <ul>{monsterAdvBlocks(monster.actions)}</ul>
           </div>
         }
         {monster.reactions &&
           <div>
             <h3>Reactions</h3>
-            <ul>{monsterAdvBlocks(monster, monster.reactions)}</ul>
+            <ul>{monsterAdvBlocks(monster.reactions)}</ul>
           </div>
         }
         {monster.lgdyactions &&
           <div>
             <h3>Legendary Actions</h3>
-            <ul>{monsterAdvBlocks(monster, monster.lgdyactions)}</ul>
+            <ul>{monsterAdvBlocks(monster.lgdyactions)}</ul>
           </div>
         }
         {monster.description &&
