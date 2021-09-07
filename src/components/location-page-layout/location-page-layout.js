@@ -304,7 +304,6 @@ class LocationPage extends React.Component {
   constructor(props) {
     super(props);
     this.handleNavClick = this.handleNavClick.bind(this);
-    this.handleRoll = this.handleRoll.bind(this);
     this.state = {
       anchor: this.props.location.hash,
     };
@@ -329,10 +328,6 @@ class LocationPage extends React.Component {
       hash = event.target.dataset.anchor;
     }
     this.setState({anchor: hash}, () => navigate(this.state.anchor));
-  }
-
-  handleRoll(event) {
-    console.log('foofoofooooo');
   }
 
   render() {
