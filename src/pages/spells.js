@@ -2,7 +2,6 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
-import showdown from 'showdown';
 import MarkdownView from 'react-showdown';
 import * as styles from '../styles/spells.module.scss';
 
@@ -34,7 +33,6 @@ export const query = graphql`
     }
   }
 `
-const converter = new showdown.Converter();
 
 function resultMarkup(spell, index) {
   return(

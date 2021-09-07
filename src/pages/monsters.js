@@ -124,10 +124,7 @@ function resultMarkup(monster, index) {
     );
   }
   return (
-    <article
-      key={index}
-      className={styles.monster}
-    >
+    <article key={index}>
       <h1>{monster.name}</h1>
       <ul className={styles.abilities}>{abilityList}</ul>
       <div className={styles.short}>

@@ -45,7 +45,7 @@ function ArticleItems(props) {
       articles.push(
         <li 
           key={i}
-          className={`${styles.articleContainer} ${styles.closed}`}
+          className={styles.articleContainer}
         >
           <AnchorLink
             id={encodeURI(props.articles[i].frontmatter.title.toLowerCase().replace(/[^0-9a-z]/gi, ''))}

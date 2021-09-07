@@ -38,7 +38,7 @@ function AdventureItem(props) {
       <h1>
         <Link to={props.slug}>{props.title}</Link>
       </h1>
-      <div className={styles.content}>
+      <div>
         <dl>
           <dt>Setting</dt>
           <dd>{props.setting}</dd>

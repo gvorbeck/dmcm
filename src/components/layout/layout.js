@@ -87,11 +87,9 @@ class Layout extends React.Component {
   }
 
   render() {
-    const pageWrapperClasses = [styles.pageWrapper, this.props.className, 'dmcm--pageWrapper'].join(' ');
-    
     return (
       <div
-        className={pageWrapperClasses}
+        className={`dmcm--pageWrapper ${this.props.className}`}
       >
         <Header
           homeNav={this.props.homeNav}
