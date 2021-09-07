@@ -93,12 +93,8 @@ class Layout extends React.Component {
 
   render() {
     return (
-      <div
-        className={`dmcm--pageWrapper ${this.props.className}`}
-      >
-        <Header
-          homeNav={this.props.homeNav}
-        />
+      <div className={`dmcm--pageWrapper ${this.props.className}`}>
+        <Header homeNav={this.props.homeNav}/>
         <main
           ref={this.mainRef}
           className={'dmcm--layout'}
