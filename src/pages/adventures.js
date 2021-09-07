@@ -74,7 +74,6 @@ class AdventuresListPage extends React.Component {
         />
       </li>
     ));
-    console.log(this.props.data.allMdx.edges);
     return (
       <Layout
         className={styles.adventuresWrapper}
