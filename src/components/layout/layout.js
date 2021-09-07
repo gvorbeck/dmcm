@@ -26,7 +26,7 @@ const DiceTable = React.forwardRef((props, ref) => {
         <li className={styles.diceFormula}>{formula}</li>
         {rolls}
         {props.amount > 1 &&
-          <li className={styles.diceResult}>{props.result}</li>
+          <li>{props.result}</li>
         }
       </ul>
     </section>

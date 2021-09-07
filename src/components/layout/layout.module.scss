@@ -112,7 +112,7 @@ main {
       background-color: $color--08;
     }
 
-    &.diceResult {
+    &:last-child {
       background: $color--06;
     }
   }
