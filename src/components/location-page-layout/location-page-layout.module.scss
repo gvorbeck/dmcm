@@ -3,6 +3,7 @@
 .locationWrapper {
 
   main {
+    position: relative;
     
     & > h2 {
       position: relative;
@@ -285,5 +286,48 @@
 
   * + * {
     // margin-top: 1rem;
+  }
+}
+
+.playerStats {
+  position: sticky;
+  bottom: -5.5rem;
+  // bottom: 0;
+  width: 100%;
+  color: $color--01;
+  background-color: $color--13;
+  padding: .5rem;
+  box-sizing: border-box;
+  transition: all .25s ease;
+  border: rem(2px) solid $color--08;
+
+  h6 {
+    font-family: "Space Grotesk";
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+  }
+
+  li {
+    display: flex;
+  }
+
+  p {
+    margin: 0;
+
+    &:last-child {
+    //   background-color: $color--13;
+    //   color: $color--01;
+      padding: 0 0 0 1rem;
+    }
+  }
+
+  &:hover {
+    bottom: 0;
   }
 }
