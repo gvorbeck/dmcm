@@ -104,24 +104,28 @@ function monsterSimpleBlocks(area) {
 function resultMarkup(monster, index) {
   let speedList = [],
       abilityList = [];
-  
-  for (let i=0,l=monster.speed.length;i<l;i++) {
-    speedList.push(
-      <li key={i}>{monster.speed[i]}</li>
-    );
+
+  if (monster.speed) {
+    for (let i=0,l=monster.speed.length;i<l;i++) {
+      speedList.push(
+        <li key={i}>{monster.speed[i]}</li>
+      );
+    }
   }
 
-  for (const [key, value] of Object.entries(monster.abilities)) {
-    abilityList.push(
-      <li 
-        key={key}
-        className={styles.ability}
-      >
-        <p>{key.toUpperCase()}</p>
-        <p className={styles.modifier}>{Math.floor((value - 10) / 2)}</p>
-        <p className={styles.value}>{value}</p>
-      </li>
-    );
+  if (monster.abilities) {
+    for (const [key, value] of Object.entries(monster.abilities)) {
+      abilityList.push(
+        <li 
+          key={key}
+          className={styles.ability}
+        >
+          <p>{key.toUpperCase()}</p>
+          <p className={styles.modifier}>{Math.floor((value - 10) / 2)}</p>
+          <p className={styles.value}>{value}</p>
+        </li>
+      );
+    }
   }
   return (
     <article
@@ -133,14 +137,26 @@ function resultMarkup(monster, index) {
       <ul className={styles.abilities}>{abilityList}</ul>
       <div className={styles.short}>
         <dl className={styles.stats}>
-          <dt>Armor Class</dt>
-          <dd>{monster.ac.value}{monster.ac.notes}</dd>
-          <dt>Hit Points</dt>
-          <dd>{monster.hp.value}{monster.hp.notes}</dd>
-          <dt>Speed</dt>
-          <dd>
-            <ul>{speedList}</ul>
-          </dd>
+          {monster.ac &&
+            <React.Fragment>
+              <dt>Armor Class</dt>
+              <dd>{monster.ac.value}{monster.ac.notes}</dd>
+            </React.Fragment>
+          }
+          {monster.hp &&
+            <React.Fragment>
+              <dt>Hit Points</dt>
+              <dd>{monster.hp.value}{monster.hp.notes}</dd>
+            </React.Fragment>
+          }
+          {speedList.length > 0 &&
+            <React.Fragment>
+              <dt>Speed</dt>
+              <dd>
+                <ul>{speedList}</ul>
+              </dd>
+            </React.Fragment>
+          }
         </dl>
         <dl className={styles.stats}>
           {monster.saves &&
@@ -189,10 +205,18 @@ function resultMarkup(monster, index) {
               <dd>{monster.senses.join(', ')}</dd>
             </React.Fragment>
           }
-          <dt>Languages</dt>
-          <dd>{monster.languages.join(', ')}</dd>
-          <dt>Challenge</dt>
-          <dd>{monster.challenge}</dd>
+          {monster.languages &&
+            <React.Fragment>
+              <dt>Languages</dt>
+              <dd>{monster.languages.join(', ')}</dd>
+            </React.Fragment>
+          }
+          {monster.challenge &&
+            <React.Fragment>
+              <dt>Challenge</dt>
+              <dd>{monster.challenge}</dd>
+            </React.Fragment>
+          }
         </dl>
       </div>
       <div className={styles.long}>
