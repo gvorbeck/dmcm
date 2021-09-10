@@ -292,7 +292,8 @@ function PlayerStats(props) {
     );
   });
   return (
-    <section>
+    <section className={styles.playerStats}>
+      <h6>Player Stats</h6>
       <ul>
         {playersList}
       </ul>
