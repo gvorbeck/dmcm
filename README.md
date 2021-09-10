@@ -1,14 +1,13 @@
-<h1>!DMCM is in the midst of a complete rewrite now that I better know React. Look for a completely new version in the coming weeks!</h1>
 <p align="center">
   <a href="https://github.com/gvorbeck/dmcm">
     <img alt="DMCM (Dungeon Master Campaign Manager)" src="https://i.imgur.com/LoTMnlj.png" width="60" />
   </a>
 </p>
 <h1 align="center">
-  DMCM: Dungeon Master Campaign Manager
+  DMCM: Dungeon Master's Campaign Manager
 </h1>
 
-The DMCM is a localhost site that you can use during your 5e TTRPG sessions to house all your DM notes! It is powered by the reactjs-based Gatsby static site generator.
+The DMCM is a React-based localhost app that you can use during your 5e TTRPG sessions to house all your DM notes, references, and homebrew stats & spells! It is powered by the Gatsby site generator tool.
 
 A hosted example of the DMCM can be seen [here](https://rpg.iamgarrett.com/).
 
@@ -27,35 +26,31 @@ A hosted example of the DMCM can be seen [here](https://rpg.iamgarrett.com/).
 
 4. **Run DMCM**
 
-   In terminal run `npm run develop`. After it completes the launch process the DMCM will live at `http://localhost:8000/` until you kill the process.
-
-
-* More documentation coming as I complete this project!
+   In terminal run `gatsby develop`. After it completes the launch process the DMCM will live at `http://localhost:8000/` until you kill the process in your terminal.
 
 ## Documentation
 
 ### 1. Adventures
-Adventures are the most basic building block for DMCM since this is a campaign manager. Everything other piece of content (Besides the Reference page) flows from it's parent Adventure.
+Adventures are one of the most basic building blocks for DMCM since this is a campaign manager. Everything flows from your TTRPG's adventure.
 
 #### 1.1 Creating a new Adventure
 ##### Create a directory to house your Adventure.
-Navigate to your DMCM's `src/content/adventures/` directory. By default, there will be an `example/` directory which serves as a placeholder Adventure. To create your new Adventure, create a new directory nicknamed after your adventure (ex: "Lost Mine of Phandelver" might be housed in `lmop/`).
+Navigate to your DMCM's `src/content/adventures/` directory. By default, there will be an `example/` directory which serves as a placeholder Adventure. To create your new Adventure, create a new directory nicknamed after your adventure (ex: "Lost Mine of Phandelver" might be housed in `lmop/`). Keep it short and unique.
 
 ##### Add an index file.
 Inside your new directory, create an `index.mdx` file. This will house the basic metadata for your adventure and requires some frontmatter added to it like this:
 ```
 ---
-type: adventure
-title: "YOUR ADVENTURE'S FULL TITLE"
-image: "./images/adventure-cover-image.jpg"
-levels: "1 - 5"
-playernum: "4 - 5"
-setting: "Rorgotten Fealms"
+title: "The Mountain that Disappeared"
+icon: "game-icon-spiked-dragon-head"
+levels: "1-5"
+playernum: "4-5"
+setting: "The Pocket Universe"
 links:
 - url: "https://example.org"
   title: "A link related to this Adventure that I'd like to keep handy."
 players:
-- name: Trigger Jones
+- name: Traveller Jones
   race: Gnome
   class: Druid
   passiveperception: 15
@@ -63,24 +58,25 @@ players:
 _My Adventure_ is an adventure for four to five characters of 1st level. _lorem ipsum something_ something something. This is my Adventure's description.
 ```
 ##### Fields
-* `type` - A tag for GraphQL queries. Should always have a value of `adventure`.
-* `title` - The full title of your Adventure.
-* `image` - A promo image. This image will be used on the Adventure's homepage `/adventures/example/`.
-* `levels` - The levels Player Characters (PCs) should start and end at while playing this Adventure.
-* `playernum` - The number of players this Adventure is best played with.
-* `setting` - The world in which this adventure takes place in.
-* `links` - A list of external links that should be listed on this Adventure's homepage (ex: walkthroughs, dm guides, inspiration, etc). Include a `url` key and `title` key for each link.
-* `players` - A list of PCs involved in this adventure. This is used on Location pages on the Footer Drawer so that you can refer to certain stats of your players as you advance through locations. Currently, only the `passiveperception` key is used, but this will be expanded later.
+* `title` - [REQUIRED] The full title of your Adventure.
+* `icon` - [OPTIONAL] An icon that will represent your adventure. Must start with `game-icon-`. (source: [Game Icons Font](https://seiyria.com/gameicons-font/))
+* `levels` - [OPTIONAL] The levels Player Characters (PCs) should start and end at while playing this Adventure.
+* `playernum` - [OPTIONAL] The number of players this Adventure is best played with.
+* `setting` - [OPTIONAL] The world in which this adventure takes place in.
+* `links` - [OPTIONAL] A list of external links that should be listed on this Adventure's homepage (ex: walkthroughs, dm guides, inspiration, etc). Include a `url` key and `title` key for each link.
+* `players` - [OPTIONAL] A list of PCs involved in this adventure. This is used on Location pages on the Footer Drawer so that you can refer to certain stats of your players as you advance through locations. Currently, only the `passiveperception` key is used, but this will be expanded later.
 * The body of the `.mdx` file is to be used as general description for the adventure and is used both on the Adventures list page (`/adventures/`) and the Adventure homepage.
 
+Once you have your `index.mdx` file created, it's time to create the directories your adventure will need:
+
 ##### Adventure Directories
-* `images/` - This is where all imagery associated with the Adventure goes. This includes all location maps, etc.
-* `locations/` - Directory for every documented location within the adventure. This includes battle maps, towns, any place of note. More on this below.
-* `notes/` - This is for notes on the Adventure. I use it to lay out session notes, plan storylines, brainstorm, etc.
-* `npcs/` - Directory for holding npc `.mdx` files.
+* `images/` - This is where all the image files associated with your Adventure goes. This includes all location maps.
+* `locations/` - Place all your location files for your adventure within this directory. This includes dungeons, towns, or any place of note. More on this below.
+* `notes/` - This is for notes on your Adventure. I use it to lay out session notes, plan storylines, brainstorm, etc.
+* `npcs/` - Directory for holding NPC `.mdx` files.
 
 #### 1.2 Creating a new Location
-Inside your `locations` directory, create a new `.mdx` file named after your location (ex: `desert-maze.mdx`). This file holds all the metadata for your location like this:
+Inside your `locations/` directory, create a new `.mdx` file named after your location (ex: `desert-maze.mdx`). This file holds all the metadata for your location like this:
 ```
 title: Desert Maze
 map:
@@ -93,17 +89,17 @@ areas:
   x: 5
   y: 2
   flags:
-  - trap
+  - secret-door
+  - evil-minion
   traps:
-  - type: area
-    x: 7
+  - x: 7
     y: 3
     w: 2
     h: 2
   flavor: |
     This is a crumbling entrance to the maze in the desert. Step on the wrong tile and you're gonna have a bad time.
   callout: |
-    Remember to attack with the invisible sand ghost.
+    Remember to attack with the invisible sand ghost first to scare the PCs.
   content: |
     If a PC steps on the outlined trap, a wall of sand plows into them, dealing 1d6 bludgeoning damage.
 
@@ -115,8 +111,8 @@ This area is where I will add any "General Features" for this location like how 
 * `title` - The full title of your Location.
 * `map` - This object holds all of the Location's map data.
     * `image` - Contains the Location's map image and should be located within this Adventure's `image/` directory.
-    * `width` - The number of CSS Grid columns your map will need to contain. I usually eyeball this in my browser's Developer Tools until it looks right.
-    * `height` - The number of CSS Grid rows your map will need to contain. I usually eyeball this in my browser's Developer Tools until it looks right.
+    * `width` - The number of CSS Grid columns your map will need to contain. I usually eyeball this in my browser's Developer Tools until it looks right or you can count the columns in your image.
+    * `height` - The number of CSS Grid rows your map will need to contain. I usually eyeball this in my browser's Developer Tools until it looks right or you can count the rows in your image.
     * `padding` - This is the amount of padding your Locations map requires before starting the CSS Grid for perfect alignment. This can be toyed with in your browser's Developer Tools in order to line your map's grid up.
 * `areas` - This object holds a repeatable list of all the Location's area notes.
     * `name` - The name of the room/area.
