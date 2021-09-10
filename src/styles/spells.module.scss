@@ -2,8 +2,95 @@
 
 .spellsWrapper {
 
-  & > h2 {
-    position: relative;
+  main {
+
+    & > h2 {
+      position: relative;
+      // z-index: -1;
+
+      &::before {
+        position: absolute;
+        content: '';
+        display: block;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        z-index: -1;
+        background-color: $color--02;
+        box-shadow: $color--08 2rem 0rem 0rem 0rem,
+                    $color--05 4rem 0rem 0rem 0rem,
+                    $color--12 6rem 0rem 0rem 0rem,
+                    $color--10 8rem 0rem 0rem 0rem,
+                    $color--04 10rem 0rem 0rem 0rem,
+
+                    $color--09 12rem 0rem 0rem 0rem,
+                    $color--06 14rem 0rem 0rem 0rem,
+                    $color--13 16rem 0rem 0rem 0rem,
+                    $color--11 18rem 0rem 0rem 0rem,
+                    $color--05 20rem 0rem 0rem 0rem,
+                    
+                    $color--07 22rem 0rem 0rem 0rem,
+                    $color--04 24rem 0rem 0rem 0rem,
+                    $color--11 26rem 0rem 0rem 0rem,
+                    $color--09 28rem 0rem 0rem 0rem,
+                    $color--03 30rem 0rem 0rem 0rem,
+                    
+                    $color--10 32rem 0rem 0rem 0rem,
+                    $color--07 34rem 0rem 0rem 0rem,
+                    $color--01 36rem 0rem 0rem 0rem,
+                    $color--12 38rem 0rem 0rem 0rem,
+                    $color--06 40rem 0rem 0rem 0rem,
+                    
+                    $color--06 2rem -2rem 0rem 0rem,
+                    $color--05 4rem -2rem 0rem 0rem,
+                    $color--12 6rem -2rem 0rem 0rem,
+                    $color--10 8rem -2rem 0rem 0rem,
+                    $color--04 10rem -2rem 0rem 0rem,
+                    
+                    $color--12 12rem -2rem 0rem 0rem,
+                    $color--09 14rem -2rem 0rem 0rem,
+                    $color--03 16rem -2rem 0rem 0rem,
+                    $color--01 18rem -2rem 0rem 0rem,
+                    $color--08 20rem -2rem 0rem 0rem,
+                    
+                    $color--02 22rem -2rem 0rem 0rem,
+                    $color--12 24rem -2rem 0rem 0rem,
+                    $color--06 26rem -2rem 0rem 0rem,
+                    $color--04 28rem -2rem 0rem 0rem,
+                    $color--11 30rem -2rem 0rem 0rem,
+                    
+                    $color--04 32rem -2rem 0rem 0rem,
+                    $color--01 34rem -2rem 0rem 0rem,
+                    $color--08 36rem -2rem 0rem 0rem,
+                    $color--06 38rem -2rem 0rem 0rem,
+                    $color--13 40rem -2rem 0rem 0rem,
+                    
+                    $color--03 2rem -4rem 0rem 0rem,
+                    $color--06 4rem -4rem 0rem 0rem,
+                    $color--10 6rem -4rem 0rem 0rem,
+                    $color--05 8rem -4rem 0rem 0rem,
+                    $color--08 10rem -4rem 0rem 0rem,
+                    
+                    $color--04 12rem -4rem 0rem 0rem,
+                    $color--05 14rem -4rem 0rem 0rem,
+                    $color--11 16rem -4rem 0rem 0rem,
+                    $color--07 18rem -4rem 0rem 0rem,
+                    $color--09 20rem -4rem 0rem 0rem,
+                    
+                    $color--04 22rem -4rem 0rem 0rem,
+                    $color--09 24rem -4rem 0rem 0rem,
+                    $color--12 26rem -4rem 0rem 0rem,
+                    $color--07 28rem -4rem 0rem 0rem,
+                    $color--08 30rem -4rem 0rem 0rem,
+                    
+                    $color--01 32rem -4rem 0rem 0rem,
+                    $color--07 34rem -4rem 0rem 0rem,
+                    $color--13 36rem -4rem 0rem 0rem,
+                    $color--05 38rem -4rem 0rem 0rem,
+                    $color--08 40rem -4rem 0rem 0rem;
+      }
+    }
   }
 }
 
