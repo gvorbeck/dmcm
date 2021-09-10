@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import Attack from '../components/attack/attack';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
 import showdown from 'showdown';
@@ -83,7 +84,7 @@ function monsterAdvBlocks(area) {
         <h4>{area[i].name}</h4>
         <MarkdownView
           markdown={area[i].content}
-          components={{Dice}}
+          components={{Dice, Attack}}
         />
       </li>
     );
