@@ -21,7 +21,10 @@ const DiceTable = React.forwardRef((props, ref) => {
     }
   }) : '';
   return (
-    <section ref={ref} className={styles.diceTable}>
+    <section
+      ref={ref}
+      className={styles.diceTable}
+    >
       <ul>
         <li className={styles.diceFormula}>{formula}</li>
         {rolls}
@@ -31,7 +34,20 @@ const DiceTable = React.forwardRef((props, ref) => {
       </ul>
     </section>
   );
-})
+});
+
+const AttackTable = React.forwardRef((props, ref) => {
+  return (
+    <section
+      ref={ref}
+      className={styles.attackTable}
+    >
+      <ul>
+        <li>{props.name}</li>
+      </ul>
+    </section>
+  );
+});
 
 class Layout extends React.Component {
   constructor(props) {
@@ -39,7 +55,10 @@ class Layout extends React.Component {
     this.mainRef = React.createRef();
     this.diceButtonRef = React.createRef();
     this.diceTable = React.createRef();
+    this.attackTable = React.createRef();
     this.handleClick = this.handleClick.bind(this);
+    this.handleAttackClick = this.handleAttackClick.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     this.getButtons = this.getButtons.bind(this);
     this.state = {
       dice: {
@@ -48,13 +67,20 @@ class Layout extends React.Component {
         modifier: 0,
         rolls: [],
         result: 0,
-      }
+      },
+      attack: {
+        name: '',
+        modifier: 0,
+        formula: '',
+        type: '',
+      },
+      scroll: 0,
     }
   }
 
   handleClick(event) {
     let total = 0;
-    let dice = {...this.state.address};
+    let dice = {...this.state.dice};
     dice.amount = event.target.dataset.amount ? parseInt(event.target.dataset.amount) : 1;
     dice.type = parseInt(event.target.dataset.type);
     dice.modifier = event.target.dataset.modifier ? parseInt(event.target.dataset.modifier) : 0;
@@ -71,24 +97,49 @@ class Layout extends React.Component {
     this.diceTable.current.style.display = 'block';
   }
 
+  handleAttackClick(event) {
+    console.log('foo');
+    let attack = {...this.state.attack};
+    attack.name = event.target.dataset.name;
+
+    this.setState({ attack });
+    console.log(attack);
+  }
+
+  handleScroll(event) {
+    this.setState({
+      scroll: window.scrollY
+    });
+    console.log(this.state.scroll);
+  }
+
   getButtons() {
     const buttons = this.mainRef.current.getElementsByClassName('dmcm--dice-button');
+    const attackButtons = this.mainRef.current.getElementsByClassName('dmcm--attack-button');
     for (let i=0,l=buttons.length;i<l;i++) {
       buttons[i].addEventListener('click', this.handleClick);
+    }
+    for (let i=0,l=attackButtons.length;i<l;i++) {
+      attackButtons[i].addEventListener('click', this.handleAttackClick);
     }
   }
 
   componentDidMount() {
     setTimeout(() => {
-      /* this is delayed because some pages render their <Dice/> components AFTER layout and makes buttons not work. */
+      /* This is delayed because some pages render their components AFTER <Layout/> and makes buttons not work if rendered after <Layout/>. */
       /* I know this is less than ideal, but it works. I'll fix... some day. */
       this.getButtons();
     }, 500);
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentDidUpdate() {
     /* Runs again so that when searching, new results containing buttons are given event listeners. */
     this.getButtons();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
   }
 
   render() {
@@ -112,6 +163,9 @@ class Layout extends React.Component {
             rolls={this.state.dice.rolls}
             result={this.state.dice.result}
             ref={this.diceTable}
+          />
+          <AttackTable
+            name={this.state.attack.name}
           />
           {this.props.children}
         </main>
