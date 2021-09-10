@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
 import MarkdownView from 'react-showdown';
@@ -38,7 +38,7 @@ function resultMarkup(spell, index) {
   return(
     <article
       key={index}
-      className={styles.spell}
+      className={`${styles.spell} ${styles[spell.school.toLowerCase()]}`}
     >
       <h1>{spell.name}</h1>
       <h2>{spell.level} {spell.school}{spell.ritual? ' (ritual)':''}</h2>
@@ -82,9 +82,9 @@ function resultMarkup(spell, index) {
         }
       </dl>
       <MarkdownView
-        className={styles.content}
+        className={`${styles.content} dmcm--text`}
         markdown={spell.description}
-        components={{Dice}}
+        components={{Dice, Link}}
       />
       <p className={styles.source}>{spell.source}</p>
     </article>
