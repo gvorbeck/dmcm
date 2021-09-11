@@ -147,7 +147,12 @@ function resultMarkup(monster, index) {
           {monster.hp &&
             <React.Fragment>
               <dt>Hit Points</dt>
-              <dd>{monster.hp.value}{monster.hp.notes}</dd>
+              <dd>{monster.hp.value} 
+                <MarkdownView
+                  markdown={monster.hp.notes}
+                  components={{ Dice }}
+                />
+              </dd>
             </React.Fragment>
           }
           {speedList.length > 0 &&
