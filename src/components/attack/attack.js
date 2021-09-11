@@ -10,7 +10,6 @@ class Attack extends React.Component {
       type: raw[3]
     };
 
-    console.log(raw);
     return (
       <button
         aria-label='Attack Button'
