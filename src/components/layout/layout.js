@@ -44,6 +44,7 @@ const AttackTable = React.forwardRef((props, ref) => {
     >
       <ul>
         <li>{props.name}</li>
+        <li>{props.tohitRoll}</li>
       </ul>
     </section>
   );
@@ -52,14 +53,18 @@ const AttackTable = React.forwardRef((props, ref) => {
 class Layout extends React.Component {
   constructor(props) {
     super(props);
+
     this.mainRef = React.createRef();
     this.diceButtonRef = React.createRef();
     this.diceTable = React.createRef();
     this.attackTable = React.createRef();
-    this.handleClick = this.handleClick.bind(this);
-    this.handleAttackClick = this.handleAttackClick.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
+
     this.getButtons = this.getButtons.bind(this);
+    this.handleAttackClick = this.handleAttackClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleRoll = this.handleRoll.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+
     this.state = {
       dice: {
         amount: 0,
@@ -70,12 +75,17 @@ class Layout extends React.Component {
       },
       attack: {
         name: '',
-        modifier: 0,
+        tohit: 0,
+        tohitRoll: 0,
         formula: '',
         type: '',
       },
       scroll: 0,
     }
+  }
+
+  handleRoll(die) {
+    return (1 + Math.floor(Math.random()*die))
   }
 
   handleClick(event) {
@@ -87,7 +97,7 @@ class Layout extends React.Component {
     dice.rolls = [];
 
     for (let i=0,l=dice.amount;i<l;i++) {
-      const roll = 1 + Math.floor(Math.random()*dice.type);
+      const roll = this.handleRoll(dice.type);
       dice.rolls.push(roll);
       total = total + roll;
     }
@@ -98,19 +108,19 @@ class Layout extends React.Component {
   }
 
   handleAttackClick(event) {
-    console.log('foo');
     let attack = {...this.state.attack};
     attack.name = event.target.dataset.name;
+    attack.tohit = parseInt(event.target.dataset.tohit, 10);
+    attack.tohitRoll = this.handleRoll(20) + attack.tohit;
 
     this.setState({ attack });
-    console.log(attack);
+    this.attackTable.current.style.display = 'block';
   }
 
   handleScroll(event) {
     this.setState({
       scroll: window.scrollY
     });
-    console.log(this.state.scroll);
   }
 
   getButtons() {
@@ -166,6 +176,9 @@ class Layout extends React.Component {
           />
           <AttackTable
             name={this.state.attack.name}
+            ref={this.attackTable}
+            tohit={this.state.attack.tohit}
+            tohitRoll={this.state.attack.tohitRoll}
           />
           {this.props.children}
         </main>
