@@ -89,11 +89,11 @@ main {
   }
 }
 
-.diceTable {
+.diceTable,
+.attackTable {
   display: none;
   z-index: 1;
   position: sticky;
-  top: 0;
   height: 3rem;
 
   ul {
@@ -107,6 +107,13 @@ main {
     padding: 1rem;
     background: $color--07;
     color: #000000;
+  }
+}
+
+.diceTable {
+  top: 0;
+
+  li {
 
     &.diceFormula {
       background-color: $color--08;
@@ -116,6 +123,12 @@ main {
       background: $color--06;
     }
   }
+}
+
+.attackTable {
+  top: 3rem;
+
+
 }
 
 .pageTitle {
