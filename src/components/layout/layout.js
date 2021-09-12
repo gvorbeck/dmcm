@@ -51,6 +51,17 @@ const AttackTable = React.forwardRef((props, ref) => {
   );
 });
 
+const SimpleTable = React.forwardRef((props, ref) => {
+  return (
+    <section
+      ref={ref}
+      className={styles.simpleTable}
+    >
+      <h1>hello world</h1>
+    </section>
+  );
+});
+
 class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -59,6 +70,7 @@ class Layout extends React.Component {
     this.diceButtonRef = React.createRef();
     this.diceTable     = React.createRef();
     this.attackTable   = React.createRef();
+    this.simpleTable   = React.createRef();
 
     this.getButtons        = this.getButtons.bind(this);
     this.handleAttackClick = this.handleAttackClick.bind(this);
@@ -224,6 +236,11 @@ class Layout extends React.Component {
               formula={this.state.attack.formula}
               damage={this.state.attack.damage}
               type={this.state.attack.type}
+            />
+            <SimpleTable
+              ref={this.simpleTable}
+              title={this.state.simple.title}
+              value={this.state.simple.value}
             />
           </div>
           {this.props.children}
