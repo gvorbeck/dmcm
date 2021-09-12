@@ -183,10 +183,14 @@ class Layout extends React.Component {
     simple.title = event.currentTarget.dataset.title;
     simple.value = event.currentTarget.dataset.modifier;
     simple.roll = this.handleRoll(20);
+
     this.setState({ simple });
     this.attackTable.current.style.display = 'none';
     this.diceTable.current.style.display = 'none';
     this.simpleTable.current.style.display = 'block';
+
+    const clickDate = new Date();
+    console.log(`${simple.title} @${clickDate.getHours()}:${clickDate.getMinutes()}\nModifier: ${simple.value}\nTotal: ` + (parseInt(simple.value) + parseInt(simple.roll)));
   }
 
   handleScroll(event) {
