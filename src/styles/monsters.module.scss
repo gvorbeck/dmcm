@@ -54,19 +54,28 @@
   .ability {
     width: 100%;
     background: $color--08;
-    color: $color--01;
-    font-family: "Space Grotesk";
-    padding: 0 .25rem;
-    box-sizing: border-box;
+    padding: 0;
+
+    button {
+      box-sizing: border-box;
+      font-family: "Space Grotesk";
+      background: transparent;
+      border: none;
+      color: $color--01;
+      padding: 0 .25rem;
+      width: 100%;
+      cursor: pointer;
+    }
 
     & + .ability {
       margin-top: 1rem;
     }
 
-    p {
+    span {
       text-align: center;
+      display: block;
 
-      & + p {
+      & + span {
         margin-top: 0;
       }
     }

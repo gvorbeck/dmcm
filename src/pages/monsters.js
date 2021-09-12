@@ -125,6 +125,7 @@ function resultMarkup(monster, index) {
           <button
             className='dmcm--ability-button'
             data-modifier={modifier}
+            data-title={`Ability Check: ${key.toUpperCase()}`}
           >
             <span>{key.toUpperCase()}</span>
             <span className={styles.modifier}>{modifier}</span>
