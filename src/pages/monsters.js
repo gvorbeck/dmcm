@@ -116,14 +116,20 @@ function resultMarkup(monster, index) {
 
   if (monster.abilities) {
     for (const [key, value] of Object.entries(monster.abilities)) {
+      const modifier = Math.floor((value - 10) / 2);
       abilityList.push(
         <li 
           key={key}
           className={styles.ability}
         >
-          <p>{key.toUpperCase()}</p>
-          <p className={styles.modifier}>{Math.floor((value - 10) / 2)}</p>
-          <p className={styles.value}>{value}</p>
+          <button
+            className='dmcm--ability-button'
+            data-modifier={modifier}
+          >
+            <span>{key.toUpperCase()}</span>
+            <span className={styles.modifier}>{modifier}</span>
+            <span className={styles.value}>{value}</span>
+          </button>
         </li>
       );
     }

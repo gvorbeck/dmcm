@@ -55,16 +55,17 @@ class Layout extends React.Component {
   constructor(props) {
     super(props);
 
-    this.mainRef = React.createRef();
+    this.mainRef       = React.createRef();
     this.diceButtonRef = React.createRef();
-    this.diceTable = React.createRef();
-    this.attackTable = React.createRef();
+    this.diceTable     = React.createRef();
+    this.attackTable   = React.createRef();
 
-    this.getButtons = this.getButtons.bind(this);
+    this.getButtons        = this.getButtons.bind(this);
     this.handleAttackClick = this.handleAttackClick.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleRoll = this.handleRoll.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
+    this.handleClick       = this.handleClick.bind(this);
+    this.handleRoll        = this.handleRoll.bind(this);
+    this.handleScroll      = this.handleScroll.bind(this);
+    this.handleSimpleClick = this.handleSimpleClick.bind(this);
 
     this.state = {
       dice: {
@@ -83,6 +84,10 @@ class Layout extends React.Component {
         damage: 0,
         type: '',
       },
+      simple: {
+        title: '',
+        value: 0,
+      },
       scroll: 0,
     }
   }
@@ -92,13 +97,13 @@ class Layout extends React.Component {
   }
 
   handleClick(event) {
-    let total = 0;
-    let dice = {...this.state.dice};
-    dice.amount = event.target.dataset.amount ? parseInt(event.target.dataset.amount) : 1;
-    dice.type = parseInt(event.target.dataset.type);
+    let total     = 0;
+    let dice      = {...this.state.dice};
+    dice.amount   = event.target.dataset.amount ? parseInt(event.target.dataset.amount) : 1;
+    dice.type     = parseInt(event.target.dataset.type);
     dice.modifier = event.target.dataset.modifier ? parseInt(event.target.dataset.modifier) : 0;
-    dice.formula = event.target.dataset.formula;
-    dice.rolls = [];
+    dice.formula  = event.target.dataset.formula;
+    dice.rolls    = [];
 
     for (let i=0,l=dice.amount;i<l;i++) {
       const roll = this.handleRoll(dice.type);
@@ -116,15 +121,15 @@ class Layout extends React.Component {
   }
 
   handleAttackClick(event) {
-    let attack = {...this.state.attack},
-        damageTotal = 0;
-    attack.name = event.target.dataset.name;
-    attack.tohit = parseInt(event.target.dataset.tohit, 10);
+    let attack       = {...this.state.attack},
+        damageTotal  = 0;
+    attack.name      = event.target.dataset.name;
+    attack.tohit     = parseInt(event.target.dataset.tohit, 10);
     attack.tohitRoll = this.handleRoll(20) + attack.tohit;
-    attack.formula = event.target.dataset.formula;
-    attack.type = event.target.dataset.type;
-    damageTotal = parseInt(attack.formula.split(/\d*d\d+/)[1]);
-    attack.formula = attack.formula.split('d');
+    attack.formula   = event.target.dataset.formula;
+    attack.type      = event.target.dataset.type;
+    damageTotal      = parseInt(attack.formula.split(/\d*d\d+/)[1]);
+    attack.formula   = attack.formula.split('d');
 
     for (let i=0,l=attack.formula[0];i<l;i++) {
       const roll = this.handleRoll(attack.formula[1].split(/[+-]?/)[0]);
@@ -140,6 +145,13 @@ class Layout extends React.Component {
     console.log(`Attack Roll @${clickDate.getHours()}:${clickDate.getMinutes()}\nName: ${attack.name}\nTo Hit: ${attack.tohitRoll}\nDamage: ${attack.damage} ${attack.type}`);
   }
 
+  handleSimpleClick(event) {
+    let simple = {...this.state.simple};
+    simple.title = event.currentTarget.dataset.title;
+    simple.value = this.handleRoll(20) + parseInt(event.currentTarget.dataset.modifier);
+    this.setState({ simple });
+  }
+
   handleScroll(event) {
     this.setState({
       scroll: window.scrollY
@@ -147,14 +159,19 @@ class Layout extends React.Component {
   }
 
   getButtons() {
-    const buttons = this.mainRef.current.getElementsByClassName('dmcm--dice-button');
-    const attackButtons = this.mainRef.current.getElementsByClassName('dmcm--attack-button');
-    for (let i=0,l=buttons.length;i<l;i++) {
-      buttons[i].addEventListener('click', this.handleClick);
+    const diceButtons    = this.mainRef.current.getElementsByClassName('dmcm--dice-button'),
+          attackButtons  = this.mainRef.current.getElementsByClassName('dmcm--attack-button'),
+          abilityButtons = this.mainRef.current.getElementsByClassName('dmcm--ability-button');
+
+    const buttonClickListeners = (buttons, func) => {
+      for (let i=0,l=buttons.length;i<l;i++) {
+        buttons[i].addEventListener('click', func);
+      }
     }
-    for (let i=0,l=attackButtons.length;i<l;i++) {
-      attackButtons[i].addEventListener('click', this.handleAttackClick);
-    }
+
+    buttonClickListeners(diceButtons, this.handleClick);
+    buttonClickListeners(attackButtons, this.handleAttackClick);
+    buttonClickListeners(abilityButtons, this.handleSimpleClick);
   }
 
   componentDidMount() {
