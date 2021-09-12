@@ -45,6 +45,7 @@ const AttackTable = React.forwardRef((props, ref) => {
       <ul>
         <li>{props.name}</li>
         <li>{props.tohitRoll}</li>
+        <li>({props.damage} {props.type})</li>
       </ul>
     </section>
   );
@@ -78,6 +79,7 @@ class Layout extends React.Component {
         tohit: 0,
         tohitRoll: 0,
         formula: '',
+        damage: 0,
         type: '',
       },
       scroll: 0,
@@ -108,10 +110,22 @@ class Layout extends React.Component {
   }
 
   handleAttackClick(event) {
-    let attack = {...this.state.attack};
+    let attack = {...this.state.attack},
+        damageTotal = 0;
     attack.name = event.target.dataset.name;
     attack.tohit = parseInt(event.target.dataset.tohit, 10);
     attack.tohitRoll = this.handleRoll(20) + attack.tohit;
+    attack.formula = event.target.dataset.formula;
+    attack.type = event.target.dataset.type;
+    damageTotal = parseInt(attack.formula.split(/\d*d\d+/)[1]);
+    attack.formula = attack.formula.split('d');
+
+    for (let i=0,l=attack.formula[0];i<l;i++) {
+      const roll = this.handleRoll(attack.formula[1].split(/[+-]?/)[0]);
+      damageTotal += roll;
+    }
+
+    attack.damage = damageTotal;
 
     this.setState({ attack });
     this.attackTable.current.style.display = 'block';
@@ -179,6 +193,9 @@ class Layout extends React.Component {
             ref={this.attackTable}
             tohit={this.state.attack.tohit}
             tohitRoll={this.state.attack.tohitRoll}
+            formula={this.state.attack.formula}
+            damage={this.state.attack.damage}
+            type={this.state.attack.type}
           />
           {this.props.children}
         </main>
