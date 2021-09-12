@@ -73,6 +73,7 @@ class Layout extends React.Component {
         modifier: 0,
         rolls: [],
         result: 0,
+        formula: '',
       },
       attack: {
         name: '',
@@ -96,6 +97,7 @@ class Layout extends React.Component {
     dice.amount = event.target.dataset.amount ? parseInt(event.target.dataset.amount) : 1;
     dice.type = parseInt(event.target.dataset.type);
     dice.modifier = event.target.dataset.modifier ? parseInt(event.target.dataset.modifier) : 0;
+    dice.formula = event.target.dataset.formula;
     dice.rolls = [];
 
     for (let i=0,l=dice.amount;i<l;i++) {
@@ -107,6 +109,10 @@ class Layout extends React.Component {
     dice.result = total + dice.modifier;
     this.setState({ dice });
     this.diceTable.current.style.display = 'block';
+    this.attackTable.current.style.display = 'none';
+
+    const clickDate = new Date();
+    console.log(`Dice Roll @${clickDate.getHours()}:${clickDate.getMinutes()}\nFormula: ${dice.formula}\nRolls: ${dice.rolls.join(', ')}\nTotal: ${dice.result}`)
   }
 
   handleAttackClick(event) {
@@ -124,11 +130,14 @@ class Layout extends React.Component {
       const roll = this.handleRoll(attack.formula[1].split(/[+-]?/)[0]);
       damageTotal += roll;
     }
-
     attack.damage = damageTotal;
 
     this.setState({ attack });
     this.attackTable.current.style.display = 'block';
+    this.diceTable.current.style.display = 'none';
+
+    const clickDate = new Date();
+    console.log(`Attack Roll @${clickDate.getHours()}:${clickDate.getMinutes()}\nName: ${attack.name}\nTo Hit: ${attack.tohitRoll}\nDamage: ${attack.damage} ${attack.type}`);
   }
 
   handleScroll(event) {
@@ -180,23 +189,26 @@ class Layout extends React.Component {
           {this.props.title &&
             <h2 className={styles.pageTitle}>{this.props.title}</h2>
           }
-          <DiceTable
-            amount={this.state.dice.amount}
-            type={this.state.dice.type}
-            modifier={this.state.dice.modifier}
-            rolls={this.state.dice.rolls}
-            result={this.state.dice.result}
-            ref={this.diceTable}
-          />
-          <AttackTable
-            name={this.state.attack.name}
-            ref={this.attackTable}
-            tohit={this.state.attack.tohit}
-            tohitRoll={this.state.attack.tohitRoll}
-            formula={this.state.attack.formula}
-            damage={this.state.attack.damage}
-            type={this.state.attack.type}
-          />
+          <div className={styles.dataFloater}>
+            <DiceTable
+              ref={this.diceTable}
+              amount={this.state.dice.amount}
+              type={this.state.dice.type}
+              modifier={this.state.dice.modifier}
+              rolls={this.state.dice.rolls}
+              result={this.state.dice.result}
+              formula={this.state.dice.formula}
+            />
+            <AttackTable
+              ref={this.attackTable}
+              name={this.state.attack.name}
+              tohit={this.state.attack.tohit}
+              tohitRoll={this.state.attack.tohitRoll}
+              formula={this.state.attack.formula}
+              damage={this.state.attack.damage}
+              type={this.state.attack.type}
+            />
+          </div>
           {this.props.children}
         </main>
         <footer>
