@@ -3,7 +3,7 @@ import { graphql } from 'gatsby';
 import Attack from '../components/attack/attack';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
-import { SpellLink } from '../components/int-link/int-link';
+import { SpellLink, MonsterLink } from '../components/int-link/int-link';
 import showdown from 'showdown';
 import MarkdownView from 'react-showdown';
 import * as styles from '../styles/monsters.module.scss';
@@ -85,7 +85,7 @@ function monsterAdvBlocks(area) {
         <h4>{area[i].name}</h4>
         <MarkdownView
           markdown={area[i].content}
-          components={{Dice, Attack, SpellLink}}
+          components={{Dice, Attack, SpellLink, MonsterLink}}
         />
       </li>
     );
@@ -331,16 +331,20 @@ class BeastPage extends React.Component {
     
     if (this.props.location.search) {
       const params = new URLSearchParams(this.props.location.search);
-      this.getResults(params.get('m'));
+      this.getResults(params.get('m'), true);
     }
   }
 
-  getResults(query) {
+  getResults(query, limit=false) {
     let results = [];
-    for (let i=0,l=this.monsterList.length;i<l;i++) {
-      if (this.monsterList[i].name.toUpperCase().includes(query.toUpperCase())) {
-        results.push(this.monsterList[i]);
+    if (!limit) {
+      for (let i=0,l=this.monsterList.length;i<l;i++) {
+        if (this.monsterList[i].name.toUpperCase().includes(query.toUpperCase())) {
+          results.push(this.monsterList[i]);
+        }
       }
+    } else {
+      results.push(this.monsterList.find(({ name }) => name.toUpperCase() === query.toUpperCase()));
     }
 
     this.setState({searchResults: results});
