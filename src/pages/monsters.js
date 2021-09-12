@@ -3,6 +3,7 @@ import { graphql } from 'gatsby';
 import Attack from '../components/attack/attack';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
+import { SpellLink } from '../components/int-link/int-link';
 import showdown from 'showdown';
 import MarkdownView from 'react-showdown';
 import * as styles from '../styles/monsters.module.scss';
@@ -84,7 +85,7 @@ function monsterAdvBlocks(area) {
         <h4>{area[i].name}</h4>
         <MarkdownView
           markdown={area[i].content}
-          components={{Dice, Attack}}
+          components={{Dice, Attack, SpellLink}}
         />
       </li>
     );
@@ -92,14 +93,14 @@ function monsterAdvBlocks(area) {
   return formattedItems;
 }
 
-function monsterSimpleBlocks(area) {
+function monsterSimpleBlocks(area, type) {
   const formattedItems = [];
   for (let i=0,l=area.length;i<l;i++) {
     formattedItems.push(
       <li key={i}>
         <button
           className='dmcm--simple-button'
-          data-title={area[i].name}
+          data-title={`${type}: ${area[i].name}`}
           data-modifier={area[i].modifier}
         >
           {area[i].name}: +{area[i].modifier}
@@ -184,7 +185,7 @@ function resultMarkup(monster, index) {
             <React.Fragment>
               <dt>Saving Throws</dt>
               <dd>
-                <ul>{monsterSimpleBlocks(monster.saves)}</ul>
+                <ul>{monsterSimpleBlocks(monster.saves, 'Saving Throw')}</ul>
               </dd>
             </React.Fragment>
           }
@@ -192,7 +193,7 @@ function resultMarkup(monster, index) {
             <React.Fragment>
               <dt>Skills</dt>
               <dd>
-                <ul>{monsterSimpleBlocks(monster.skills)}</ul>
+                <ul>{monsterSimpleBlocks(monster.skills, 'Skill Check')}</ul>
               </dd>
             </React.Fragment>
           }
@@ -240,7 +241,7 @@ function resultMarkup(monster, index) {
           }
         </dl>
       </div>
-      <div className={styles.long}>
+      <div className={`${styles.long} dmcm--text`}>
         {monster.traits &&
           <div>
             <h3>Traits</h3>
