@@ -7,6 +7,7 @@ TODOs:
 - add Critical Hit/Miss alerts.
 - add Simple Clicks to monster skills/saving throws.
 - Add Simple Clicks to spell areas.
+- Add hints to search forms: (ex: type 'example')
 */
 
 const DiceTable = React.forwardRef((props, ref) => {
