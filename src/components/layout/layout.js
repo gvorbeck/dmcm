@@ -6,7 +6,6 @@ import * as styles from './layout.module.scss';
 TODOs:
 - add Critical Hit/Miss alerts.
 - Add Simple Clicks to spell areas.
-- Add hints to search forms: (ex: type 'example')
 */
 
 const DiceTable = React.forwardRef((props, ref) => {

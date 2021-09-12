@@ -119,6 +119,7 @@ class SearchTextInput extends React.Component {
             value={text}
             type='text'
             onChange={this.handleChange}
+            placeholder={this.props.placeholder}
           />
         </label>
       </fieldset>
@@ -194,6 +195,7 @@ class SpellPage extends React.Component {
           <SearchTextInput
             onTextChange={this.handleTextChange}
             text={text}
+            placeholder='Example'
           />
           <input
             type='submit'
