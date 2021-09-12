@@ -5,7 +5,6 @@ import * as styles from './layout.module.scss';
 /*
 TODOs:
 - add Critical Hit/Miss alerts.
-- add Simple Clicks to monster skills/saving throws.
 - Add Simple Clicks to spell areas.
 - Add hints to search forms: (ex: type 'example')
 */
@@ -172,7 +171,7 @@ class Layout extends React.Component {
 
     this.setState({ attack });
     this.attackTable.current.style.display = 'block';
-    this.diceTable.current.style.display = 'none';
+    this.diceTable.current.style.display   = 'none';
     this.simpleTable.current.style.display = 'none';
 
     const clickDate = new Date();
@@ -180,14 +179,14 @@ class Layout extends React.Component {
   }
 
   handleSimpleClick(event) {
-    let simple = {...this.state.simple};
+    let simple   = {...this.state.simple};
     simple.title = event.currentTarget.dataset.title;
     simple.value = event.currentTarget.dataset.modifier;
-    simple.roll = this.handleRoll(20);
+    simple.roll  = this.handleRoll(20);
 
     this.setState({ simple });
     this.attackTable.current.style.display = 'none';
-    this.diceTable.current.style.display = 'none';
+    this.diceTable.current.style.display   = 'none';
     this.simpleTable.current.style.display = 'block';
 
     const clickDate = new Date();
