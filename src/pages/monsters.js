@@ -96,7 +96,15 @@ function monsterSimpleBlocks(area) {
   const formattedItems = [];
   for (let i=0,l=area.length;i<l;i++) {
     formattedItems.push(
-      <li key={i}>{area[i].name}: +{area[i].modifier}</li>
+      <li key={i}>
+        <button
+          className='dmcm--simple-button'
+          data-title={area[i].name}
+          data-modifier={area[i].modifier}
+        >
+          {area[i].name}: +{area[i].modifier}
+        </button>
+      </li>
     );
   }
   return formattedItems;

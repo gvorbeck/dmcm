@@ -203,7 +203,8 @@ class Layout extends React.Component {
   getButtons() {
     const diceButtons    = this.mainRef.current.getElementsByClassName('dmcm--dice-button'),
           attackButtons  = this.mainRef.current.getElementsByClassName('dmcm--attack-button'),
-          abilityButtons = this.mainRef.current.getElementsByClassName('dmcm--ability-button');
+          abilityButtons = this.mainRef.current.getElementsByClassName('dmcm--ability-button'),
+          simpleButtons  = this.mainRef.current.getElementsByClassName('dmcm--simple-button');
 
     const buttonClickListeners = (buttons, func) => {
       for (let i=0,l=buttons.length;i<l;i++) {
@@ -214,6 +215,7 @@ class Layout extends React.Component {
     buttonClickListeners(diceButtons, this.handleClick);
     buttonClickListeners(attackButtons, this.handleAttackClick);
     buttonClickListeners(abilityButtons, this.handleSimpleClick);
+    buttonClickListeners(simpleButtons, this.handleSimpleClick);
   }
 
   componentDidMount() {
