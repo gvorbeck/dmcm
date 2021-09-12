@@ -89,11 +89,15 @@ main {
   }
 }
 
+.dataFloater {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .diceTable,
 .attackTable {
   display: none;
-  z-index: 1;
-  position: sticky;
   height: 3rem;
 
   ul {
@@ -111,7 +115,6 @@ main {
 }
 
 .diceTable {
-  top: 0;
 
   li {
 
@@ -126,9 +129,7 @@ main {
 }
 
 .attackTable {
-  top: 3rem;
-
-
+  // top: 3rem;
 }
 
 .pageTitle {
