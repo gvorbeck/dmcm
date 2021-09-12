@@ -2,6 +2,13 @@ import React from 'react';
 import Header from '../header/header';
 import * as styles from './layout.module.scss';
 
+/*
+TODOs:
+- add Critical Hit/Miss alerts.
+- add Simple Clicks to monster skills/saving throws.
+- Add Simple Clicks to spell areas.
+*/
+
 const DiceTable = React.forwardRef((props, ref) => {
   const modifierSign = props.modifier > 0 ? '+' : '',
   formula = props.amount + 'd' + props.type + modifierSign + (props.modifier === 0 ? '' : props.modifier),
@@ -52,12 +59,23 @@ const AttackTable = React.forwardRef((props, ref) => {
 });
 
 const SimpleTable = React.forwardRef((props, ref) => {
+  let crit = false;
+  if (props.roll === 20 || props.roll === 0) {
+    crit = true;
+  }
   return (
     <section
       ref={ref}
       className={styles.simpleTable}
     >
-      <h1>hello world</h1>
+      <ul>
+        <li>{props.title}</li>
+        <li>{props.value >= 0 ? '+' : ''}{props.value}</li>
+        {crit &&
+          <li>Crit!</li>
+        }
+        <li>{parseInt(props.value) + parseInt(props.roll)}</li>
+      </ul>
     </section>
   );
 });
@@ -98,6 +116,7 @@ class Layout extends React.Component {
       },
       simple: {
         title: '',
+        roll: 0,
         value: 0,
       },
       scroll: 0,
@@ -127,6 +146,7 @@ class Layout extends React.Component {
     this.setState({ dice });
     this.diceTable.current.style.display = 'block';
     this.attackTable.current.style.display = 'none';
+    this.simpleTable.current.style.display = 'none';
 
     const clickDate = new Date();
     console.log(`Dice Roll @${clickDate.getHours()}:${clickDate.getMinutes()}\nFormula: ${dice.formula}\nRolls: ${dice.rolls.join(', ')}\nTotal: ${dice.result}`)
@@ -152,6 +172,7 @@ class Layout extends React.Component {
     this.setState({ attack });
     this.attackTable.current.style.display = 'block';
     this.diceTable.current.style.display = 'none';
+    this.simpleTable.current.style.display = 'none';
 
     const clickDate = new Date();
     console.log(`Attack Roll @${clickDate.getHours()}:${clickDate.getMinutes()}\nName: ${attack.name}\nTo Hit: ${attack.tohitRoll}\nDamage: ${attack.damage} ${attack.type}`);
@@ -160,8 +181,12 @@ class Layout extends React.Component {
   handleSimpleClick(event) {
     let simple = {...this.state.simple};
     simple.title = event.currentTarget.dataset.title;
-    simple.value = this.handleRoll(20) + parseInt(event.currentTarget.dataset.modifier);
+    simple.value = event.currentTarget.dataset.modifier;
+    simple.roll = this.handleRoll(20);
     this.setState({ simple });
+    this.attackTable.current.style.display = 'none';
+    this.diceTable.current.style.display = 'none';
+    this.simpleTable.current.style.display = 'block';
   }
 
   handleScroll(event) {
@@ -241,6 +266,7 @@ class Layout extends React.Component {
               ref={this.simpleTable}
               title={this.state.simple.title}
               value={this.state.simple.value}
+              roll={this.state.simple.roll}
             />
           </div>
           {this.props.children}
