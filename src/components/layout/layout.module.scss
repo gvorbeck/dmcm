@@ -72,19 +72,6 @@ main {
       grid-template: auto/repeat(2, 1fr);
       align-items: start;
       margin-top: 4rem;
-
-      article {
-        border: rem(2px) solid $color--13;
-        display: grid;
-
-        h1 {
-          grid-column: 1/3;
-          grid-row: 1/2;
-          font-size: 5rem; 
-          font-family: "Space Grotesk";
-          word-break: break-all;
-        }
-      }
     }
   }
 }
