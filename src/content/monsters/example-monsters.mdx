@@ -4,11 +4,11 @@ monsters:
   source: Homebrew
   type: 'Large fiend, neutral evil'
   hp:
-    value: '15'
-    notes: (5d8+5)
+    value: '22'
+    notes: <Dice>5d8+5</Dice>
   ac:
-    value: '12'
-    notes: (5d8+5)
+    value: '15'
+    notes: (leather armor & shield)
   speed:
   - 60 ft.
   - 120 ft. flying
@@ -17,7 +17,7 @@ monsters:
     dex: 12
     con: 10
     int: 11
-    wis: 10
+    wis: 17
     cha: 10
   dmgvulnerabilities:
   - Poison
@@ -27,34 +27,36 @@ monsters:
   dmgimmunities:
   - Necrotic
   cdnimmunities:
-  - charmed
+  - Charmed
   saves:
-  - name: dex
+  - name: DEX
     modifier: 6
   skills:
-  - name: arcana
+  - name: Arcana
     modifier: 3
   senses:
-  - darkvision 60 ft.
+  - Darkvision 60 ft.
   languages:
-  - common
+  - Common
   challenge: '5'
   traits:
-  - name: Lorem Ipsum
+  - name: Nimble Escape
     content: |
-        Lorem. trait Ipsum.
+        The example monster can take the Disengage or Hide action as a bonus action on each of its turns.
   actions:
-  - name: Lorem Ipsum
+  - name: Greatsword
     content: |
-        Lorem. Ipsumsss.
+        Melee Weapon Attack: +11 to hit, reach 10 ft., one target. Hit: 28 (6d6 + 7) slashing damage.
+
+        <Attack>Greatsword|+11|6d6+7|slashing</Attack>
   reactions:
-  - name: Lorem Ipsum
+  - name: Misty Escape (Recharges after a Short or Long Rest)
     content: |
-        Lorem. **Ipsumzzz**.
+        When the example monster takes damage, it turns invisible and teleports up to 60 feet to an unoccupied space it can see. It remains invisible until the start of its next turn or until it attacks or casts a spell.
   lgdyactions:
-  - name: Lorem Ipsum
+  - name: Example Monster Scream
     content: |
-        Lorem. Ipsumwww.
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a tristique magna, nec rutrum urna. Pellentesque sagittis libero vel lorem pretium elementum non nec mauris. Morbi scelerisque accumsan nunc. Sed ullamcorper malesuada dui, et sagittis velit porta nec. Mauris ut scelerisque mi. In non lectus eget quam vehicula commodo in nec lectus. Nunc vulputate ligula nisl, in auctor lacus scelerisque vitae. Aenean malesuada in mauris sed ullamcorper. Etiam sit amet enim lorem.'
-  imgurl: null
+        An example monster scream uses sonic energy to grind rock into dust. Example monsters accused of spreading gossip or plotting against their superiors are trapped within one of these, their beards shorn and their ongoing agony channeled into psionic energy that powers the scream.
+  description: |
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a tristique magna, nec rutrum urna. Pellentesque sagittis libero vel lorem pretium elementum non nec mauris. Morbi scelerisque accumsan nunc. Sed ullamcorper malesuada dui, et sagittis velit porta nec. Mauris ut scelerisque mi. In non lectus eget quam vehicula commodo in nec lectus. Nunc vulputate ligula nisl, in auctor lacus scelerisque vitae. Aenean malesuada in mauris sed ullamcorper. Etiam sit amet enim lorem.'
 ---
