@@ -6,7 +6,6 @@
 
     & > h2 {
       position: relative;
-      margin-bottom: 8rem;
 
       &::before {
         content: '';
@@ -17,19 +16,31 @@
         display: block;
         border-radius: 50%;
         z-index: -1;
-        top: -1rem;
+        top: -6rem;
         left: 5rem;
-        box-shadow: 5rem 2.5rem 0 $color--02,
+        box-shadow: .25rem 0 2rem $color--01,
+                    5rem 2.5rem 0 $color--02,
+                    5.25rem 2.5rem 2rem $color--01,
                     10rem 5rem 0 $color--03,
+                    10.25rem 5rem 2rem $color--01,
                     15rem 2.5rem 0 $color--04,
+                    15.25rem 2.5rem 2rem $color--01,
                     20rem 0 0 $color--05,
+                    20.25rem 0 2rem $color--01,
                     25rem 2.5rem 0 $color--06,
+                    25.25rem 2.5rem 2rem $color--01,
                     30rem 5rem 0 $color--07,
+                    30.25rem 5rem 2rem $color--01,
                     35rem 2.5rem 0 $color--08,
+                    35.25rem 2.5rem 2rem $color--01,
                     40rem 0 0 $color--09,
+                    40.25rem 0 2rem $color--01,
                     45rem 2.5rem 0 $color--10,
+                    45.25rem 2.5rem 2rem $color--01,
                     50rem 5rem 0 $color--11,
+                    50.25rem 5rem 2rem $color--01,
                     55rem 2.5rem 0 $color--12,
+                    55.25rem 2.5rem 2rem $color--01,
                     60rem 0 0 $color--13;
       }
     }
