@@ -362,7 +362,7 @@ class BeastPage extends React.Component {
           text={text}
           placeholder='Example'
         />
-        <div>
+        <div className={styles.searchResults}>
           {searchResults}
         </div>
       </Layout>

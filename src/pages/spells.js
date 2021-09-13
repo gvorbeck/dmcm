@@ -177,7 +177,9 @@ class SpellPage extends React.Component {
           text={text}
           placeholder='Example'
         />
-        <div>{searchResults}</div>
+        <div className={styles.searchResults}>
+          {searchResults}
+        </div>
       </Layout>
     );
   }

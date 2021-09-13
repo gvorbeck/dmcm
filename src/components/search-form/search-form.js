@@ -1,4 +1,5 @@
 import React from 'react';
+import * as styles from './search-form.module.scss';
 
 class SearchTextInput extends React.Component {
   constructor(props) {
@@ -14,13 +15,14 @@ class SearchTextInput extends React.Component {
     const text = this.props.text;
     return (
       <fieldset>
-        <label>
+        <label className={styles.searchLabel}>
           Search:
           <input
             type='text'
             value={text}
             onChange={this.handleChange}
             placeholder={this.props.placeholder}
+            className={styles.searchInput}
           />
         </label>
       </fieldset>
@@ -30,7 +32,10 @@ class SearchTextInput extends React.Component {
 
 function SearchForm(props) {
   return (
-    <form onSubmit={props.submit}>
+    <form
+      onSubmit={props.submit}
+      className={styles.searchForm}
+    >
       <SearchTextInput
         onTextChange={props.textChange}
         text={props.text}
@@ -39,6 +44,7 @@ function SearchForm(props) {
       <input
         type='submit'
         value='Submit'
+        className={styles.searchSubmit}
       />
     </form>
   );

@@ -32,48 +32,6 @@ main {
     font-family: "Space Grotesk";
     font-size: 1.5rem;
   }
-
-  form {
-    background: $color--13;
-    padding: 1rem;
-    color: #000000;
-
-    label {
-      font-size: 2rem;
-    }
-
-    input {
-
-      &[type=text] {
-        border: 0;
-        background: transparent;
-        border-bottom: .2rem solid #000000;
-        width: 100%;
-        font-size: 1.25rem;
-        margin-bottom: 1rem;
-
-        &:focus {
-          outline: none;
-        }
-      }
-
-      &[type=submit] {
-        background: $color--13;
-        border: rem(2px) solid #000000;
-        font-family: "Space Grotesk";
-        font-size: 1.5rem;
-      }
-    }
-
-    // .results
-    ~ div {
-      display: grid;
-      grid-gap: 1rem;
-      grid-template: auto/repeat(2, 1fr);
-      align-items: start;
-      margin-top: 4rem;
-    }
-  }
 }
 
 .dataFloater {

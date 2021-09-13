@@ -45,6 +45,14 @@
     }
 }
 
+@mixin searchResultList {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template: auto/repeat(2, 1fr);
+  align-items: start;
+  margin-top: 4rem;
+}
+
 @mixin searchResult {
   position: relative;
   border: rem(2px) solid $color--13;

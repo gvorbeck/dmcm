@@ -36,6 +36,10 @@
   }
 }
 
+.searchResults {
+  @include searchResultList
+}
+
 .monster {
   @include searchResult;
   grid-template-columns: 20% 80%;

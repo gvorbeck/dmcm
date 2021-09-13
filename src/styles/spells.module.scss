@@ -94,6 +94,10 @@
   }
 }
 
+.searchResults {
+  @include searchResultList
+}
+
 .spell {
   @include searchResult;
   grid-template-columns: 100%;
