@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, Link } from 'gatsby';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
+import SearchForm from '../components/search-form/search-form';
 import MarkdownView from 'react-showdown';
 import * as styles from '../styles/spells.module.scss';
 
@@ -108,34 +109,6 @@ function resultList(spells) {
   return spellList;
 }
 
-class SearchTextInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(e) {
-    this.props.onTextChange(e.target.value);
-  }
-
-  render() {
-    const text = this.props.text;
-    return (
-      <fieldset>
-        <label>
-          Name:
-          <input
-            value={text}
-            type='text'
-            onChange={this.handleChange}
-            placeholder={this.props.placeholder}
-          />
-        </label>
-      </fieldset>
-    );
-  }
-}
-
 class SpellPage extends React.Component {
   constructor(props) {
     super(props);
@@ -198,19 +171,12 @@ class SpellPage extends React.Component {
         title='Spellbook'
         className={styles.spellsWrapper}
       >
-        <form
-          onSubmit={this.handleSubmit}
-        >
-          <SearchTextInput
-            onTextChange={this.handleTextChange}
-            text={text}
-            placeholder='Example'
-          />
-          <input
-            type='submit'
-            value='Submit'
-          />
-        </form>
+        <SearchForm
+          submit={this.handleSubmit}
+          textChange={this.handleTextChange}
+          text={text}
+          placeholder='Example'
+        />
         <div>{searchResults}</div>
       </Layout>
     );

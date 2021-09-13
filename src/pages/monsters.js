@@ -3,6 +3,7 @@ import { graphql } from 'gatsby';
 import Attack from '../components/attack/attack';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
+import SearchForm from '../components/search-form/search-form';
 import { SpellLink, MonsterLink } from '../components/int-link/int-link';
 import showdown from 'showdown';
 import MarkdownView from 'react-showdown';
@@ -290,34 +291,6 @@ function resultList(monsters) {
   return monsterList;
 }
 
-class SearchTextInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(e) {
-    this.props.onTextChange(e.target.value);
-  }
-
-  render() {
-    const text = this.props.text;
-    return (
-      <fieldset>
-        <label>
-          Name: 
-          <input
-            type='text'
-            value={text}
-            onChange={this.handleChange}
-            placeholder={this.props.placeholder}
-          />
-        </label>
-      </fieldset>
-    );
-  }
-}
-
 class BeastPage extends React.Component {
   constructor(props) {
     super(props);
@@ -383,17 +356,12 @@ class BeastPage extends React.Component {
         title={'Bestiary'}
         className={styles.bestiaryWrapper}
       >
-        <form onSubmit={this.handleSubmit}>
-          <SearchTextInput
-            onTextChange={this.handleTextChange}
-            text={text}
-            placeholder='Example'
-          />
-          <input
-            type='submit'
-            value='Submit'
-          />
-        </form>
+        <SearchForm
+          submit={this.handleSubmit}
+          textChange={this.handleTextChange}
+          text={text}
+          placeholder='Example'
+        />
         <div>
           {searchResults}
         </div>
