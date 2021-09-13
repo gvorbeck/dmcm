@@ -40,9 +40,11 @@ function resultMarkup(spell, index) {
       key={index}
       className={`${styles.spell} ${styles[spell.school.toLowerCase()]}`}
     >
-      <h1>{spell.name}</h1>
-      <h2>{spell.level} {spell.school}{spell.ritual? ' (ritual)':''}</h2>
-      <h3>{spell.classes.join(', ')}</h3>
+      <header>
+        <h1>{spell.name}</h1>
+        <h2>{spell.level} {spell.school}{spell.ritual? ' (ritual)':''}</h2>
+        <h3>{spell.classes.join(', ')}</h3>
+      </header>
       <dl className={styles.stats}>
         {spell.castingtime &&
           <React.Fragment>
@@ -77,16 +79,23 @@ function resultMarkup(spell, index) {
         {spell.damage &&
           <React.Fragment>
             <dt>Damage</dt>
-            <dd>{spell.damage}</dd>
+            <dd>
+              <MarkdownView
+                markdown={spell.damage}
+                components={{Dice}}
+              />
+            </dd>
           </React.Fragment>
         }
       </dl>
-      <MarkdownView
-        className={`${styles.content} dmcm--text`}
-        markdown={spell.description}
-        components={{Dice, Link}}
-      />
-      <p className={styles.source}>{spell.source}</p>
+      <div className={styles.long}>
+        <MarkdownView
+          className={`${styles.content} dmcm--text`}
+          markdown={spell.description}
+          components={{Dice, Link}}
+        />
+        <p className={styles.source}>{spell.source}</p>
+      </div>
     </article>
   );
 }
