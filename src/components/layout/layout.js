@@ -4,54 +4,62 @@ import * as styles from './layout.module.scss';
 
 /*
 TODOs:
-- add Critical Hit/Miss alerts.
 - Add Simple Clicks to spell areas.
 */
 
 const DiceTable = React.forwardRef((props, ref) => {
-  const modifierSign = props.modifier > 0 ? '+' : '',
-  formula = props.amount + 'd' + props.type + modifierSign + (props.modifier === 0 ? '' : props.modifier),
-  rolls = props.rolls ? props.rolls.map((roll, i) => {
-    if (props.rolls.length === i + 1) {
-      return (
-        <li key={i}>
-          {roll + props.modifier}
-        </li>
-      );
-    } else {
-      return (
-        <li key={i}>
-          {roll}
-        </li>
-      );
-    }
-  }) : '';
+  const formula = props.formula,
+        modifier = props.modifier,
+        rolls = props.rolls,
+        total = props.total,
+        sign = modifier > 0 ? '+' : '',
+        rollItems = rolls.length > 0 ? rolls.map((roll, i) => (
+          <li key={i}>
+            {roll}
+          </li>
+        )) : '';
+  
   return (
     <section
       ref={ref}
       className={styles.diceTable}
     >
       <ul>
-        <li className={styles.diceFormula}>{formula}</li>
-        {rolls}
-        {props.amount > 1 &&
-          <li>{props.result}</li>
+        <li>{formula}</li>
+        {rollItems.length > 1 ? rollItems : ''}
+        {modifier !== 0 &&
+          <li>{sign}{modifier}</li>
         }
+        <li>{total}</li>
       </ul>
     </section>
   );
 });
 
 const AttackTable = React.forwardRef((props, ref) => {
+  let crit = false
+  const title = props.title,
+        tohit = props.tohit,
+        modifier = props.modifier,
+        damage = props.damage,
+        type = props.type;
+  
+  if ((tohit === 20) || tohit === 1) {
+    crit = true;
+  }
+  
   return (
     <section
       ref={ref}
       className={styles.attackTable}
     >
       <ul>
-        <li>{props.name}</li>
-        <li>{props.tohitRoll}</li>
-        <li>({props.damage} {props.type})</li>
+        <li>{title}</li>
+        <li>To Hit: {tohit + modifier}</li>
+        {crit &&
+          <li>Crit!</li>
+        }
+        <li>Damage: {damage} {type}</li>
       </ul>
     </section>
   );
@@ -59,7 +67,7 @@ const AttackTable = React.forwardRef((props, ref) => {
 
 const SimpleTable = React.forwardRef((props, ref) => {
   let crit = false;
-  if (props.roll === 20 || props.roll === 0) {
+  if (props.roll === 20 || props.roll === 1) {
     crit = true;
   }
   return (
@@ -68,12 +76,12 @@ const SimpleTable = React.forwardRef((props, ref) => {
       className={styles.simpleTable}
     >
       <ul>
-        <li>{props.title}</li>
-        <li>{props.value >= 0 ? '+' : ''}{props.value}</li>
+        <li className={styles.tableTitle}>{props.title}</li>
+        <li>{props.modifier >= 0 ? '+' : ''}{props.modifier}</li>
         {crit &&
-          <li>Crit!</li>
+          <li className={styles.tableCrit}>Crit!</li>
         }
-        <li>{parseInt(props.value) + parseInt(props.roll)}</li>
+        <li>{props.roll === 1 ? 0 : (parseInt(props.modifier) + parseInt(props.roll))}</li>
       </ul>
     </section>
   );
@@ -90,25 +98,21 @@ class Layout extends React.Component {
     this.simpleTable   = React.createRef();
 
     this.getButtons        = this.getButtons.bind(this);
-    this.handleAttackClick = this.handleAttackClick.bind(this);
     this.handleClick       = this.handleClick.bind(this);
     this.handleRoll        = this.handleRoll.bind(this);
     this.handleScroll      = this.handleScroll.bind(this);
-    this.handleSimpleClick = this.handleSimpleClick.bind(this);
 
     this.state = {
       dice: {
-        amount: 0,
-        type: 0,
-        modifier: 0,
-        rolls: [],
-        result: 0,
         formula: '',
+        rolls: [],
+        total: 0,
+        modifier: '',
       },
       attack: {
-        name: '',
+        title: '',
         tohit: 0,
-        tohitRoll: 0,
+        modifier: 0,
         formula: '',
         damage: 0,
         type: '',
@@ -116,7 +120,8 @@ class Layout extends React.Component {
       simple: {
         title: '',
         roll: 0,
-        value: 0,
+        modifier: 0,
+        crit: false,
       },
       scroll: 0,
     }
@@ -127,69 +132,134 @@ class Layout extends React.Component {
   }
 
   handleClick(event) {
-    let total     = 0;
-    let dice      = {...this.state.dice};
-    dice.amount   = event.target.dataset.amount ? parseInt(event.target.dataset.amount) : 1;
-    dice.type     = parseInt(event.target.dataset.type);
-    dice.modifier = event.target.dataset.modifier ? parseInt(event.target.dataset.modifier) : 0;
-    dice.formula  = event.target.dataset.formula;
-    dice.rolls    = [];
+    /*
+    VARS: 
+    target - ARRAY - the clicked button's data attributes.
+    handleRoll - FUNCTION - localized instanciation of this.handleRoll function.
+    reducer - FUNCTION - adds up values of array contents.
+    CSS display property.
+    */
+    const target     = event.currentTarget.dataset,
+          handleRoll = this.handleRoll,
+          reducer    = (previousValue, currentValue) => previousValue + currentValue;
 
-    for (let i=0,l=dice.amount;i<l;i++) {
-      const roll = this.handleRoll(dice.type);
-      dice.rolls.push(roll);
-      total = total + roll;
+    /* Hide tables */
+    this.diceTable.current.style.display = this.attackTable.current.style.display = this.simpleTable.current.style.display = 'none';
+
+    function formulaRoll(formula, crit=false) {
+      /* 
+      Object 'obj' full of broken down dice formula data. Accounts for possibility of 
+      formula being 0 - which happens when a user rolls a 1 to hit, causing a 
+      "critical miss".
+      */
+      const obj = {
+        formula:  formula,
+        amount:   formula === 0 ? 0
+                : formula.split('d')[0] ? parseInt(formula.split('d')[0])
+                : 1,
+        type:     formula === 0 ? 0
+                : parseInt(formula.split('d')[1].split(/[+-]/)[0]),
+        modifier: formula === 0 ? 0
+                : formula.split(/\d*d\d+/)[1] ? parseInt(formula.split(/\d*d\d+/)[1])
+                : 0,
+        rolls:    [],
+        total:    0,
+      };
+      /* Double the amount of damage dice if user rolls a 20 to hit. */
+      obj.amount = crit ? obj.amount *= 2 : obj.amount;
+      /* Roll each die and then assign its value to the 'rolls' array within the 'obj' object. */
+      for (let i=0,l=obj.amount;i<l;i++) {
+        obj.rolls.push(handleRoll(obj.type));
+      }
+      /*
+      Reduce (add together) the 'rolls' array, adding the 'modifier' value as well before 
+      assigning the 'total' value.
+      */
+      obj.total = obj.rolls.reduce(reducer, obj.modifier);
+      return obj;
     }
 
-    dice.result = total + dice.modifier;
-    this.setState({ dice });
-    this.diceTable.current.style.display = 'block';
-    this.attackTable.current.style.display = 'none';
-    this.simpleTable.current.style.display = 'none';
-
-    const clickDate = new Date();
-    console.log(`Dice Roll @${clickDate.getHours()}:${clickDate.getMinutes()}\nFormula: ${dice.formula}\nRolls: ${dice.rolls.join(', ')}\nTotal: ${dice.result}`)
-  }
-
-  handleAttackClick(event) {
-    let attack       = {...this.state.attack},
-        damageTotal  = 0;
-    attack.name      = event.target.dataset.name;
-    attack.tohit     = parseInt(event.target.dataset.tohit, 10);
-    attack.tohitRoll = this.handleRoll(20) + attack.tohit;
-    attack.formula   = event.target.dataset.formula;
-    attack.type      = event.target.dataset.type;
-    damageTotal      = parseInt(attack.formula.split(/\d*d\d+/)[1]);
-    attack.formula   = attack.formula.split('d');
-
-    for (let i=0,l=attack.formula[0];i<l;i++) {
-      const roll = this.handleRoll(attack.formula[1].split(/[+-]?/)[0]);
-      damageTotal += roll;
+    function attackRoll(attack) {
+      /* This value is used multiple times so constructing it outside of the object becomes necessary. */
+      const roll = handleRoll(20);
+      /* See formulaRoll for details. This breaksdown the attack roll similarly. */
+      const obj = {
+        title:    attack.title,
+        tohit:    roll,
+        modifier: attack.modifier,
+        formula:  attack.formula,
+        type:     attack.type,
+        damage:   roll === 1 ? formulaRoll(0)
+                : roll === 20 ? formulaRoll(attack.formula, true)
+                : formulaRoll(attack.formula),
+      };
+      return obj;
     }
-    attack.damage = damageTotal;
 
-    this.setState({ attack });
-    this.attackTable.current.style.display = 'block';
-    this.diceTable.current.style.display   = 'none';
-    this.simpleTable.current.style.display = 'none';
+    function simpleRoll(simple) {
+      /* See formulaRoll and attackRoll for more info. */
+      const roll = handleRoll(20);
+      const obj = {
+        title:    simple.title,
+        roll:     roll,
+        modifier: simple.modifier,
+        crit:     roll === 20 ? true
+                : roll === 1 ? true
+                : false,
+      };
+      return obj;
+    }
 
-    const clickDate = new Date();
-    console.log(`Attack Roll @${clickDate.getHours()}:${clickDate.getMinutes()}\nName: ${attack.name}\nTo Hit: ${attack.tohitRoll}\nDamage: ${attack.damage} ${attack.type}`);
-  }
+    let obj;
+    switch(target.roll) {
+      case 'formula':
+        obj      = formulaRoll(target.formula);
+        let dice = {...this.state.dice};
 
-  handleSimpleClick(event) {
-    let simple   = {...this.state.simple};
-    simple.title = event.currentTarget.dataset.title;
-    simple.value = event.currentTarget.dataset.modifier;
-    simple.roll  = this.handleRoll(20);
+        dice.formula  = obj.formula;
+        dice.modifier = obj.modifier;
+        dice.rolls    = obj.rolls;
+        dice.total    = obj.total;
 
-    this.setState({ simple });
-    this.attackTable.current.style.display = 'none';
-    this.diceTable.current.style.display   = 'none';
-    this.simpleTable.current.style.display = 'block';
+        this.setState({ dice });
+        this.diceTable.current.style.display = 'block';
+        break;
+      case 'attack':
+        obj        = attackRoll(target);
+        let attack = {...this.state.attack};
+        dice       = {...this.state.dice};
 
-    const clickDate = new Date();
-    console.log(`${simple.title} @${clickDate.getHours()}:${clickDate.getMinutes()}\nModifier: ${simple.value}\nTotal: ` + (parseInt(simple.value) + parseInt(simple.roll)));
+        attack.title = obj.title;
+        attack.tohit = obj.tohit;
+        attack.modifier = parseInt(obj.modifier);
+        attack.formula = obj.formula;
+        attack.type = obj.type.charAt(0).toUpperCase() + obj.type.slice(1);
+        attack.damage = obj.damage.total;
+
+        dice.formula = obj.formula;
+        dice.modifier = obj.damage.modifier;
+        dice.rolls = obj.damage.rolls;
+        dice.total = obj.damage.total;
+
+        this.setState({ dice, attack });
+        this.diceTable.current.style.display = 'block';
+        this.attackTable.current.style.display = 'block';
+        break;
+      case 'simple':
+        obj        = simpleRoll(target);
+        let simple = {...this.state.simple};
+        
+        simple.title    = obj.title;
+        simple.roll     = obj.roll;
+        simple.modifier = parseInt(obj.modifier);
+        simple.crit     = obj.crit;
+
+        this.setState({ simple });
+        this.simpleTable.current.style.display = 'block';
+        break;
+      default:
+        return '';
+    }
   }
 
   handleScroll(event) {
@@ -201,19 +271,17 @@ class Layout extends React.Component {
   getButtons() {
     const diceButtons    = this.mainRef.current.getElementsByClassName('dmcm--dice-button'),
           attackButtons  = this.mainRef.current.getElementsByClassName('dmcm--attack-button'),
-          abilityButtons = this.mainRef.current.getElementsByClassName('dmcm--ability-button'),
           simpleButtons  = this.mainRef.current.getElementsByClassName('dmcm--simple-button');
 
-    const buttonClickListeners = (buttons, func) => {
+    const buttonClickListeners = (buttons) => {
       for (let i=0,l=buttons.length;i<l;i++) {
-        buttons[i].addEventListener('click', func);
+        buttons[i].addEventListener('click', this.handleClick);
       }
     }
 
-    buttonClickListeners(diceButtons, this.handleClick);
-    buttonClickListeners(attackButtons, this.handleAttackClick);
-    buttonClickListeners(abilityButtons, this.handleSimpleClick);
-    buttonClickListeners(simpleButtons, this.handleSimpleClick);
+    buttonClickListeners(diceButtons);
+    buttonClickListeners(attackButtons);
+    buttonClickListeners(simpleButtons);
   }
 
   componentDidMount() {
@@ -251,27 +319,26 @@ class Layout extends React.Component {
           <div className={styles.dataFloater}>
             <DiceTable
               ref={this.diceTable}
-              amount={this.state.dice.amount}
-              type={this.state.dice.type}
+              formula={this.state.dice.formula}
               modifier={this.state.dice.modifier}
               rolls={this.state.dice.rolls}
-              result={this.state.dice.result}
-              formula={this.state.dice.formula}
+              total={this.state.dice.total}
             />
             <AttackTable
               ref={this.attackTable}
-              name={this.state.attack.name}
+              title={this.state.attack.title}
               tohit={this.state.attack.tohit}
-              tohitRoll={this.state.attack.tohitRoll}
+              modifier={this.state.attack.modifier}
               formula={this.state.attack.formula}
               damage={this.state.attack.damage}
               type={this.state.attack.type}
             />
             <SimpleTable
               ref={this.simpleTable}
-              title={this.state.simple.title}
-              value={this.state.simple.value}
+              crit={this.state.simple.crit}
+              modifier={this.state.simple.modifier}
               roll={this.state.simple.roll}
+              title={this.state.simple.title}
             />
           </div>
           {this.props.children}
