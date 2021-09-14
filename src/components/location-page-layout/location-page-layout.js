@@ -5,6 +5,7 @@ import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import AnchorLink from '../anchorlink/anchorlink';
 import Dice from '../dice/dice';
 import Layout from '../layout/layout';
+import { SpellLink, MonsterLink } from '../int-link/int-link';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import showdown from 'showdown';
@@ -256,7 +257,7 @@ function Areas(props) {
           }
           <MarkdownView
             markdown={area.content}
-            components={{Dice}}
+            components={{Dice, MonsterLink, SpellLink}}
           />
         </section>
       </React.Fragment>
