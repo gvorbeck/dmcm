@@ -4,6 +4,7 @@ import Attack from '../components/attack/attack';
 import Dice from '../components/dice/dice';
 import Layout from '../components/layout/layout';
 import SearchForm from '../components/search-form/search-form';
+import Simple from '../components/simple/simple';
 import { SpellLink, MonsterLink } from '../components/int-link/int-link';
 import showdown from 'showdown';
 import MarkdownView from 'react-showdown';
@@ -99,13 +100,12 @@ function monsterSimpleBlocks(area, type) {
   for (let i=0,l=area.length;i<l;i++) {
     formattedItems.push(
       <li key={i}>
-        <button
-          className='dmcm--simple-button'
-          data-title={`${type}: ${area[i].name}`}
-          data-modifier={area[i].modifier}
+        <Simple
+          modifier={area[i].modifier}
+          title={`${type}: ${area[i].name}`}
         >
           {area[i].name}: +{area[i].modifier}
-        </button>
+        </Simple>
       </li>
     );
   }
@@ -132,15 +132,14 @@ function resultMarkup(monster, index) {
             key={key}
             className={styles.ability}
           >
-            <button
-              className='dmcm--ability-button'
-              data-modifier={modifier}
-              data-title={`Ability Check: ${key.toUpperCase()}`}
+            <Simple
+              modifier={modifier}
+              title={`Ability Check: ${key.toUpperCase()}`}
             >
               <span>{key.toUpperCase()}</span>
               <span className={styles.modifier}>{modifier}</span>
               <span className={styles.value}>{value}</span>
-            </button>
+            </Simple>
           </li>
         );
       }
