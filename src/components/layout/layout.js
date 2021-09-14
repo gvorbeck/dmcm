@@ -260,6 +260,20 @@ class Layout extends React.Component {
       default:
         return '';
     }
+    const clickDate = new Date();
+    console.log(
+      'Dice Roll @' + clickDate.getHours() + ':' + clickDate.getMinutes() + ':' + clickDate.getSeconds() +
+      (obj.title ? '\nTitle: ' + obj.title : '') + 
+      (obj.formula ? '\nFormula: ' + obj.formula : '') + 
+      (obj.modifier ? '\nModifier: ' + obj.modifier : '') + 
+      (obj.tohit ? '\nTo Hit: ' + obj.tohit : '') +
+      (obj.type ? '\nType: ' + obj.type : '') +
+      (obj.rolls ? '\nRolls: ' + obj.rolls : '') + 
+      (obj.roll ? '\nRoll: ' + obj.roll : '') +
+      (obj.crit ? '\nCrit: ' + obj.crit : '') +
+      (obj.damage ? '\nDamage: ' + obj.damage.total : '') +
+      (obj.total ? '\nTotal: ' + obj.total : '')
+    );
   }
 
   handleScroll(event) {
