@@ -129,16 +129,20 @@ class SpellPage extends React.Component {
 
     if (this.props.location.search) {
       const params = new URLSearchParams(this.props.location.search);
-      this.getResults(params.get('s'));
+      this.getResults(params.get('s'), true);
     }
   }
 
-  getResults(query) {
+  getResults(query, limit=false) {
     let results = [];
-    for (let i=0,l=this.spellList.length;i<l;i++) {
-      if (this.spellList[i].name.toUpperCase().includes(query.toUpperCase())) {
-        results.push(this.spellList[i]);
+    if (!limit) {
+      for (let i=0,l=this.spellList.length;i<l;i++) {
+        if (this.spellList[i].name.toUpperCase().includes(query.toUpperCase())) {
+          results.push(this.spellList[i]);
+        }
       }
+    } else {
+      results.push(this.spellList.find(({ name }) => name.toUpperCase() === query.toUpperCase()));
     }
 
     this.setState({searchResults: results});
