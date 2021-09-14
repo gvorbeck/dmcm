@@ -7,81 +7,89 @@ TODOs:
 - Add Simple Clicks to spell areas.
 */
 
-const DiceTable = React.forwardRef((props, ref) => {
-  const formula = props.formula,
-        modifier = props.modifier,
-        rolls = props.rolls,
-        total = props.total,
-        sign = modifier > 0 ? '+' : '',
-        rollItems = rolls.length > 0 ? rolls.map((roll, i) => (
-          <li key={i}>
-            {roll}
-          </li>
-        )) : '';
-  
-  return (
-    <section
-      ref={ref}
-      className={styles.diceTable}
-    >
-      <ul>
-        <li>{formula}</li>
-        {rollItems.length > 1 ? rollItems : ''}
-        {modifier !== 0 &&
-          <li>{sign}{modifier}</li>
-        }
-        <li>{total}</li>
-      </ul>
-    </section>
-  );
-});
+const FloatTable = React.forwardRef((props, ref) => {
+  let data = {},
+      listItems,
+      rollItems;
+  switch(props.tableType) {
+    case 'dice-table':
+      data.formula  = props.formula;
+      data.modifier = props.modifier;
+      data.rolls    = props.rolls;
+      data.total    = props.total;
+      data.sign     = data.modifier > 0 ? '+' : '';
+      data.class    = styles.diceTable;
 
-const AttackTable = React.forwardRef((props, ref) => {
-  let crit = false
-  const title = props.title,
-        tohit = props.tohit,
-        modifier = props.modifier,
-        damage = props.damage,
-        type = props.type;
-  
-  if ((tohit === 20) || tohit === 1) {
-    crit = true;
-  }
-  
-  return (
-    <section
-      ref={ref}
-      className={styles.attackTable}
-    >
-      <ul>
-        <li>{title}</li>
-        <li>To Hit: {tohit + modifier}</li>
-        {crit &&
-          <li>Crit!</li>
-        }
-        <li>Damage: {damage} {type}</li>
-      </ul>
-    </section>
-  );
-});
+      rollItems = data.rolls.length > 0 ? data.rolls.map((roll, i) => (
+        <li key={i}>
+          {roll}
+        </li>
+      )) : '';
 
-const SimpleTable = React.forwardRef((props, ref) => {
-  let crit = false;
-  if (props.roll === 20 || props.roll === 1) {
-    crit = true;
+      listItems = (
+        <React.Fragment>
+          <li>{data.formula}</li>
+          {rollItems}
+          {data.modifier !== 0 &&
+            <li>{data.sign}{data.modifier}</li>
+          }
+          <li>{data.total}</li>
+        </React.Fragment>
+      );
+      break;
+    case 'attack-table':
+      data.title    = props.title;
+      data.tohit    = props.tohit;
+      data.modifier = props.modifier;
+      data.damage   = props.damage;
+      data.type     = props.type;
+      data.class    = styles.attackTable;
+      if (data.tohit === 20 || data.tohit === 1) {
+        data.crit = true;
+      }
+
+      listItems = (
+        <React.Fragment>
+          <li>{data.title}</li>
+          <li>To Hit: {data.tohit + data.modifier}</li>
+          {data.crit &&
+            <li>Crit!</li>
+          }
+          <li>Damage: {data.damage} {data.type}</li>
+        </React.Fragment>
+      );
+      break;
+    case 'simple-table':
+      data.roll     = props.roll;
+      data.title    = props.title;
+      data.modifier = props.modifier;
+      data.sign     = data.modifier > 0 ? '+' : '';
+      data.class    = styles.simpleTable;
+      if (data.roll === 20 || data.roll === 1) {
+        data.crit = true;
+      }
+
+      listItems = (
+        <React.Fragment>
+          <li>{data.title}</li>
+          <li>{data.sign}{data.modifier}</li>
+          {data.crit &&
+            <li>Crit!</li>
+          }
+          <li>{data.roll === 1 ? 0 : (parseInt(data.modifier) + parseInt(data.roll))}</li>
+        </React.Fragment>
+      );
+      break;
+    default:
+      return '';
   }
   return (
     <section
       ref={ref}
-      className={styles.simpleTable}
+      className={data.class}
     >
       <ul>
-        <li className={styles.tableTitle}>{props.title}</li>
-        <li>{props.modifier >= 0 ? '+' : ''}{props.modifier}</li>
-        {crit &&
-          <li className={styles.tableCrit}>Crit!</li>
-        }
-        <li>{props.roll === 1 ? 0 : (parseInt(props.modifier) + parseInt(props.roll))}</li>
+        {listItems}
       </ul>
     </section>
   );
@@ -331,15 +339,17 @@ class Layout extends React.Component {
             <h2 className={styles.pageTitle}>{this.props.title}</h2>
           }
           <div className={styles.dataFloater}>
-            <DiceTable
+            <FloatTable
               ref={this.diceTable}
+              tableType='dice-table'
               formula={this.state.dice.formula}
               modifier={this.state.dice.modifier}
               rolls={this.state.dice.rolls}
               total={this.state.dice.total}
             />
-            <AttackTable
+            <FloatTable
               ref={this.attackTable}
+              tableType='attack-table'
               title={this.state.attack.title}
               tohit={this.state.attack.tohit}
               modifier={this.state.attack.modifier}
@@ -347,8 +357,9 @@ class Layout extends React.Component {
               damage={this.state.attack.damage}
               type={this.state.attack.type}
             />
-            <SimpleTable
+            <FloatTable
               ref={this.simpleTable}
+              tableType='simple-table'
               crit={this.state.simple.crit}
               modifier={this.state.simple.modifier}
               roll={this.state.simple.roll}
