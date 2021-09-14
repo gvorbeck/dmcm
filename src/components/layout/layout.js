@@ -7,10 +7,15 @@ TODOs:
 - Add Simple Clicks to spell areas.
 */
 
+/*
+FloatTable:  Component
+Arguments:   props, ref
+Description: This component builds the floating tables that appear when a user
+clicks a Roll button.
+*/
 const FloatTable = React.forwardRef((props, ref) => {
   let data = {},
-      listItems,
-      rollItems;
+      listItems;
   switch(props.tableType) {
     case 'dice-table':
       data.formula  = props.formula;
@@ -20,7 +25,7 @@ const FloatTable = React.forwardRef((props, ref) => {
       data.sign     = data.modifier > 0 ? '+' : '';
       data.class    = styles.diceTable;
 
-      rollItems = data.rolls.length > 0 ? data.rolls.map((roll, i) => (
+      const rollItems = data.rolls.length > 0 ? data.rolls.map((roll, i) => (
         <li key={i}>
           {roll}
         </li>
@@ -205,7 +210,7 @@ class Layout extends React.Component {
     }
 
     function simpleRoll(simple) {
-      /* See formulaRoll and attackRoll for more info. */
+      /* See formulaRoll and attackRoll for more info. These rolls handle Ability and Skill Checks. */
       const roll = handleRoll(20);
       const obj = {
         title:    simple.title,
