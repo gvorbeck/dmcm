@@ -5,6 +5,7 @@ import * as styles from './layout.module.scss';
 /*
 TODOs:
 - Add Simple Clicks to spell areas.
+- Get example files back into this repo and out of my campaigns repo.
 */
 
 /*
