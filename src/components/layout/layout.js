@@ -26,7 +26,7 @@ const FloatTable = React.forwardRef((props, ref) => {
       data.sign     = data.modifier > 0 ? '+' : '';
       data.class    = styles.diceTable;
 
-      const rollItems = data.rolls.length > 0 ? data.rolls.map((roll, i) => (
+      const rollItems = data.rolls.length > 1 ? data.rolls.map((roll, i) => (
         <li key={i}>
           {roll}
         </li>
