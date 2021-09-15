@@ -188,6 +188,7 @@ function Map(props) {
     <li
       key={i}
       style={trap.style}
+      className={styles.trap}
     />
   ));
   return (
