@@ -135,6 +135,11 @@
 
     div {
       display: block;
+      box-shadow: rem(5px) rem(5px);
+    }
+
+    a {
+      box-shadow: none;
     }
   }
 
@@ -158,6 +163,7 @@
     font-family: monospace;
     background: $color--13;
     position: relative;
+    box-shadow: rem(5px) rem(5px);
 
     span {
       line-height: 1.25;
