@@ -7,7 +7,7 @@
   DMCM: Dungeon Master's Campaign Manager
 </h1>
 
-The DMCM is a React-based localhost app that you can use during your 5e TTRPG sessions to house all your DM notes, references, and homebrew stats & spells! It is powered by the Gatsby site generator tool.
+The DMCM is a React-based localhost app that you can use during your 5e TTRPG sessions to house all your DM notes, references, and homebrew stats & spells! It is powered by the Gatsby site generator tool. Not enough? Throw it in [Electron](https://www.electronjs.org/) and turn it into a desktop app!
 
 A hosted example of the DMCM can be seen [here](https://rpg.iamgarrett.com/).
 
@@ -18,13 +18,19 @@ A hosted example of the DMCM can be seen [here](https://rpg.iamgarrett.com/).
 
 2. **Clone this repo**
 
+  `git clone https://github.com/gvorbeck/dmcm.git`
+
    Select a directory (ex: `~/Sites/`) and clone this repo into that directory.
 
 3. **Install DMCM**
 
+  `cd dmcm && npm install`
+
    In terminal, navigate to the cloned repo directory (ex: `~/Sites/dmcm/`) and run `npm install`.
 
 4. **Run DMCM**
+
+  `gatsby develop`
 
    In terminal run `gatsby develop`. After it completes the launch process the DMCM will live at `http://localhost:8000/` until you kill the process in your terminal.
 
@@ -59,12 +65,12 @@ _My Adventure_ is an adventure for four to five characters of 1st level. _lorem 
 ```
 ##### Fields
 * `title` - [REQUIRED] The full title of your Adventure.
-* `icon` - [OPTIONAL] An icon that will represent your adventure. Must start with `game-icon-`. (source: [Game Icons Font](https://seiyria.com/gameicons-font/))
-* `levels` - [OPTIONAL] The levels Player Characters (PCs) should start and end at while playing this Adventure.
-* `playernum` - [OPTIONAL] The number of players this Adventure is best played with.
-* `setting` - [OPTIONAL] The world in which this adventure takes place in.
-* `links` - [OPTIONAL] A list of external links that should be listed on this Adventure's homepage (ex: walkthroughs, dm guides, inspiration, etc). Include a `url` key and `title` key for each link.
-* `players` - [OPTIONAL] A list of PCs involved in this adventure. This is used on Location pages on the Footer Drawer so that you can refer to certain stats of your players as you advance through locations. Currently, only the `passiveperception` key is used, but this will be expanded later.
+* `icon` - An icon that will represent your adventure. Must start with `game-icon-`. (source: [Game Icons Font](https://seiyria.com/gameicons-font/))
+* `levels` - The levels Player Characters (PCs) should start and end at while playing this Adventure.
+* `playernum` - The number of players this Adventure is best played with.
+* `setting` - The world in which this adventure takes place in.
+* `links` - A list of external links that should be listed on this Adventure's homepage (ex: walkthroughs, dm guides, inspiration, etc). Include a `url` key and `title` key for each link.
+* `players` - A list of PCs involved in this adventure. This is used on Location pages on the Footer Drawer so that you can refer to certain stats of your players as you advance through locations. Currently, only the `passiveperception` key is used, but this will be expanded later.
 * The body of the `.mdx` file is to be used as general description for the adventure and is used both on the Adventures list page (`/adventures/`) and the Adventure homepage.
 
 Once you have your `index.mdx` file created, it's time to create the directories your adventure will need:
@@ -78,37 +84,48 @@ Once you have your `index.mdx` file created, it's time to create the directories
 #### 1.2 Creating a new Location
 Inside your `locations/` directory, create a new `.mdx` file named after your location (ex: `desert-maze.mdx`). This file holds all the metadata for your location like this:
 ```
-title: Desert Maze
+---
+title: Example Location
 map:
-  image: ../images/desert-maze-map.jpg
-  width: 25
-  height: 48
-  padding: 1% 1% 1% 1%
+  image: ../images/examplia-hills-barrow.png
+  width: 21
+  height: 27
+  padding: 8% 8% 8% 8%
 areas:
-- name: Crumbling Entrance
-  x: 5
-  y: 2
+- name: Entrance
+  x: 10
+  y: 4
   flags:
-  - secret-door
-  - evil-minion
+  - six-eyes
+  - wolf-trap
+  - person
   traps:
-  - x: 7
-    y: 3
+  - x: 8
+    y: 5
     w: 2
     h: 2
   flavor: |
-    This is a crumbling entrance to the maze in the desert. Step on the wrong tile and you're gonna have a bad time.
-  callout: |
-    Remember to attack with the invisible sand ghost first to scare the PCs.
+    This is **flavor text** written in markdown. Wow, that's a _scary_ entrance. Dust and spiders lurk here where adventurers are seldom seen.
   content: |
-    If a PC steps on the outlined trap, a wall of sand plows into them, dealing 1d6 bludgeoning damage.
+    #### Occupants
+    * 2 <MonsterLink>Example Monster</MonsterLink>s with spellcasting ability. They can cast <SpellLink>Example Spell</SpellLink>.
 
-    Any PC that survives the trap is then attacked by the ghost.
+    #### Environment
+    * The main gates, made of bronze-covered wood, have corroded and collapsed.
+    * Any dice formulas in text can be turned into buttons to roll from!
+        * example: <Dice>d20</Dice>, <Dice>5d6</Dice>, it's so easy - <Dice>3d12+3</Dice>! Just wrap them in Dice tags (ex: `<Dice>2d6</Dice>`).
+    #### Developments
+    * Hover your mouse over the PLAYER STATS bar at the bottom of your screen. Your players' info will be displayed. Right now it's just their Passive Perception, but I'll put more here soon.
+    * Any loud noises here attract attention from Goblins in **area 7**.
+    #### Treasure
+    * A single **MacGuffin** is located in the southeast corner.
+    #### XP
+    * The party splits 5,000 xp for being great. And defeating the goblins.
 ---
 This area is where I will add any "General Features" for this location like how high the **ceilings** are, quality of light, material of doors, etc.
 ```
 ##### Fields
-* `title` - The full title of your Location.
+* `title` - [REQUIRED] The full title of your Location.
 * `map` - This object holds all of the Location's map data.
     * `image` - Contains the Location's map image and should be located within this Adventure's `image/` directory.
     * `width` - The number of CSS Grid columns your map will need to contain. I usually eyeball this in my browser's Developer Tools until it looks right or you can count the columns in your image.
@@ -118,30 +135,20 @@ This area is where I will add any "General Features" for this location like how 
     * `name` - The name of the room/area.
     * `x` - X coordinate of this area on your map image.
     * `y` - Y coordinate of this area on your map image.
-    * `flags` - Your map will show these symbols when you hover over this area's number on your map. It is a quick way of being able to look at a map's various rooms and know what they contain without going to that area's full note section. Possible values include:
-        * `villain` - Adds a small sword wielding figure to let you know that room contains enemies.
-        * `loot` - A treasure chest icon that tells you there is loot to be found in this room.
-        * `person` - Adds a silhouette figure to inform you that a person of interest is located here.
-        * `secret` - An outlined door signifies there is some sort of secret in this room (ex: a hidden passage)
-        * `action` - A symbol for reminding you that some sort of action/violence occurs by virtue of your players entering this area, regardless of actions taken.
-        * `trap` - A trap is located in this room!
-        * `eyes` - The eyeballs icon tells you that your PCs can be observed from this location. Their stealth may necessary or they will be caught.
+    * `flags` - Your map will show these symbols when you hover over this area's number on your map. It is a quick way of being able to look at a map's various rooms and know what they contain without going to that area's full note section. This can be any icon you find at [Game Icons Font](https://seiyria.com/gameicons-font/). Just type the icon's name into the repeatable list.
     * `traps` - An object for detailing the locations of area traps on your map. They will be laid out on your CSS grid in a slightly opaque red outline. Its fields include:
         * `x` - The trap's X coordinate.
         * `y` - Its Y coordinate
         * `w` - The trap's width in CSS Grid columns.
         * `h` - Its height in CSS Grid rows.
     * `flavor` - This markdown field creates a box within the area's note box for flavor text to read aloud to your players when they enter a room.
-    * `callout` - This markdown field creates another box in the area's note box for extra notes you may want seperated, like how to roleplay a specific NPC in this room or how your notes may differ depending on previous events.
+    * `callout` - This markdown field creates another box in the area's note box for extra notes you may want separated, like how to roleplay a specific NPC in this room or how your notes may differ depending on previous events.
     * `content` - Markdown field for entering all the notes you have for a specific area within this Location.
 * Content placed outside of the frontmatter fields will be placed in your Location's "General Features" box. This is also a markdown area and can be formatted with markdown.
 
-##### Dice Roller
-Any dice formulas written (ex: 1d4, d20, 3d6) in your notes can be read by the DMCM and converted into a button that you can click and receive results for on the right side of the screen. A complete history of your rolls is displayed in your browser's Developer Tools' Console screen to refer back to if needed.
+There are several custom tags shown here that you can use in this file and others. Their documentation can be read below.
 
-In order to make a dice formula turn into a rollable button, place a `/r ` in front of the dice formula (ex: `/r 3d6`).
-
-NOTE: This functionality currently only works on "Location" pages.
+Content below here may be out of date.
 
 ##### Character stats
 At the bottom of any Location page is a tray containing your PC's stats, just hover over the yellow strip at the bottom of the screen. Right now, only the passive perception score is listed, but will show more in the future.
@@ -199,7 +206,36 @@ voice: lispy snake-like
 
 Note: The `age` value needs to be wrapped in quotation marks. In fact, it's a good idea to wrap all your values in double quotation marks so that values with apostraphes don't mess up the formatting of your `.mdx` files. Any errors you're likely to encounter will be usually be from needing quotation marks or improper indentation of your frontmatter.
 
-### 2. Reference
+### 2. Custom Tags
+
+#### 2.1 Dice
+`<Dice/>`
+Example: `The punch causes <Dice>3d8+3</Dice> bludgeoning damage.`
+DMCM can roll dice for you! Got a dice formula (ex: 3d8+5)? Throw some `<Dice>` tags around it and DMCM will turn that formula into a button that will roll those dice for you. Furthermore, it will record those results into your browser's Developer Tools' Console so that you can refer back to them if needed.
+
+#### 2.2 MonsterLink
+`<MonsterLink/>`
+Example: `Here, there are three <MonsterLink>Example Monster</MonsterLink>s lurking.`
+Want to link directly to one of your monsters within the Bestiary? If you wrap its name with `<Monster>` tags. **Note**, it does not accept plurals of whatever a monster is named - the tags *must* be wrapped around the monster's exact name. Capitalization is unimportant.
+
+#### 2.3 SpellLink
+`<SpellLink/>`
+Example: `Tav casts <SpellLink>Example Spell</SpellLink> at anyone approaching.`
+Much like `<MonsterLink/>`, this tag will llink to one of your spells within the Spellbook. Same rule on plurals as above.
+
+#### 2.4 Attack
+`<Attack/>`
+Example:
+```
+Greatsword
+Melee Weapon Attack: +11 to hit, reach 10 ft., one target. Hit: 28 (6d6 + 7) slashing damage.
+<Attack>Greatsword|+11|6d6+7|slashing</Attack>
+```
+Only on Monster stat sheets (for actions, traits, reactions, legendary actions), there is an `<Attack/>` tag. This allows you to set up all the rolls needed to execute the action within a single button. It rolls first to see whether the action hits, accounts for both critical hits **and** misses, and then rolls to find any damage that occurs. On a critical hit, the damage dice are doubled; on a critical miss, it is an automatic miss and does not roll for damage (as per the *PHB*). It gives a full account of all these rolls on screen also recording them in your browser's Developer Tools' Console.
+
+The formatting is Action Name, Hit Modifier, Damage Formula, Damage Type - all separated by `|` characters.
+
+### 3. Reference
 I've added a ton of rule references in this section so that you can easily get to the resolution of any complex situation your game may fall into. You can add any rule references you may want by creating another `.mdx` file in the `dmcm/src/content/references/` directory. Each file in there is written similarly to the files outlined above with frontmatter fields layed out to document each rule. Reference files are documented in three types: `table`, `definitions`, and `markdown`. For simplicity, any rule reference you wish to add should follow that system.
 
 * `table` types are references that only require a table of values, like currency exchange rates.
