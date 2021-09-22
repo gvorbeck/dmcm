@@ -107,6 +107,7 @@ function ArticleItems(props) {
                               <MarkdownView
                                 markdown={term.text}
                                 components={{Dice}}
+                                options={{ tables: true }}
                               />
                             </li>
                           ))}
