@@ -8,6 +8,7 @@ function AnchorLink(props) {
       dangerouslySetInnerHTML={{ __html: '&nbsp;' }}
       aria-label='Anchor link'
       className='dmcm--anchor-link'
+      style={props.style}
     />
   );
 }
