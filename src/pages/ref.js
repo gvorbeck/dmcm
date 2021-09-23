@@ -47,86 +47,88 @@ function ArticleItems(props) {
       articles.push(
         <li 
           key={i}
-          className={styles.articleContainer}
+          className={styles.articleItem}
         >
           <AnchorLink
             id={encodeURI(props.articles[i].frontmatter.title.toLowerCase().replace(/[^0-9a-z]/gi, ''))}
+            style={{
+              position: 'absolute',
+              top: '-47px',
+            }}
           />
           <article>
-            <header>
-              <h1>{props.articles[i].frontmatter.title}</h1>
-            </header>
-              {props.articles[i].frontmatter.content &&
-                props.articles[i].frontmatter.content.map((content, i) => {
-                  if (content.type === 'table') {
-                    return (
-                      <div
-                        key={i}
-                        className={`dmcm--text ${styles.content} dmcm--closed`}
-                      >
-                        <table>
-                          <thead>
-                            <tr>
-                              {content.headers.map((header, i) => (
-                                <th
-                                  key={i}
-                                  aria-label={header}
-                                >{header}</th>
+            <h1 className={styles.articleTitle}>{props.articles[i].frontmatter.title}</h1>
+            {props.articles[i].frontmatter.content &&
+              props.articles[i].frontmatter.content.map((content, i) => {
+                if (content.type === 'table') {
+                  return (
+                    <div
+                      key={i}
+                      className={`dmcm--text ${styles.content}`}
+                    >
+                      <table>
+                        <thead>
+                          <tr>
+                            {content.headers.map((header, i) => (
+                              <th
+                                key={i}
+                                aria-label={header}
+                              >{header}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {content.rows.map((row, i) => (
+                            <tr key={i}>
+                              {row.map((cell, i) => (
+                                <td key={i} dangerouslySetInnerHTML={{ __html: converter.makeHtml(cell)}}/>
                               ))}
                             </tr>
-                          </thead>
-                          <tbody>
-                            {content.rows.map((row, i) => (
-                              <tr key={i}>
-                                {row.map((cell, i) => (
-                                  <td key={i} dangerouslySetInnerHTML={{ __html: converter.makeHtml(cell)}}/>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    );
-                  } else if (content.type === 'definitions') {
-                    return (
-                      <div
-                        className={`dmcm--text ${styles.content} dmcm--closed`}
-                        key={i}
-                      >
-                        <ul className={styles.definitions}>
-                          {content.terms.map((term, i) => (
-                            <li
-                              key={i}
-                              className={styles.definition}
-                            >
-                              <div className={styles.header}>
-                                <h2 className={styles.term}>{term.title}</h2>
-                                <p className={styles.short}>{term.short}</p>
-                                <p className={styles.cite}>{term.cite}</p>
-                              </div>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                } else if (content.type === 'definitions') {
+                  return (
+                    <div
+                      className={`dmcm--text ${styles.content}`}
+                      key={i}
+                    >
+                      <ul className={styles.definitionItems}>
+                        {content.terms.map((term, i) => (
+                          <li
+                            key={i}
+                            className={styles.definitionItem}
+                          >
+                            <h2 className={styles.definitionTitle}>{term.title}</h2>
+                            <div className={styles.definitionContent}>
+                              <p className={styles.short}>{term.short}</p>
+                              <p className={styles.cite}>{term.cite}</p>
                               <MarkdownView
                                 markdown={term.text}
                                 components={{Dice}}
                                 options={{ tables: true }}
                               />
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  } else if (content.type === 'markdown') {
-                    return (
-                      <MarkdownView
-                        key={i}
-                        className={`dmcm--text ${styles.content}`}
-                        markdown={content.text}
-                        components={{Dice}}
-                      />
-                    );
-                  }
-                  return ('');
-                })
-              }
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                } else if (content.type === 'markdown') {
+                  return (
+                    <MarkdownView
+                      key={i}
+                      className={`dmcm--text ${styles.content}`}
+                      markdown={content.text}
+                      components={{Dice}}
+                    />
+                  );
+                }
+                return ('');
+              })
+            }
           </article>
         </li>
       )
@@ -140,14 +142,12 @@ function Articles(props) {
   const refItems = tocData.categories.map((category, i) => (
     <li
       key={i}
-      className={styles.category}
+      className={styles.categoryItem}
     >
-      <h4>
-        <Link to='#toc'>
-          <span>{i + 1}.</span> {category}
-        </Link>
+      <h4 className={styles.categoryTitle}>
+        <Link to='#toc'>{category}</Link>
       </h4>
-      <ul>
+      <ul className={styles.articleItems}>
         <ArticleItems
           articles={tocData.articles}
           category={category}
@@ -157,7 +157,7 @@ function Articles(props) {
   ));
   return (
     <section>
-      <ul>
+      <ul className={styles.categoryItems}>
         {refItems}
       </ul>
     </section>
