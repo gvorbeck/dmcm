@@ -113,118 +113,372 @@
   }
 }
 
-.category {
-  display: flex;
-
-  & > h4 {
-    padding: .5rem;
-    text-shadow: $color--01 .5rem .5rem;
-    font-family: "Space Grotesk";
-    width: 30%;
-    height: max-content;
-    font-size: 2rem;
-    position: sticky;
-    top: 0;
-    box-shadow:
-      inset 3rem 0 0 0 $color--06,
-      inset 6rem 0 0 0 $color--05,
-      inset 9rem 0 0 0 $color--04,
-      inset 12rem 0 0 0 $color--03,
-      inset 15rem 0 0 0 $color--02,
-      inset 18rem 0 0 0 $color--01;
-
-    span {
-      font-size: 1rem;
-    }
-
-    a {
-      border: none;
-      color: $color--13;
-    }
-  }
-
-  & > ul {
-    width: 70%;
-  }
-
-  article {
-
-    h1 {
-      background-color: $color--13;
-      color: $color--01;
-      font-family: "Space Grotesk";
-      padding: .25rem .5rem;
-      font-size: 1.5rem;
-      letter-spacing: 1vw;
-      line-height: 1.5;
-    }
-
-    .content {
-      border: rem(1px) solid $color--13;
-      padding: calc(.5rem - 1px);
-      overflow: hidden;
-
-      & > *:not(:first-child) {
-        margin-top: 1rem;
-      }
-    }
-  }
-
-  & + .category {
-    margin-top: 2rem;
-  }
+.categoryItems,
+.articleTitle,
+.definitionItems {
+  list-style: decimal inside;
 }
 
-.articleContainer {
-
-  &.closed {
-    .content {
-      // max-height: 0;
-    }
-  }
-
-  & + .articleContainer {
-    margin-top: 2rem;
-  }
-
-  table {
-    width: 100%;
-  }
+.categoryItem {
+  display: block;
 }
 
-.definitions {
-  padding-left: 0 !important;
-}
-
-.definition {
-  list-style-type: none;
-
-  &:not(:first-child) {
-    margin-top: 2rem;
-  }
-
-  .header {
-    margin-bottom: 1rem;
-
-    p {
-      margin-top: 0;
-    }
-  }
-}
-
-
-.term {
-  font-family: "Space Grotesk";
-  font-size: 1.25rem;
+.categoryTitle,
+.articleTitle,
+.definitionTitle {
+  background: $color--13;
   font-weight: 700;
-  border-bottom: rem(2px) solid;
+  display: list-item;
+  position: sticky;
+  padding: .5rem;
+  font-family: "Space Grotesk";
 }
 
-.short {
-  font-style: italic;
-  font-weight: 300;
+.categoryTitle {
+  font-size: 2rem;
+  top: 0;
+  z-index: 2;
+
+  a,
+  &::marker {
+    color: $color--01;
+  }
+
+  a {
+    display: inline-block;
+    border: none;
+    padding: 0;
+  }
+
+  &::marker {
+    content: counter(sections) '. ';
+  }
 }
 
-.cite {
-  font-size: .75rem;
+.categoryItems,
+.articleItems,
+.definitionItems {
+  counter-reset: sections;
 }
+
+.categoryItem,
+.articleItem,
+.definitionItem {
+  counter-increment: sections;
+}
+
+.articleTitle,
+.definitionTitle {
+  color: $color--01;
+  font-size: 1.5rem;
+  border-top: rem(2px) solid $color--01;
+  top: rem(48px);
+  z-index: 1;
+
+  &::marker {
+    content: counters(sections, '.') ' ';
+  }
+}
+
+.articleItem {
+  position: relative;
+}
+
+.definitionItems {
+  list-style-type: none !important;
+  padding: 0 !important;
+}
+
+.definitionItem {
+
+  .short,
+  .cite {}
+
+  .short {}
+
+  .cite {
+    margin: 0 0 1rem;
+    padding-bottom: .5rem;
+    border-bottom: rem(2px) solid $color--13;
+    font-size: .75rem;
+    font-style: italic;
+  }
+}
+
+.definitionTitle {
+  font-size: 1.25rem;
+  top: rem(90px);
+  z-index: 0;
+}
+
+.definitionContent {
+  border: rem(2px) solid $color--13;
+  border-top-width: 0;
+  padding: .5rem;
+}
+
+// .categories {
+//   counter-reset: sections;
+//   list-style: decimal inside;
+// }
+
+// .category {
+//   display: block;
+
+//   article {
+//     // counter-increment: subsections;
+//     counter-reset: sections;
+//     counter-increment: sections;
+
+//     header {
+//       list-style: decimal inside;
+
+//       h1 {
+//         display: list-item;
+
+//         &::marker {
+//           content: counters(sections, '.') ': ';
+//         }
+//       }
+//     }
+//   }
+// }
+
+// .categoryName {
+//   display: list-item;
+//   counter-increment: sections;
+
+//   &::marker {
+//     content: counter(sections) '. ';
+//   }
+// }
+
+
+
+
+
+
+// .categories {
+// }
+
+// .category {
+//   display: block;
+
+//   article {
+
+//     header {
+
+//       h1 {
+//         display: list-item;
+//         list-style: decimal inside;
+
+//         &::marker {
+//           content: counters(list-item, ".") ":";
+//         }
+//       }
+//     }
+//   }
+// }
+
+// .categoryName {
+//   list-style: decimal inside;
+//   display: list-item;
+//   background: $color--13;
+
+//   &::marker {
+//     content: counter(list-item) ". ";
+//     color: $color--01;
+//   }
+
+//   a {
+//     display: inline-block;
+//     color: $color--01;
+//     border: none;
+//   }
+// }
+
+
+
+
+
+// .category {
+
+//   & > h4 {
+//     padding: .5rem;
+//     background: $color--13;
+//     font-family: "Space Grotesk";
+//     font-size: 2rem;
+//     position: sticky;
+//     top: 0;
+//     z-index: 2;
+
+//     span {
+//       font-size: 1rem;
+//     }
+
+//     a {
+//       border: none;
+//       color: $color--01;
+//       padding: 0;
+//     }
+//   }
+
+//   & > ul {
+//     margin-top: 1rem;
+//   }
+
+//   .articleContainer {
+//     border: rem(2px) solid $color--13;
+//     border-top-width: 0;
+
+//     & + .articleContainer {
+//       margin-top: 2rem;
+//     }
+//   }
+
+//   article {
+
+//     header,
+//     .term {
+//       padding: 1rem .5rem;
+//       position: sticky;
+//     }
+
+//     header {
+//       background: $color--13;
+//       color: $color--01;
+//       top: rem(48px);
+//       z-index: 1;
+//     }
+
+//     .definitions {
+//       list-style-type: none;
+//       padding-left: 0;
+//     }
+
+//     .term {
+//       position: sticky;
+//       top: rem(96px);
+//       background: $color--01;
+//       border-bottom: rem(2px) solid $color--13;
+//     }
+//   }
+// }
+
+
+
+// .category {
+//   display: flex;
+
+//   & > h4 {
+//     padding: .5rem;
+//     text-shadow: $color--01 .5rem .5rem;
+//     font-family: "Space Grotesk";
+//     width: 30%;
+//     height: max-content;
+//     font-size: 2rem;
+//     position: sticky;
+//     top: 0;
+//     box-shadow:
+//       inset 3rem 0 0 0 $color--06,
+//       inset 6rem 0 0 0 $color--05,
+//       inset 9rem 0 0 0 $color--04,
+//       inset 12rem 0 0 0 $color--03,
+//       inset 15rem 0 0 0 $color--02,
+//       inset 18rem 0 0 0 $color--01;
+
+//     span {
+//       font-size: 1rem;
+//     }
+
+//     a {
+//       border: none;
+//       color: $color--13;
+//     }
+//   }
+
+//   & > ul {
+//     width: 70%;
+//   }
+
+//   article {
+
+//     h1 {
+//       background-color: $color--13;
+//       color: $color--01;
+//       font-family: "Space Grotesk";
+//       padding: .25rem .5rem;
+//       font-size: 1.5rem;
+//       letter-spacing: 1vw;
+//       line-height: 1.5;
+//     }
+
+//     .content {
+//       border: rem(1px) solid $color--13;
+//       padding: calc(.5rem - 1px);
+//       overflow: hidden;
+
+//       & > *:not(:first-child) {
+//         margin-top: 1rem;
+//       }
+//     }
+//   }
+
+//   & + .category {
+//     margin-top: 2rem;
+//   }
+// }
+
+// .articleContainer {
+
+//   &.closed {
+//     .content {
+//       // max-height: 0;
+//     }
+//   }
+
+//   & + .articleContainer {
+//     margin-top: 2rem;
+//   }
+
+//   table {
+//     width: 100%;
+//   }
+// }
+
+// .definitions {
+//   padding-left: 0 !important;
+// }
+
+// .definition {
+//   list-style-type: none;
+
+//   &:not(:first-child) {
+//     margin-top: 2rem;
+//   }
+
+//   .header {
+//     margin-bottom: 1rem;
+
+//     p {
+//       margin-top: 0;
+//     }
+//   }
+// }
+
+
+// .term {
+//   font-family: "Space Grotesk";
+//   font-size: 1.25rem;
+//   font-weight: 700;
+//   border-bottom: rem(2px) solid;
+// }
+
+// .short {
+//   font-style: italic;
+//   font-weight: 300;
+// }
+
+// .cite {
+//   font-size: .75rem;
+// }
