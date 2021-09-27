@@ -239,6 +239,7 @@ class RefPage extends React.Component {
       <Layout
         title={'Reference'}
         className={styles.refWrapper}
+        pageTitle={'Reference: DMCM'}
       >
         <TableOfContents
           articles={articles}

@@ -338,6 +338,7 @@ class LocationPage extends React.Component {
       <Layout
         title={this.props.data.mdx.frontmatter.title}
         className={styles.locationWrapper}
+        pageTitle={this.props.data.mdx.frontmatter.title + ': DMCM'}
       >
         <Navigation
           adventure={`/${this.props.data.adventure.slug}`}

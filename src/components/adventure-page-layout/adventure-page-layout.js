@@ -215,6 +215,7 @@ class AdventurePage extends React.Component {
         title={this.props.data.mdx.frontmatter.title}
         className={styles.adventureWrapper}
         icon={this.props.data.mdx.frontmatter.icon + ' dmcm--adventure-icon'}
+        pageTitle={this.props.data.mdx.frontmatter.title + ': DMCM'}
       >
         <div className={styles.container}>
           <section className={styles.details}>

@@ -354,6 +354,7 @@ class BeastPage extends React.Component {
       <Layout
         title={'Bestiary'}
         className={styles.bestiaryWrapper}
+        pageTitle={'Bestiary: DMCM'}
       >
         <SearchForm
           submit={this.handleSubmit}

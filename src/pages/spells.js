@@ -174,6 +174,7 @@ class SpellPage extends React.Component {
       <Layout
         title='Spellbook'
         className={styles.spellsWrapper}
+        pageTitle={'Spellbook: DMCM'}
       >
         <SearchForm
           submit={this.handleSubmit}

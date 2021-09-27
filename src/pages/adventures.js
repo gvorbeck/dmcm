@@ -78,6 +78,7 @@ class AdventuresListPage extends React.Component {
       <Layout
         className={styles.adventuresWrapper}
         title='Adventures'
+        pageTitle={'Adventures: DMCM'}
       >
         <ul className={styles.adventureList}>{adventureList}</ul>
       </Layout>

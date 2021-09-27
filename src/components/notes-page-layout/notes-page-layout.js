@@ -31,7 +31,8 @@ class NotesPage extends React.Component {
     return (
       <Layout
         title={this.props.data.mdx.frontmatter.title}
-        className={styles.notesWrapper}        
+        className={styles.notesWrapper}
+        pageTitle={this.props.data.mdx.frontmatter.title + ': DMCM'}     
       >
         <Link to={`/${this.props.data.adventure.slug}`}>Back</Link>
         <h1>{this.props.data.mdx.frontmatter.title}</h1>
