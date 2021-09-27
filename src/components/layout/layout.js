@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../header/header';
 import * as styles from './layout.module.scss';
 
@@ -333,6 +334,10 @@ class Layout extends React.Component {
   render() {
     return (
       <div className={`dmcm--pageWrapper ${this.props.className}`}>
+        <Helmet
+          defaultTitle='DMCM'
+          title={this.props.pageTitle}
+        />
         <Header homeNav={this.props.homeNav}/>
         <main
           ref={this.mainRef}
