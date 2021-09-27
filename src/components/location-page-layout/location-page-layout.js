@@ -353,6 +353,7 @@ class LocationPage extends React.Component {
             title={this.props.data.mdx.frontmatter.title}
             areas={this.props.data.mdx.frontmatter.areas}
           />
+          
         }
         {this.props.data.mdx.body &&
           <GeneralFeatures
