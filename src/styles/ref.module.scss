@@ -121,6 +121,10 @@
 
 .categoryItem {
   display: block;
+
+  & + .categoryItem {
+    margin-top: 2rem;
+  }
 }
 
 .categoryTitle,
@@ -182,6 +186,20 @@
 
 .articleItem {
   position: relative;
+
+  & + .articleItem {
+    margin-top: 2rem;
+  }
+
+  .content {
+    border: rem(2px) solid $color--13;
+    border-top-width: 0;
+    padding: .5rem;
+
+    table {
+      margin-top: 1rem;
+    }
+  }
 }
 
 .definitionItems {
@@ -190,11 +208,6 @@
 }
 
 .definitionItem {
-
-  .short,
-  .cite {}
-
-  .short {}
 
   .cite {
     margin: 0 0 1rem;

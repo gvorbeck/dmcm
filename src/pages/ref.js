@@ -103,8 +103,12 @@ function ArticleItems(props) {
                           >
                             <h2 className={styles.definitionTitle}>{term.title}</h2>
                             <div className={styles.definitionContent}>
-                              <p className={styles.short}>{term.short}</p>
-                              <p className={styles.cite}>{term.cite}</p>
+                              {term.short &&
+                                <p className={styles.short}>{term.short}</p>
+                              }
+                              {term.cite &&
+                                <p className={styles.cite}>{term.cite}</p>
+                              }
                               <MarkdownView
                                 markdown={term.text}
                                 components={{Dice}}
