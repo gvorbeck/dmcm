@@ -1,50 +1,85 @@
 import React from 'react';
 import { Link } from 'gatsby';
 
-function NavItem(props) {
-  return (
-    <li>
-      <Link to={props.slug}>{props.title}</Link>
-    </li>
-  )
-}
-
 function Navigation() {
-  const nav = [
+  const navArr = [
     {
-      title: 'Adventures',
-      slug: '/adventures'
+      title: 'adventures',
+      slug: '/adventures',
     },
     {
-      title: 'Bestiary',
-      slug: '/monsters'
+      title: 'bestiary',
+      slug: '/monsters',
     },
     {
-      title: 'Reference',
-      slug: '/ref'
+      title: 'reference',
+      slug: '/ref',
     },
     {
-      title: 'Spellbook',
-      slug: '/spells'
-    }
+      title: 'spellbook',
+      slug: '/spellbook',
+    },
   ];
-  
+
+  const navItems = navArr.map((item) => (
+    <li key={item.title}>
+      <Link to={item.slug}>{item.title}</Link>
+    </li>
+  ));
+
   return (
     <nav>
       <ul>
-        {
-          nav.length &&
-          nav.map((item, i) => (
-            <NavItem
-              key={i}
-              title={item.title}
-              slug={item.slug}
-            />
-          ))
-        }
+        {navItems}
       </ul>
     </nav>
-  )
+  );
 }
 
 export default Navigation;
+
+// function NavItem(props) {
+//   return (
+//     <li>
+//       <Link to={props.slug}>{props.title}</Link>
+//     </li>
+//   )
+// }
+// function Navigation() {
+//   const nav = [
+//     {
+//       title: 'Adventures',
+//       slug: '/adventures'
+//     },
+//     {
+//       title: 'Bestiary',
+//       slug: '/monsters'
+//     },
+//     {
+//       title: 'Reference',
+//       slug: '/ref'
+//     },
+//     {
+//       title: 'Spellbook',
+//       slug: '/spells'
+//     }
+//   ];
+//   return (
+//     <nav>
+//       <ul>
+//         {
+//           nav.length &&
+//           nav.map((item, i) => (
+//             <NavItem
+//               key={i}
+//               title={item.title}
+//               slug={item.slug}
+//             />
+//           ))
+//         }
+//       </ul>
+//     </nav>
+//   )
+// }
+
+// export default Navigation;
