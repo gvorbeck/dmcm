@@ -1,26 +1,27 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import Navigation from '../navigation/navigation';
 
 function HeaderHomeLink(title) {
   return (
-    <h1>
-      <Link to="/">{title}</Link>
-    </h1>
+    <Typography variant="h1">
+      <Link href="/">{title}</Link>
+    </Typography>
   );
 }
 
-function Header(props) {
+export default function Header(props) {
   const { displayNav, title } = props;
+
   return (
-    <header>
+    <Container component="header">
       {title && HeaderHomeLink(title)}
       {displayNav && Navigation()}
-    </header>
+    </Container>
   );
 }
-
-export default Header;
 
 // import { Link, StaticQuery, graphql } from 'gatsby';
 // import Navigation from '../navigation/navigation';

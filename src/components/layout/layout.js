@@ -1,9 +1,12 @@
 import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { Helmet } from 'react-helmet';
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import Header from '../header/header';
 
-function Layout(props) {
+export default function Layout(props) {
   const data = useStaticQuery(graphql`
     query HeaderQuery {
       site {
@@ -16,23 +19,39 @@ function Layout(props) {
   const { children, title, displayNav } = props;
   const siteTitle = data.site.siteMetadata.title;
   const pageTitle = title === siteTitle ? 'Home' : title;
+  const pageTitleHeader = <Typography variant="h1">{pageTitle}</Typography>;
 
   return (
-    <div>
+    <>
       <Helmet
         defaultTitle="DMCM"
         title={`${pageTitle} | ${siteTitle}`}
-      />
-      <Header displayNav={displayNav === undefined ? true : displayNav} title={siteTitle} />
-      <main>
-        {pageTitle && <h1>{pageTitle}</h1>}
-        {children}
-      </main>
-    </div>
+      >
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+      </Helmet>
+      <Grid container>
+        <Grid item xs={12}>
+          <Header displayNav={displayNav === undefined ? true : displayNav} title={siteTitle} />
+        </Grid>
+        <Grid item xs={12}>
+          <Container component="main">
+            {pageTitle && pageTitleHeader}
+            {children}
+          </Container>
+        </Grid>
+        <Grid item xs={12}>
+          <Container component="footer">
+            <Typography variant="caption">
+              &copy;
+              {`${new Date().getFullYear()} J. Garrett Vorbeck`}
+            </Typography>
+          </Container>
+        </Grid>
+      </Grid>
+    </>
   );
 }
-
-export default Layout;
 
 // import React from 'react';
 // import { Helmet } from 'react-helmet';

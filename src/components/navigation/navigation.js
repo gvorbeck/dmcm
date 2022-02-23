@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
-function Navigation() {
+export default function Navigation() {
   const navArr = [
     {
       title: 'adventures',
@@ -9,7 +12,7 @@ function Navigation() {
     },
     {
       title: 'bestiary',
-      slug: '/monsters',
+      slug: '/search/?category=monsters',
     },
     {
       title: 'reference',
@@ -17,26 +20,26 @@ function Navigation() {
     },
     {
       title: 'spellbook',
-      slug: '/spellbook',
+      slug: '/search/?category=spells',
     },
   ];
 
   const navItems = navArr.map((item) => (
-    <li key={item.title}>
-      <Link to={item.slug}>{item.title}</Link>
-    </li>
+    <ListItem key={item.title}>
+      <ListItemButton component="a" href={item.slug}>
+        <ListItemText primary={item.title} />
+      </ListItemButton>
+    </ListItem>
   ));
 
   return (
     <nav>
-      <ul>
+      <List>
         {navItems}
-      </ul>
+      </List>
     </nav>
   );
 }
-
-export default Navigation;
 
 // function NavItem(props) {
 //   return (

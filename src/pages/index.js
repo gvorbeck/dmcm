@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
+import Typography from '@mui/material/Typography';
 import Layout from '../components/layout/layout';
 import Navigation from '../components/navigation/navigation';
 // import * as styles from '../styles/index.module.scss';
@@ -15,26 +16,26 @@ export const query = graphql`
   }
 `;
 
-function IndexPage({ data }) {
+export default function IndexPage({ data }) {
   const { title } = data.site.siteMetadata;
   return (
-    <Layout title={title} displayNav>
-      <h2>Hail fellow well met.</h2>
+    <Layout title={title} displayNav={false}>
+      <Typography variant="h2">Hail fellow well met.</Typography>
       <Navigation />
-      <p>{`The ${title} is a React-based campaign manager for your favorite 5E TTRPG.`}</p>
+      <Typography variant="body1">{`The ${title} is a React-based campaign manager for your favorite 5E TTRPG.`}</Typography>
     </Layout>
   );
 }
 
-IndexPage.propTypes = {
-  data: PropTypes.shape({
-    site: PropTypes.shape({
-      siteMetadata: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-      }),
-    }),
-  }).isRequired,
-};
+// IndexPage.propTypes = {
+//   data: PropTypes.shape({
+//     site: PropTypes.shape({
+//       siteMetadata: PropTypes.shape({
+//         title: PropTypes.string.isRequired,
+//       }),
+//     }),
+//   }).isRequired,
+// };
 
 // class IndexPage extends React.Component {
 //   render() {
@@ -53,5 +54,4 @@ IndexPage.propTypes = {
 //     )
 //   }
 // }
-
-export default IndexPage;
+// export default IndexPage;

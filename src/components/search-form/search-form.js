@@ -1,60 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
-function SearchForm() {
-  return ('foo');
+export default function SearchForm(props) {
+  const [searchValue, setSearchValue] = useState('');
+  const { onSubmit, searchData, searchParams } = props;
+  const formattedSearchData = {
+    monsters: [],
+    spells: [],
+  };
+
+  if (searchParams.category) {
+    searchData.allMdx.edges.forEach((source) => {
+      const content = source.node.frontmatter;
+      if (content.monsters && searchParams.category === 'monsters') {
+        content.monsters.forEach((monster) => {
+          formattedSearchData.monsters.push(monster);
+        });
+      }
+      if (content.spells && searchParams.category === 'spells') {
+        content.spells.forEach((spell) => {
+          formattedSearchData.spells.push(spell);
+        });
+      }
+    });
+  } else {
+    console.error('DMCM ERROR: URL Param: \'category\' is missing. Search will not work.');
+  }
+
+  if (searchParams.category === 'monsters') {
+    formattedSearchData.monsters.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (searchParams.category === 'spells') {
+    formattedSearchData.spells.sort((a, b) => a.name.localeCompare(b.name));
+  }
+  console.log(formattedSearchData);
+
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    onSubmit(searchValue, searchData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        id="search-input"
+        name="search"
+        label="Search"
+        type="text"
+        value={searchValue}
+        onChange={handleInputChange}
+        fullWidth
+      />
+      <Button
+        variant="contained"
+        type="submit"
+      >
+        Submit
+      </Button>
+    </form>
+  );
 }
-
-export default SearchForm;
-
-// import * as styles from './search-form.module.scss';
-
-// class SearchTextInput extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.handleChange = this.handleChange.bind(this);
-//   }
-
-//   handleChange(event) {
-//     this.props.onTextChange(event.target.value);
-//   }
-
-//   render() {
-//     const text = this.props.text;
-//     return (
-//       <fieldset>
-//         <label className={styles.searchLabel}>
-//           Search:
-//           <input
-//             type='text'
-//             value={text}
-//             onChange={this.handleChange}
-//             placeholder={this.props.placeholder}
-//             className={styles.searchInput}
-//           />
-//         </label>
-//       </fieldset>
-//     );
-//   }
-// }
-
-// function SearchForm(props) {
-//   return (
-//     <form
-//       onSubmit={props.submit}
-//       className={styles.searchForm}
-//     >
-//       <SearchTextInput
-//         onTextChange={props.textChange}
-//         text={props.text}
-//         placeholder={props.placeholder}
-//       />
-//       <input
-//         type='submit'
-//         value='Submit'
-//         className={styles.searchSubmit}
-//       />
-//     </form>
-//   );
-// }
-
-// export default SearchForm;
