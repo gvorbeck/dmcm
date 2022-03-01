@@ -1,10 +1,25 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/function-component-definition */
 import React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import {
+  Box,
+  Button,
+  List,
+  ListItem,
+  Stack,
+} from '@mui/material';
 
-export default function Navigation() {
+export default function Navigation(props) {
+  const {
+    display,
+    navDir,
+    width,
+    sx,
+    color,
+    size,
+    fullWidth,
+  } = props;
   const navArr = [
     {
       title: 'adventures',
@@ -26,18 +41,36 @@ export default function Navigation() {
 
   const navItems = navArr.map((item) => (
     <ListItem key={item.title}>
-      <ListItemButton component="a" href={item.slug}>
-        <ListItemText primary={item.title} />
-      </ListItemButton>
+      <Button
+        variant="contained"
+        size={size}
+        // color={color || 'primary'}
+        width="100%"
+        href={item.slug}
+        sx={{
+          width: fullWidth && '100%',
+        }}
+      >
+        {item.title}
+      </Button>
     </ListItem>
   ));
 
+  const CustomStack = (customProps) => <Stack component="ul" direction={navDir} {...customProps} />;
+
+  if (display === false) {
+    return null;
+  }
   return (
-    <nav>
-      <List>
+    <Box
+      component="nav"
+      width={width}
+      sx={sx}
+    >
+      <List disablePadding component={CustomStack}>
         {navItems}
       </List>
-    </nav>
+    </Box>
   );
 }
 

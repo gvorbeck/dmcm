@@ -4,6 +4,7 @@ module.exports = {
     title: "Dungeon Master's Campaign Manager",
   },
   plugins: [
+    "gatsby-plugin-material-ui",
     "gatsby-plugin-sass",
     "gatsby-plugin-image",
     "gatsby-plugin-mdx",

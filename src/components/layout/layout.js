@@ -1,10 +1,27 @@
 import React from 'react';
-import { useStaticQuery, graphql } from 'gatsby';
+import {
+  useStaticQuery,
+  graphql,
+} from 'gatsby';
 import { Helmet } from 'react-helmet';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Header from '../header/header';
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Link,
+  Stack,
+} from '@mui/material';
+import {
+  GiBlackBridge,
+} from 'react-icons/gi';
+import { createTheme } from '@mui/material/styles';
+import Navigation from '../navigation/navigation';
+import theme from '../../theme';
+
+console.log(theme);
 
 export default function Layout(props) {
   const data = useStaticQuery(graphql`
@@ -27,26 +44,88 @@ export default function Layout(props) {
         defaultTitle="DMCM"
         title={`${pageTitle} | ${siteTitle}`}
       >
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       </Helmet>
+      <CssBaseline enableColorScheme />
       <Grid container>
         <Grid item xs={12}>
-          <Header displayNav={displayNav === undefined ? true : displayNav} title={siteTitle} />
+          <Box>
+            <AppBar sx={{ px: 3, py: 1, minHeight: '68px' }} position="relative">
+              <Stack direction="row" justifyContent="space-between">
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  color="secondary"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    position: 'absolute',
+                    top: 0,
+                    // background: theme.palette.tertiary.main,
+                  }}
+                >
+                  <Link
+                    // color={theme.palette.primary.contrastText}
+                    href="/"
+                    underline="hover"
+                    sx={{ padding: 1 }}
+                  >
+                    DMCM
+                    <Box
+                      component="span"
+                      sx={{
+                        display: 'block',
+                        textAlign: 'center',
+                        width: '100%',
+                        fontSize: '3rem',
+                        lineHeight: 1,
+                        // background: theme.palette.tertiary.main,
+                      }}
+                    >
+                      <GiBlackBridge />
+                    </Box>
+                  </Link>
+                </Typography>
+                <Navigation
+                  display={displayNav}
+                  navDir="row"
+                  width="50%"
+                />
+              </Stack>
+            </AppBar>
+          </Box>
         </Grid>
         <Grid item xs={12}>
-          <Container component="main">
-            {pageTitle && pageTitleHeader}
+          <Container
+            component="main"
+            sx={{
+              pt: '2rem',
+            }}
+          >
+            {pageTitle && pageTitle !== 'Home' && pageTitleHeader}
             {children}
           </Container>
         </Grid>
         <Grid item xs={12}>
-          <Container component="footer">
-            <Typography variant="caption">
+          <Box component="footer">
+            <Typography
+              variant="caption"
+              component="p"
+              sx={{
+                px: 3,
+                py: 1,
+                mt: 2,
+                minHeight: '68px',
+                // color: theme.palette.tertiary.main,
+              }}
+            >
               &copy;
               {`${new Date().getFullYear()} J. Garrett Vorbeck`}
             </Typography>
-          </Container>
+          </Box>
         </Grid>
       </Grid>
     </>

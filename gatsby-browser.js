@@ -1,5 +1,11 @@
-import "@fontsource/space-grotesk";
-import "@fontsource/ibm-plex-sans";
-/* refer to https://seiyria.com/gameicons-font/ for icon names */
-import "./src/styles/game-icons.scss";
-import "./src/styles/global.scss";
+import React from 'react';
+import { unstable_ClassNameGenerator as ClassNameGenerator } from '@mui/material/utils';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './src/theme';
+
+// Assign site-wide classname prefix.
+ClassNameGenerator.configure((componentName) => componentName.replace('Mui', 'dmcm-'));
+console.log('theme', theme);
+export const wrapRootElement = ({ element }) => (
+  <ThemeProvider theme={theme}>{element}</ThemeProvider>
+);

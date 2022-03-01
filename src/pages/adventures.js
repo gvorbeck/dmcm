@@ -1,15 +1,25 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import Container from '@mui/material/Container';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+// import Container from '@mui/material/Container';
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import Card from '@mui/material/Card';
+// import CardHeader from '@mui/material/CardHeader';
+// import CardContent from '@mui/material/CardContent';
+// import Typography from '@mui/material/Typography';
+// import Link from '@mui/material/Link';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Container,
+  Link,
+  List,
+  ListItem,
+  Typography,
+} from '@mui/material';
 import Layout from '../components/layout/layout';
 
 export default function AdventuresPage(props) {

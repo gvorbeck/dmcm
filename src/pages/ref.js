@@ -2,34 +2,45 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import {
+  Box,
+  Card,
+  CardHeader,
   Container,
   Link,
   List,
   ListItem,
   ListSubheader,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
 } from '@mui/material';
+import MarkdownView from 'react-showdown';
 import Layout from '../components/layout/layout';
+import Dice from '../components/dice/dice';
 
 function TableOfContents(tocProps) {
   const { formattedPosts } = tocProps;
   // Create an array of <li>'s containing the category name as a title and every post for
   // that category.
-  const toc = formattedPosts.map((obj, i) => {
+  const toc = formattedPosts.map((obj) => {
     // For each category object in formattedPosts we need to go through its posts array and
     // create the <li>'s that will link to reference article.
     const postList = obj.posts.map((post) => {
       const postData = post.post.node;
       return (
         <Typography variant="body1" component="li" key={postData.id}>
-          <Link href="#1">{postData.frontmatter.title}</Link>
+          <Link href={`#${postData.id}`}>{postData.frontmatter.title}</Link>
         </Typography>
       );
     });
     return (
-      <ListItem key={`catgeory-${i}`}>
+      <ListItem key={Math.random()}>
         <List>
-          <ListSubheader component="h3">{obj.category}</ListSubheader>
+          <ListSubheader component="h3" key={Math.random()}>{obj.category}</ListSubheader>
           {postList}
         </List>
       </ListItem>
@@ -40,24 +51,90 @@ function TableOfContents(tocProps) {
 
 function ArticleList(articleProps) {
   const { articles } = articleProps;
+  console.log(articles);
   const articleListMarkup = articles.map((obj) => {
     const articleMarkup = obj.posts.map((articleObj) => {
       const article = articleObj.post.node;
       return (
-        <ListItem key={article.id}>
-          <div>{article.frontmatter.title}</div>
-          <div>foo</div>
+        <ListItem key={article.id} id={article.id}>
+          <Card component="article">
+            <CardHeader component="header" titleTypographyProps={{ component: 'h1' }} title={article.frontmatter.title} />
+            {article.frontmatter.content && article.frontmatter.content.map((content) => {
+              console.log(content.type);
+              if (content.type === 'dl') {
+                return (
+                  <dl key={Math.random()}>
+                    {content.terms.map((term) => (
+                      <Container key={Math.random()}>
+                        <Typography variant="body1" component="dt">{term.dt}</Typography>
+                        <Typography variant="body1" component="dd">
+                          {term.dd.short && <Box component="span">{term.dd.short}</Box>}
+                          {term.dd.cite && <Box component="span">{term.dd.cite}</Box>}
+                          {term.dd.text && (
+                            <MarkdownView
+                              markdown={term.dd.text}
+                              components={{ Dice }}
+                              options={{ tables: true }}
+                            />
+                          )}
+                        </Typography>
+                      </Container>
+                    ))}
+                  </dl>
+                );
+              } else if (content.type === 'table') {
+                return (
+                  <TableContainer key={Math.random()}>
+                    <Typography variant="body1" component="h2">{content.title}</Typography>
+                    <Table aria-label={content.title}>
+                      {content.headers && (
+                        <TableHead>
+                          <TableRow>
+                            {content.headers.map((header) => (
+                              <TableCell key={Math.random()}>{header}</TableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                      )}
+                      {content.rows && (
+                        <TableBody>
+                          {content.rows.map((row) => (
+                            <TableRow key={Math.random()}>
+                              {row.length > 0 && row.map((cell) => (
+                                <TableCell key={Math.random()}>{cell}</TableCell>
+                              ))}
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      )}
+                    </Table>
+                  </TableContainer>
+                );
+              } else if (content.type === 'markdown') {
+                console.log(content);
+                return (
+                  <Typography variant="body1" component="div">
+                    <MarkdownView
+                      key={Math.random()}
+                      markdown={content.text}
+                      components={{ Dice }}
+                    />
+                  </Typography>
+                );
+              }
+              return null;
+            })}
+          </Card>
         </ListItem>
       );
     });
     return (
-      <Container component="section">
+      <Container key={Math.random()} component="section">
         <Typography variant="body1" component="h4">{obj.category}</Typography>
         <List>{articleMarkup}</List>
       </Container>
     );
   });
-  console.log(articles);
   return articleListMarkup;
 }
 
@@ -120,20 +197,25 @@ query ReferenceQuery {
         id
         frontmatter {
           title
-          titlenote
           category
           content {
+            type
+            terms {
+              dt
+              dd {
+                text
+                short
+                cite
+              }
+            }
+            title
             headers
             rows
             text
-            type
-            terms {
-              cite
-              short
-              text
-              title
-            }
           }
+        }
+        fields {
+          slug
         }
       }
     }
